@@ -21,7 +21,6 @@ function mainVideoPlay() {
 	// contextPath 구하기
 	let hostIndex = location.href.indexOf(location.host) + location.host.length;
 	let contextPath = location.href.substring(hostIndex, location.href.indexOf("/", hostIndex + 1));
-    console.log(contextPath);
 
     // let mainVideoUrl = contextPath + "/public/video/sample.mp4#t=0" + mainVideoH + ":" + mainVideoM.substr(-2) + ":" + mainVideoS.substr(-2);
     let mainVideoUrl = "video/sample.mp4#t=0" + mainVideoH + ":" + mainVideoM.substr(-2) + ":" + mainVideoS.substr(-2);

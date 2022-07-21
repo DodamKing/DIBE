@@ -8,78 +8,11 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="stylesheets/main.css">
+        <link rel="shortcut icon" href="https://i1.sndcdn.com/avatars-000606604806-j6ghpm-t500x500.jpg" />
     </head>
     <body>
-        <jsp:include page="/WEB-INF/views/include/searchBar.jsp" />
-        <jsp:include page="/WEB-INF/views/include/nav.jsp" />
-        <jsp:include page="/WEB-INF/views/include/header.jsp" />
-
-    <div id="title_search" class="row">
-        <h4 class="col"><a href=""><%= title %></a></h4>
-        <div id="main_srch" class="col-1"><i class="fa-solid fa-magnifying-glass"></i></div>
-    </div>
-
-    <nav>
-        <div class="card-body nav-w">
-            <div>
-                <c:if test="${sVO == null }">
-                    <div class="text-center"><a href="">로그인</a></div>
-                </c:if>
-                <div class="row">
-                    <!-- <c:if test="${sVO != null }">
-                    <c:if test="${empty sVO.profileImg }">
-                        <div class="col-2"><i class="fa-solid fa-user"></i></div>
-                    </c:if>
-                    <c:if test="${!empty sVO.profileImg }">
-                        <div class="col-2 mr-2" style="margin-top: -2px;"><img src="${ctp }/resources/img/${sVO.profileImg}"></div>
-                    </c:if>
-                    <div class="col ho" id="dropMenu" >
-                        <c:if test="${!empty sVO.nickNm }">${sVO.nickNm }</c:if>
-                        <c:if test="${empty sVO.nickNm }">${sMid}</c:if>
-                        <i class="fa-solid fa-caret-down"></i>
-                    </div>
-                    </c:if> -->
-                </div>
-                <div class="list-group my-group">
-                    <ul>
-                        <c:if test="${sVO != null }">
-                            <li class="list-group-item list-group-item-light"><a href="${ctp }/user/membership/${sVO.idx}">My 멤버십</a></li>
-                            <li class="list-group-item list-group-item-light"><a href="${ctp }/review/list?kategorie=공지">공지사항</a></li>
-                            <li class="list-group-item list-group-item-light"><a href="${ctp }/user/profile/${sVO.idx}">계정설정</a></li>
-                        <c:if test="${sVO.membership == -1}">
-                            <li class="list-group-item list-group-item-light"><a href="${ctp }/admin/main" target="_blank">관리자</a></li>
-                        </c:if>
-                        <li class="list-group-item list-group-item-light"><a onclick="return confirm('로그아웃 하시겠습니까?')" href="${ctp }/user/logout">로그아웃</a></li>
-                        </c:if>
-                    </ul>
-                </div>
-            </div>
-            <div>
-                <ul>
-                    <li><a href="${ctp }/today">투데이</a></li>
-                    <li><a href="${ctp }/chart">차트</a></li>
-                    <li><a href="${ctp }/temp">DJ 스테이션</a></li>
-                    <li><a href="${ctp }/rank">이달의 노래</a></li>
-                </ul>
-                <c:if test="${sVO != null }">
-                    <ul>
-                        <div>보관함</div>
-                        <li><a href="${ctp }/temp">믹스테잎</a></li>
-                        <li><a href="${ctp }/artisttape">아티스트</a></li>
-                        <li><a href="${ctp }/user/playlist">플레이리스트</a></li>
-                        <li><a href="${ctp }/gift">받은노래</a></li>
-                        <li><a href="${ctp }/song/mp3">구매한 MP3</a></li>
-                    </ul>
-                </c:if>
-                <ul>
-                    <li><a href="${ctp }/myranking">#내돈내듣</a></li>
-                    <li><a href="${ctp }/intro">서비스 소개</a></li>
-                    <li><a href="${ctp }/review/list">사용자 리뷰</a></li>
-                    <li><a href="${ctp }/comming">커밍쑨 DDMusic</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+        <%- include('./include/searchBar') %>
+        <%- include('./include/nav') %>
 
     <header>
         <div id="srch_bar">
@@ -147,12 +80,12 @@
                                 <div>2021.10.26</div>
                             </div>
                             <div class="col">
-                                <a href="" class="section-img-box"><img class="section-img" src="/public/images/a1.png" alt=""></a>
+                                <a href="" class="section-img-box"><img class="section-img" src="images/a1.png" alt=""></a>
                                 <a href="">New Release #64 : 디제이 스네이크,<br> 홍광호</a>
                                 <div>2021.10.25</div>
                             </div>
                             <div class="col">
-                                <a href="" class="section-img-box"><img class="section-img" src="https://raw.githubusercontent.com/DodamKing/DDMusic/master/cjs2108_kdd/src/main/webapp/resources/img/a2.png" alt=""></a>
+                                <a href="" class="section-img-box"><img class="section-img" src="images/a2.png" alt=""></a>
                                 <a href="">꼭 들어야 할 여섯 장의 앨범 : 따마,<br> 데드보이즈</a>
                                 <div>2021.10.22</div>
                             </div>
@@ -162,12 +95,12 @@
                                 <div>2021.10.19</div>
                             </div>
                             <div class="col">
-                                <a href="" class="section-img-box"><img class="section-img" src="${ctp }/resources/img/12.png" alt=""></a>
+                                <a href="" class="section-img-box"><img class="section-img" src="images/12.png" alt=""></a>
                                 <a href="">New Release #63 : 아델,<br> 스텔라 장</a>
                                 <div>2021.10.18</div>
                             </div>
                             <div class="col">
-                                <a href="" class="section-img-box"><img class="section-img" src="${ctp }/resources/img/13.png" alt=""></a>
+                                <a href="" class="section-img-box"><img class="section-img" src="images/13.png" alt=""></a>
                                 <a href="">무엇이든 물어보세요 : 트라이비(TRI.BE)</a>
                                 <div>2021.10.14</div>
                             </div>
@@ -209,33 +142,33 @@
                                 <div>관련 뉴스 보기</div>
                             </div>
                             <div class="col">
-                                <a href="" class="section-img-box"><img class="section-img" src="${ctp }/resources/img/1.png" alt=""></a>
+                                <a href="" class="section-img-box"><img class="section-img" src="images/1.png" alt=""></a>
                                 <a href="">아델의 Easy on Me가 '빌보드 핫 100' 1위를 차지하였습니다</a>
                                 <div>관련 뉴스 보기</div>
                             </div>
                             <div class="col">
-                                <a href="" class="section-img-box"><img class="section-img" src="${ctp }/resources/img/2.png" alt=""></a>
+                                <a href="" class="section-img-box"><img class="section-img" src="images/2.png" alt=""></a>
                                 <a href="">라잇썸의 'VAVACE'가 빌보드 월드 디지털 송 차트에서 8위를 차지하였습니다</a>
                                 <div>관련 뉴스 보기</div>
                             </div>
                             <div class="col">
-                                <a href="" class="section-img-box"><img class="section-img" src="${ctp }/resources/img/3.jpg" alt=""></a>
+                                <a href="" class="section-img-box"><img class="section-img" src="images/3.jpg" alt=""></a>
                                 <a href="">온앤오프가 첫 단독 콘서트를 개최합니다</a>
                                 <div>관련 뉴스 보기</div>
                             </div>
                             <div class="col">
-                                <a href="" class="section-img-box"><img class="section-img" src="${ctp }/resources/img/4.png" alt="">
+                                <a href="" class="section-img-box"><img class="section-img" src="images/4.png" alt="">
                                 </a>
                                 <a href="">자우림이 단독 콘서트 '영원한 사랑'을 개최 합니다</a>
                                 <div>관련 뉴스 보기</div>
                             </div>
                             <div class="col">
-                                <a href="" class="section-img-box"><img class="section-img" src="${ctp }/resources/img/5.jpg" alt=""></a>
+                                <a href="" class="section-img-box"><img class="section-img" src="images/5.jpg" alt=""></a>
                                 <a href="">이달의 소녀가 오리콘 데일리 차트 3위에 올랐습니다</a>
                                 <div>관련 뉴스 보기</div>
                             </div>
                             <div class="col">
-                                <a href="" class="section-img-box"><img class="section-img" src="${ctp }/resources/img/6.png" alt=""></a>
+                                <a href="" class="section-img-box"><img class="section-img" src="images/6.png" alt=""></a>
                                 <a href="">황치열이 2년 만에 단독 콘서트를 개최합니다</a>
                                 <div>관련 뉴스 보기</div>
                             </div>

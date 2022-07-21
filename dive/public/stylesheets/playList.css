@@ -1,0 +1,145 @@
+footer {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    height: 80px;
+    background-color: rgb(36, 36, 36);
+    z-index: 999;
+}
+
+#controls_title {
+    width: 120px;
+    height: 20px;
+    font-size: 15px;
+    font-weight: 900;
+    overflow: hidden;
+}
+
+#controls_artist {
+    width: 120px;
+    height: 20px;
+    font-size: 11px;
+    opacity: 0.5;
+    overflow: hidden;
+}
+
+#controls_title:hover {
+    cursor: pointer;
+}
+
+#controls_artist {
+    cursor: pointer;
+}
+
+.imgBox {
+    border: 1px solid;
+    width: 50px;
+}
+
+button[type="button"] {
+    color: inherit;
+    opacity: 0.7;
+}
+
+button[type="button"]:hover {
+    color: inherit;
+    opacity: 1;
+}
+
+#play_btn, #pause_btn {
+    color: red;
+}
+
+#controls_time {
+    font-size: 0.8em;
+}
+
+#mute_btn1, #mute_btn2 {
+    width: 50px;
+}
+
+#volume_bar {
+    -webkit-appearance: none;
+    background: gray;
+    background-color: gray;
+    height: 3px;
+    width: 100px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+#volume_bar::-webkit-slider-thumb:hover {
+    background-color: white;
+    box-shadow: -100vw 0 0 100vw white;
+}
+
+#volume_bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 0px;
+    height: 13px;
+    border-radius: 3px;
+    background: rgb(185, 185, 185);
+    box-shadow: -100vw 0 0 100vw rgb(185, 185, 185);
+    /* overflow: hidden; */
+}
+
+#volume_bar::-webkit-slider-thumb:hover{
+    background-color: white;
+}
+
+#play_listContainer {
+    position: fixed;
+    /* top: 100%; */
+    /* height: 100%; */
+    z-index: 998;
+}
+
+#play_listImg {
+    position: fixed;
+    height: 100%;
+    width: 600px;
+    min-width: 600px;
+    background: #111;
+}
+
+div#play_listImg > div {
+	margin: 7% 20%;
+	z-index: 998;
+	position: fixed;
+}
+
+#play_listBox {
+	position: fixed;
+	right: 0px;
+    width: 400px;
+    height: 100%;
+    background: black;
+    overflow: scroll;
+    padding-bottom: 150px;
+    z-index: 998;
+}
+
+.table {
+    color: inherit;
+}
+
+#play_bar {
+    -webkit-appearance: none;
+    overflow: hidden;
+    height: 6px;
+    width: 100%;
+    cursor: pointer;
+    position: absolute;
+    z-index: 999;
+}
+
+#play_bar::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    width: 0px;
+    height: 6px;
+    box-shadow: -8000px 0 0 8000px red;
+}
+
+#play_bar::-webkit-slider-runnable-track {
+    background: #222;
+}
