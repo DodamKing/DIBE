@@ -39,12 +39,22 @@ router.post('/upload', async (req, res) => {
 
 router.post('/upload/test', (req, res) => {
     const data = req.body
+    const title = 'BEAUTIFUL MONSTER'
+    const artist = 'STAYC(스테이씨)'
+    const fileName = title + ' - ' + artist + '.mp3'
+    data.title = title
+    data.artist = artist
     try {
         const fs = require('fs')
-        fs.readFile('e:/music_db/보고싶었어 - WSG워너비 (4FIRE).mp3', (err, file) => {
-            data.file = file
-            db.Song.create(data)
-            res.json('succes!')
+        fs.readFile('e:/music_db/' + fileName, (err, file) => {
+            if (err) {
+                console.error(err)
+            }
+            else {
+                data.file = file
+                db.Song.create(data)
+                res.json('succes!')
+            }
         })
     } catch (err) {
         console.error(err)

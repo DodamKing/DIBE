@@ -25,10 +25,11 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(port, () => {
+  console.log(`${port}번 포트에서 대기중`);
+});
 server.on('error', onError);
 server.on('listening', onListening);
-console.log(`${port} 포트에서 대기중`)
 
 /**
  * Normalize a port into a number, string, or false.
