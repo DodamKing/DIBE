@@ -2,6 +2,15 @@ const express = require('express')
 const router = express.Router()
 const db = require('../models')
 const fs = require('fs')
+const request = require('request')
+
+router.get('/chart', (req, res) => {
+    const url = 'http://127.0.0.1:8080/chart'
+    request(url, (err, response, body) => {
+        if (err) return res.json(err)
+        res.json(JSON.parse(body))
+    })
+})
 
 router.get('/list', async (req, res) => {
     try {
@@ -41,13 +50,11 @@ router.post('/upload', async (req, res) => {
 
 router.post('/upload/test', (req, res) => {
     const data = req.body
-    const title = '보고싶었어'
-    const artist = 'WSG워너비 (4FIRE)'
+    const title = req.body.title
+    const artist = req.body.artist
     const fileName = title + ' - ' + artist + '.mp3'
-    const path = 'e:/music_db/' + fileName
-    data.title = title
-    data.artist = artist
-    
+    const path = 'public/video/' + fileName
+
     fs.readFile(path, (err, file) => {
         if (err) return res.json(err)
         
@@ -56,29 +63,8 @@ router.post('/upload/test', (req, res) => {
             if (err) return res.json(err)
             res.json(result)
         })
-})
+    })
     
-    // const readStream = fs.createReadStream(path)
-    // const stream = []
-
-    // readStream.on('data', (chunck) => {
-        //     stream.push(chunck)
-        // })
-
-    // readStream.on('end', async () => {
-    //     const file = Buffer.concat(stream)
-    //     data.file = file
-    //     try {
-    //         const result = await db.Song.create(data)
-    //         res.json(result)
-    //     } catch (err) {
-    //         console.error(err)
-    //     }
-    // })
-
-    // readStream.on('error', (err) => {
-    //     console.error(err)
-    // })
 })
 
 router.delete('/delete/:_id', async  (req, res) => {

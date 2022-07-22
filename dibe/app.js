@@ -6,7 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-const songRouter = require('./routes/song')
+const songRouter = require('./routes/song');
 
 require('dotenv').config()
 require('./db/connect')()

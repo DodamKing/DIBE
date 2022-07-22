@@ -44,7 +44,6 @@ const songSchema = new Schema({
     },
     file : { //음원파일
         type : Buffer,
-        // default : null,
     },
     createdAt: {
         type: Date,
