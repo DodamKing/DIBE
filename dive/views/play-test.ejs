@@ -7,17 +7,12 @@
     <title><%- title %></title>
 </head>
 <body>
-    <audio id="audio" controls></audio>
-    <audio controls></audio>
+    <!-- <audio id="audio1" controls></audio> -->
+    <audio id="audio2" controls></audio>
     <script>
-        const url = '<%- url %>'
-        const file = '<%- file %>'
-        const audio = document.getElementsByTagName('audio')
-        // const audio = document.getElementById('audio')
-
-        // audio[0].setAttribute("src", url);
-        document.getElementById('audio').src = url
-        audio[1].setAttribute("src", '');
+        // const url = '<%- url %>'
+        // document.getElementById('audio1').src = url
+        document.getElementById('audio2').src = '/audio/stream'
     </script>
 </body>
 </html>
