@@ -1,0 +1,32 @@
+div.card-body > table td:first-child {
+    text-align: center;
+    vertical-align: middle;
+}
+
+div.card-body > table div:nth-child(2) {
+    opacity: 0.7;
+    font-size: 0.8em;
+}
+
+.playlist_t {
+    width: 180px;
+    height: 25px;
+    font-size: 16px;
+    overflow: hidden;
+}
+
+.playlist_a {
+    font-size: 12px;
+    opacity: 0.7;
+    width: 180px;
+    height: 25px;
+    overflow: hidden;
+}
+
+.playlist_t:hover {
+	cursor: pointer;
+}
+
+.playlist_a:hover {
+	cursor: pointer;
+}
