@@ -50,6 +50,10 @@ for i in range(len(title_list)):
 driver.close()
 driver.quit()
 
+# for i in range(len(title_list)):
+#     yt = YouTube(yt_url_list[i])
+#     audio = yt.streams.get_by_itag(251)
+
 for i in range(len(title_list)):
     keyword = '{} - {}'.format(title_list[i], artist_list[i])
     keyword = re.sub('[\\\/:*?\"<>|]', '', keyword)

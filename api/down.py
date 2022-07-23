@@ -1,10 +1,13 @@
-from flask import Blueprint
+from base64 import decode
+from flask import Blueprint, jsonify
 
 from selenium import webdriver
 from bs4 import BeautifulSoup as bs
 from pytube import YouTube
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from collections import OrderedDict
+import json
 import re, time, os
 
 down = Blueprint('down', __name__)
@@ -33,18 +36,28 @@ def file_down():
     driver.close()
     driver.quit()
 
-    for i in range(len(title_list)):
-        keyword = '{} - {}'.format(title_list[i], artist_list[i])
-        keyword = re.sub('[\\\/:*?\"<>|]', '', keyword)
+    # for i in range(len(title_list)):
+    #     keyword = '{} - {}'.format(title_list[i], artist_list[i])
+    #     keyword = re.sub('[\\\/:*?\"<>|]', '', keyword)
 
-        if os.path.exists('d:/music_db/' + keyword + '.mp3'):
-            print(keyword + ' is already exist')
-            pass
-        else:
-            yt = YouTube(yt_url_list[i])
-            audio = yt.streams.get_by_itag(140)
-            audio.download('d:/music_db', keyword + '.mp3')
-            print(keyword + ' is downloaded')
-            time.sleep(2)
+    #     if os.path.exists('d:/music_db/' + keyword + '.mp3'):
+    #         print(keyword + ' is already exist')
+    #         pass
+    #     else:
+    #         yt = YouTube(yt_url_list[i])
+    #         audio = yt.streams.get_by_itag(140)
+    #         audio.download('d:/music_db', keyword + '.mp3')
+    #         print(keyword + ' is downloaded')
+    #         time.sleep(2)
     
-    return 'download done'
+    data = OrderedDict()
+    streams = []
+    yt_url_list = ['https://www.youtube.com/watch?v=vN0AuAS25aQ', 'https://www.youtube.com/watch?v=o2qoo7I6k5U']
+    for i in range(2):
+        yt = YouTube(yt_url_list[i])
+        audio = yt.streams.get_by_itag(251)
+        streams.append(audio.stream_to_buffer)
+    
+    data['streams'] = streams
+    # return jsonify(streams[0])
+    return streams[0]
