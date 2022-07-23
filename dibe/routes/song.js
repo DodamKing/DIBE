@@ -12,6 +12,14 @@ router.get('/chart', (req, res) => {
     })
 })
 
+router.get('/getStreams', (req, res) => {
+    const url = 'http://127.0.0.1:8080/down'
+    request(url, (err, response, body) => {
+        if (err) return res.json(err)
+        res.json(body)
+    })
+})
+
 router.get('/downLocal', (req, res) => {
     const url = 'http://127.0.0.1:8080/chart'
     request(url, (err, response, body) => {
