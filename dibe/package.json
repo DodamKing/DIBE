@@ -6,8 +6,10 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
+    "blob": "^0.1.0",
     "buffer-to-stream": "^1.0.0",
     "cookie-parser": "~1.4.4",
+    "cross-blob": "^3.0.1",
     "debug": "~2.6.9",
     "dotenv": "^16.0.1",
     "ejs": "~2.6.1",

@@ -20,8 +20,10 @@ def file_down():
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
     yt_url_list = []
-    title_list = []
-    artist_list = []
+    # title_list = []
+    # artist_list = []
+    title_list = ['그때 그 순간 그대로 (그그그)', '보고싶었어']
+    artist_list = ['WSG워너비 (가야G)', 'WSG워너비 (4FIRE)']
 
     for i in range(len(title_list)):
         keyword = '{} {} official audio, short'.format(title_list[i], artist_list[i])
@@ -36,7 +38,10 @@ def file_down():
     driver.close()
     driver.quit()
 
-    # for i in range(len(title_list)):
+    return jsonify(yt_url_list)
+
+    # cnt = 0
+    # for i in range(len(yt_url_list)):
     #     keyword = '{} - {}'.format(title_list[i], artist_list[i])
     #     keyword = re.sub('[\\\/:*?\"<>|]', '', keyword)
 
@@ -47,17 +52,19 @@ def file_down():
     #         yt = YouTube(yt_url_list[i])
     #         audio = yt.streams.get_by_itag(140)
     #         audio.download('d:/music_db', keyword + '.mp3')
+    #         cnt += 1
     #         print(keyword + ' is downloaded')
     #         time.sleep(2)
     
-    data = OrderedDict()
-    streams = []
-    yt_url_list = ['https://www.youtube.com/watch?v=vN0AuAS25aQ', 'https://www.youtube.com/watch?v=o2qoo7I6k5U']
-    for i in range(2):
-        yt = YouTube(yt_url_list[i])
-        audio = yt.streams.get_by_itag(251)
-        streams.append(audio.stream_to_buffer)
+    # return '{} files downloaded'.format(cnt)
+
+    # data = OrderedDict()
+    # streams = []
+    # yt_url_list = ['https://www.youtube.com/watch?v=vN0AuAS25aQ', 'https://www.youtube.com/watch?v=o2qoo7I6k5U']
+    # for i in range(2):
+    #     yt = YouTube(yt_url_list[i])
+    #     audio = yt.streams.get_by_itag(251)
+    #     streams.append(audio.stream_to_buffer)
     
-    data['streams'] = streams
-    # return jsonify(streams[0])
-    return streams[0]
+    # data['streams'] = streams
+    # return jsonify(streams)

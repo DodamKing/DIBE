@@ -3,6 +3,7 @@ const router = express.Router()
 const db = require('../models')
 const fs = require('fs')
 const request = require('request')
+const youtubedl = require('youtubu-dl')
 
 router.get('/chart', (req, res) => {
     const url = 'http://127.0.0.1:8080/chart'
@@ -12,7 +13,7 @@ router.get('/chart', (req, res) => {
     })
 })
 
-router.get('/getStreams', (req, res) => {
+router.get('/getYtUrl', (req, res) => {
     const url = 'http://127.0.0.1:8080/down'
     request(url, (err, response, body) => {
         if (err) return res.json(err)
@@ -72,20 +73,28 @@ router.post('/upload', async (req, res) => {
 
 router.post('/upload/test', (req, res) => {
     const data = req.body
-    const title = req.body.title
-    const artist = req.body.artist
-    const fileName = title + ' - ' + artist + '.mp3'
-    const path = 'public/video/' + fileName
+    // const title = req.body.title
+    // const artist = req.body.artist
+    // const fileName = title + ' - ' + artist + '.mp3'
+    // const path = 'public/video/' + fileName
 
-    fs.readFile(path, (err, file) => {
+    const url = 'http://127.0.0.1:8080/down'
+    request(url, (err, response, body) => {
         if (err) return res.json(err)
-        
-        data.file = file
-        db.Song.create(data, (err, result) => {
-            if (err) return res.json(err)
-            res.json(result)
-        })
+
+        const audio = youtubedl(body[0])
+        console.log(audio);
     })
+
+    // fs.readFile(path, (err, file) => {
+    //     if (err) return res.json(err)
+        
+    //     data.file = file
+    //     db.Song.create(data, (err, result) => {
+    //         if (err) return res.json(err)
+    //         res.json(result)
+    //     })
+    // })
     
 })
 
