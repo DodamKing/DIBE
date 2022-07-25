@@ -26,12 +26,10 @@ router.get('/getYtStream', (req, res) => {
         })
         // ytdl(JSON.parse(body)[1]).pipe(res)
 
-        // const options = {filter : format => format.quality === '140'}
-        // const format = ytdl(url, options)
-
         const _id = ytdl.getURLVideoID(JSON.parse(body)[1])
         const info = await ytdl.getInfo(_id)
         const stream = ytdl.chooseFormat(info.formats, {quality : '140'})
+        // const stream = ytdl.filterFormats(info.formats, {quality : '140'})
         console.log(stream)
         fs.readFile(stream.url, (err, buffer) => {
             if (err) return res.json(err)
