@@ -3,7 +3,9 @@ const router = express.Router()
 const db = require('../models')
 const fs = require('fs')
 const request = require('request')
-const youtubedl = require('youtubu-dl')
+const ytdl = require('ytdl-core')
+const { format } = require('path')
+const { buffer } = require('mongoose/lib/utils')
 
 router.get('/chart', (req, res) => {
     const url = 'http://127.0.0.1:8080/chart'
@@ -13,11 +15,29 @@ router.get('/chart', (req, res) => {
     })
 })
 
-router.get('/getYtUrl', (req, res) => {
+router.get('/getYtStream', (req, res) => {
     const url = 'http://127.0.0.1:8080/down'
-    request(url, (err, response, body) => {
+    request(url, async (err, response, body) => {
         if (err) return res.json(err)
-        res.json(body)
+
+        res.set({
+        'Content-Type' : 'audio/mp3',
+        'Transfer-Encoding' : 'chunked',
+        })
+        // ytdl(JSON.parse(body)[1]).pipe(res)
+
+        // const options = {filter : format => format.quality === '140'}
+        // const format = ytdl(url, options)
+
+        const _id = ytdl.getURLVideoID(JSON.parse(body)[1])
+        const info = await ytdl.getInfo(_id)
+        const stream = ytdl.chooseFormat(info.formats, {quality : '140'})
+        console.log(stream)
+        fs.readFile(stream.url, (err, buffer) => {
+            if (err) return res.json(err)
+            console.log(buffer);
+        })
+        // res.send(stream)
     })
 })
 

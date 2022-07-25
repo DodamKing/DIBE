@@ -33,6 +33,7 @@ def file_down():
         soup = bs(driver.page_source, 'html.parser')
         html = soup.select('a#video-title')[0]
         video_url = 'https://www.youtube.com' + html.get('href')
+        # video_url = html.get('href')
         yt_url_list.append(video_url)
 
     driver.close()
