@@ -4,50 +4,98 @@ const db = require('../models')
 const fs = require('fs')
 const request = require('request')
 const ytdl = require('ytdl-core')
-const { chooseFormat } = require('ytdl-core')
+const { response, json } = require('express')
 
 router.get('/chart', (req, res) => {
-    const url = 'http://127.0.0.1:8080/chart'
+    const url = process.env.CHART_API_URL
     request(url, (err, response, body) => {
         if (err) return res.json(err)
         res.json(JSON.parse(body))
     })
 })
 
-router.get('/getYtStream', async (req, res) => {
-    const list = [
-        "https://www.youtube.com/watch?v=Nl6ThTbJz1M", 
-        "https://www.youtube.com/watch?v=LaD0URNK_9s"
-    ]
-
-    res.set({
-    'Content-Type' : 'audio/mp3',
-    'Transfer-Encoding' : 'chunked',
-    })
-    
-    ytdl(list[1]).pipe(fs.createWriteStream('test.mp4').on('finish', () => {
-        fs.readFile('test.mp4', (err, test) => {
-            if (err) return console.error(err)
-            res.send(test)
-        })
-        
-        if (fs.existsSync('test.mp4')) {
-            fs.unlinkSync('test.mp4')
-        }
-    }))
-})
-
-router.get('/downLocal', (req, res) => {
-    const url = 'http://127.0.0.1:8080/chart'
+router.get('/set/song', async (req, res) => {
+    const url = process.env.CHART_API_URL
     request(url, (err, response, body) => {
         if (err) return res.json(err)
-        console.log(JSON.parse(body));
-        const url = 'http://127.0.0.1:8080/down'
-        request(url, (err, response, body) => {
-            if (err) return res.json(err)
-            res.json(body)
-        })
+        
+        const data = JSON.parse(body)
 
+        for (let i=0; i<data.title.length; i++) {
+            const title = data.title[i]
+            const artist = data.artist[i]
+            const img = data.img[i]
+            const album = data.album[i]
+
+            db.Song.create({
+                title : title,
+                artist : artist,
+                img : img,
+                album : album,
+            }, (err, result) => {
+                if(err) return console.error(err)
+            })
+        }
+        
+        res.json(data)
+    })
+})
+
+router.post('/downs/local', (req, res) => {
+    const url = process.env.SONG_TO_DB_URL
+    request(url, (err, response, body) => {
+        const data = JSON.parse(body)
+        const rows = []
+        for (let i=0; i<data.title.length; i++) {
+            const title = data.title[i]
+            const artist = data.artist[i]
+    
+            db.Song.find({ title : title, artist : artist }, (err, result) => {
+                if (err) return console.error(err)
+                if (result) {
+                    const _id = result[0]._id
+                    if (!result.isFile) {
+                        if (data.yt_url[i] === '') return
+                        ytdl(data.yt_url[i], {filter : 'audioonly'}).pipe(fs.createWriteStream('public/video/' + _id + '.mp4').on('finish', () => {
+                            db.Song.findByIdAndUpdate(_id, {isFile : 1}, (err, row) => {
+                                if (err) return console.error(err)
+                                rows.push(row)
+                            })
+                        }))
+                    }
+                }
+            })
+        }
+        data.rows = rows
+        res.json(data)
+    })
+})
+
+router.get('/set/chart', (req, res) => {
+    const url = process.env.CHART_API_URL
+    request(url, (err, response, body) => {
+        if (err) return console.error(err)
+        const data = JSON.parse(body)
+        
+        for (let i=0; i<data.title.length; i++) {
+            const title = data.title[i]
+            const artist = data.artist[i]
+            const img = data.img[i]
+
+            db.Song.find({title : title, artist : artist}, (err, result) => {
+                if (err) return console.error(err)
+                const isFile = result.isFile
+
+                db.Chart.create({
+                    title : title,
+                    artist : artist,
+                    img : img,
+                    isFile : isFile,
+                }, (err, a) => {
+                    if (err) return console.error(err)
+                })
+            })
+        }
     })
 })
 
@@ -58,60 +106,6 @@ router.get('/list', async (req, res) => {
     } catch (err) {
         console.error(err)
     }
-})
-
-router.get('/:_id', async (req, res) => {
-    try {
-        const _id = req.params._id
-        const result = await db.Song.findById(_id)
-        console.log(result.file);
-        // res.json(result.file)
-
-        // const Readable = require('stream').Readable
-        // let stream = new Readable()
-        // stream.push(result.file)
-        // stream.push(null)
-        // res.json(stream)
-    } catch (err) {
-        console.error(err)
-    }
-})
-
-router.post('/upload', async (req, res) => {
-    const data = req.body
-    try {
-        await db.Song.create(data)
-        res.json('upsert success!')
-    } catch (err) {
-        console.error(err)
-    }
-})
-
-router.post('/upload/test', (req, res) => {
-    const data = req.body
-    // const title = req.body.title
-    // const artist = req.body.artist
-    // const fileName = title + ' - ' + artist + '.mp3'
-    // const path = 'public/video/' + fileName
-
-    const url = 'http://127.0.0.1:8080/down'
-    request(url, (err, response, body) => {
-        if (err) return res.json(err)
-
-        const audio = youtubedl(body[0])
-        console.log(audio);
-    })
-
-    // fs.readFile(path, (err, file) => {
-    //     if (err) return res.json(err)
-        
-    //     data.file = file
-    //     db.Song.create(data, (err, result) => {
-    //         if (err) return res.json(err)
-    //         res.json(result)
-    //     })
-    // })
-    
 })
 
 router.delete('/delete/:_id', async  (req, res) => {

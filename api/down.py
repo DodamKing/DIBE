@@ -12,7 +12,7 @@ import re, time, os
 
 down = Blueprint('down', __name__)
 
-@down.route('/', methods = ('GET', 'POST'))
+@down.route('/')
 def file_down():
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])

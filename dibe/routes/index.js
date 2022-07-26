@@ -9,32 +9,27 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/audio/test', async (req, res) => {
-  const _title = 'play_test'
-  const title = 'BEAUTIFUL MONSTER'
-  const artist = 'STAYC(스테이씨)'
-  const fileName = title + ' - ' + artist
-  const url = `/e/${title} - ${artist}.mp3`
-  
+  const audio_id = '62df9589c0102ae446534380' // somebody!
+  const cloud_url = 'https://works.do/56gcLjD'
   res.render('play-test', {
-    title : _title,
-    fileName : fileName,
-    url : url,
+    audio_id : audio_id,
+    cloud_url : cloud_url,
   })
 })
 
 router.get('/audio/stream', (req, res) => {
-  const _id = '62dad3ab9f4b21f4421d5453' // 그그그
-  // const _id = '62dad174b0fab3d96cacd363' // 보고싶었어
+  const _id = '62df9589c0102ae446534381' // 그그그
   
   res.set({
     'Content-Type' : 'audio/mp3',
     'Transfer-Encoding' : 'chunked',
   })
-
-  db.Song.findById(_id, (err, data) => {
-    if (err) return console.log(err)
-    res.send(data.file)
+  
+  fs.readFile('public/video/' + _id + '.mp4', (err, stream) => {
+    if (err) return console.error(err)
+    res.send(stream)
   })
 })
+
 
 module.exports = router;
