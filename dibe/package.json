@@ -6,8 +6,11 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
     "blob": "^0.1.0",
     "buffer-to-stream": "^1.0.0",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.4",
     "cross-blob": "^3.0.1",
     "debug": "~2.6.9",

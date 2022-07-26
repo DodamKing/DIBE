@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const db = require('../models')
+const bcrypt = require('bcryptjs')
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -14,10 +15,27 @@ router.get('/list', async (req, res) => {
 })
 
 router.get('/login', (req, res) => {
-  const _title = 'Dive 로그인'
-  res.render('user/login', {
-    _title : _title,
-  })
+  res.render('user/login')
+})
+
+router.post('/login', async (req, res) => {
+  const user = req.body
+  if (user.loginCheck === 'on') {
+    // 쿠키 설정 자동 로그인 가능하게 하삼
+    console.log('맞나');
+  }
+  console.log(user);
+
+  const pwd = await db.User.find({userId : user.userId})
+  const check = await bcrypt.compare(user.pwd, pwd)
+  console.log(check);
+
+  if (check) {
+    console.log('잘 한듯?');
+    res.json('로그인 해주삼')
+  }
+
+  res.end()
 })
 
 router.get('/signup', (req, res) => {
@@ -26,8 +44,14 @@ router.get('/signup', (req, res) => {
 
 router.post('/signup', (req, res) => {
   const user = req.body
-  db.User.create(user, (err) => {
-    if (err) res.json(err)
+  bcrypt.hash(user.pwd, 10, (err, hash) => {
+    user.pwd = hash
+    db.User.create(user, (err) => {
+      if (err) { 
+        console.error(err)
+        res.redirect('/users/signup')
+      }
+    })
   })
   res.redirect('/')
 })
