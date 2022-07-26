@@ -2,11 +2,21 @@ var express = require('express');
 var router = express.Router();
 const db = require('../models')
 const fs = require('fs')
+const request = require('request')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'DIBE' });
 });
+
+router.get('/chart', (req, res) => {
+  const url = process.env.CHART_API_URL
+  request(url, (err, response, body) => {
+      if (err) return res.json(err)
+      const data = JSON.parse(body)
+      res.render('chart', {data : data})
+  })
+})
 
 router.get('/audio/test', async (req, res) => {
   const audio_id = '62df9589c0102ae446534380' // somebody!

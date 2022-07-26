@@ -118,4 +118,8 @@ router.delete('/delete/:_id', async  (req, res) => {
     }
 })
 
+router.get('/direct', (req, res) => {
+    res.render('song/player')
+})
+
 module.exports = router
