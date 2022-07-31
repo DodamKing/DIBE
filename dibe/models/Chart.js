@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const chartSchema = new Schema({
+    songId : String,
     title : String,
     artist : String,
     img : String,

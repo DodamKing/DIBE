@@ -4,7 +4,6 @@ const db = require('../models')
 const fs = require('fs')
 const request = require('request')
 const ytdl = require('ytdl-core')
-const { response, json } = require('express')
 
 router.get('/chart', (req, res) => {
     const url = process.env.CHART_API_URL
@@ -27,33 +26,38 @@ router.get('/set/song', async (req, res) => {
             const img = data.img[i]
             const album = data.album[i]
 
-            db.Song.create({
-                title : title,
-                artist : artist,
-                img : img,
-                album : album,
-            }, (err, result) => {
+            db.Song.findOne({title : title, artist : artist}, (err, result) => {
                 if(err) return console.error(err)
+                if (!result) {
+                    db.Song.create({
+                        title : title,
+                        artist : artist,
+                        img : img,
+                        album : album,
+                    }, (err) => {
+                        if(err) return console.error(err)
+                    })
+                }
             })
+
         }
-        
         res.json(data)
     })
 })
 
-router.post('/downs/local', (req, res) => {
+router.get('/downs/local', (req, res) => {
     const url = process.env.SONG_TO_DB_URL
     request(url, (err, response, body) => {
         const data = JSON.parse(body)
+        // const data = req.body
         const rows = []
         for (let i=0; i<data.title.length; i++) {
             const title = data.title[i]
             const artist = data.artist[i]
-    
-            db.Song.find({ title : title, artist : artist }, (err, result) => {
+            db.Song.findOne({ title : title, artist : artist }, (err, result) => {
                 if (err) return console.error(err)
                 if (result) {
-                    const _id = result[0]._id
+                    const _id = result._id
                     if (!result.isFile) {
                         if (data.yt_url[i] === '') return
                         ytdl(data.yt_url[i], {filter : 'audioonly'}).pipe(fs.createWriteStream('public/video/' + _id + '.mp4').on('finish', () => {
@@ -84,14 +88,16 @@ router.get('/set/chart', (req, res) => {
 
             db.Song.find({title : title, artist : artist}, (err, result) => {
                 if (err) return console.error(err)
+                const songId = result._id
                 const isFile = result.isFile
 
                 db.Chart.create({
+                    songId : songId,
                     title : title,
                     artist : artist,
                     img : img,
                     isFile : isFile,
-                }, (err, a) => {
+                }, (err) => {
                     if (err) return console.error(err)
                 })
             })
@@ -119,7 +125,35 @@ router.delete('/delete/:_id', async  (req, res) => {
 })
 
 router.get('/direct', (req, res) => {
-    res.render('song/player')
+    const title = req.query.title
+    const artist = req.query.artist
+    const autoPlay = req.query.autoPlay
+    
+    db.Song.findOne({title : title, artist :artist}, (err, song) => {
+        if (err) return console.error(err)
+        const img1000 = song.img.replace('50', '1000')
+        const img2000 = song.img.replace('50', '2000')
+        res.render('song/player', {song, img1000, img2000, autoPlay})
+    })
+
+})
+
+router.get('/stream', (req, res) => {
+    const title = req.query.title
+    const artist = req.query.artist
+
+    res.set({
+        'Content-Type' : 'audio/mp3',
+        'Transfer-Encoding' : 'chunked',
+    })
+    
+    db.Song.findOne({title : title, artist : artist}, (err, result) => {
+        if (err) return console.error(err)
+        fs.readFile('public/video/' + result._id + '.mp4', (err, stream) => {
+            if (err) return console.error(err)
+            res.send(stream)
+        })
+    })
 })
 
 module.exports = router

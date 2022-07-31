@@ -16,6 +16,10 @@ router.get('/chart', (req, res) => {
       const data = JSON.parse(body)
       res.render('chart', {data : data})
   })
+  // db.Chart.find((err, result) => {
+  //   if (err) return res.json(err)
+  //   res.render('chart', {data : result})
+  // })
 })
 
 router.get('/audio/test', async (req, res) => {

@@ -1,36 +1,27 @@
 <footer>
     <input id="play_bar" type="range" value="0">
     <div class="d-flex">
-        <div class="col-1 p-3 mr-3">
-            <c:if test="${empty vos && empty vo }">
-                <div class="controls-song mt-1">
-                    <div id="controls_title" class="mb-1" title="오늘 뭐 듣지?">오늘 뭐 듣지?</div>
-                    <div id="controls_artist" title="재생 버튼을 클릭 해 보세요">재생 버튼을 클릭 해 보세요</div>
-                </div>
-            </c:if>
-            <!-- <c:if test="${!empty vo }">
-                <div class="row">
-                    <div class="controls-song ml-2 mt-2">
-                        <div id="controls_title" class="mb-1" title="${vo.title }" >
-                            <c:if test="${fn:length(vo.title) <= 10 }">${vo.title }</c:if>
-                            <c:if test="${fn:length(vo.title) > 10 }"><marquee scrollamount=3>${vo.title }</marquee></c:if>
-                        </div>
-                        <div id="controls_artist" title="${vo.artist }">${vo.artist }</div>
-                    </div>
-                </div>
-            </c:if>
-            <c:if test="${!empty vos }">
-                <div class="row">
-                    <div class="controls-song ml-2 mt-2">
-                        <div id="controls_title" class="mb-1" title="${vos[0].title }">
-                            <c:if test="${fn:length(vo.title) <= 10 }">${vos[0].title }</c:if>
-                            <c:if test="${fn:length(vo.title) <= 10 }"><marquee scrollamount=3>${vos[0].title }</marquee></c:if>
-                        </div>
-                        <div id="controls_artist" title="${vos[0].artist }">${vos[0].artist }</div>
-                    </div>
-                </div>
-            </c:if> -->
+        <div class="controls-song ml-2 mt-2 pt-3 pl-1">
+            <div id="controls_title" class="mb-1" title="<%- song.title %>" >
+                <% if (song.title.length <= 10) { %> 
+                <%- song.title %>
+                <% } else { %>
+                <marquee scrollamount=3><%- song.title %></marquee> 
+                <% } %>
+            </div>
+            <div id="controls_artist" title="<%- song.artist %>"><%- song.artist %></div>
         </div>
+        <!-- <c:if test="${!empty vos }">
+            <div class="row">
+                <div class="controls-song ml-2 mt-2">
+                    <div id="controls_title" class="mb-1" title="${vos[0].title }">
+                        <c:if test="${fn:length(vo.title) <= 10 }">${vos[0].title }</c:if>
+                        <c:if test="${fn:length(vo.title) <= 10 }"><marquee scrollamount=3>${vos[0].title }</marquee></c:if>
+                    </div>
+                    <div id="controls_artist" title="${vos[0].artist }">${vos[0].artist }</div>
+                </div>
+            </div>
+        </div> -->
         <div class="col-3 p-3 mt-1">
             <c:if test="${empty sMid }">
                 <button id="like_btn1" class="btn" type="button" title="좋아요"><i class="fa-regular fa-heart" style="color: #fff;"></i></button>

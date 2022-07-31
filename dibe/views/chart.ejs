@@ -26,7 +26,7 @@
                     <div id="go_btn" class="btn btn-dark btn-sm">go</div>
                 </div>
                 <div id="top_btn" class="btn btn-dark" style="position: fixed; right: 30px; bottom: 100px;">top</div>
-                <c:if test="${!empty vos }"><div id="add_btn" class="btn btn-dark btn-sm" style="position: sticky; right: 30px; top: 50px; float: right;" onclick="">선택추가</div></c:if>
+                <!-- <c:if test="${!empty vos }"><div id="add_btn" class="btn btn-dark btn-sm" style="position: sticky; right: 30px; top: 50px; float: right;" onclick="">선택추가</div></c:if> -->
                 <div class="text-center h4">
                     <!-- ${fn:replace(fn:split(vos[0].date, " ")[0], "-", ".") } --> 날짜 자리인가 봄
                 </div>
@@ -36,26 +36,13 @@
                         <tr>
                             <td style="border-top: none;"><input id="allch" type="checkbox" ></td>
                             <td id="cnt_box" colspan="2" style="vertical-align: middle; border-top: none;">0 곡 선택 됨</td>
-                            <!-- <td colspan="2" class="text-right" style="border-top: none;"><div id="add_btn" class="btn btn-dark btn-sm" style="position: sticky; position: -webkit-sticky; right: 30px; top: 50px;">선택추가</div></td> -->
+                            <td colspan="2" class="text-right" style="border-top: none;"><div id="add_btn" class="btn btn-dark btn-sm" style="position: sticky; position: -webkit-sticky; right: 30px; top: 50px;">선택추가</div></td>
                         </tr>
-                        <!-- <c:forEach var="vo" items="${vos }" varStatus="st">
-                            <tr>
-                                <td><input name="tch" type="checkbox" value="${vo.songIdx }" <c:if test="${vo.isFile == 0 }">disabled</c:if>></td>
-                                <td style="text-align: center; vertical-align: middle;">${vo.rank}</td>
-                                <td><div class="imgBox ho" onclick="oneplay(${vo.songIdx}, ${vo.isFile })"><img name="top100Img" src="${vo.img }"></div></td>
-                                <td class="align-middle">
-                                    <div name="top100Title"><a href="${ctp }/infor?idx=${vo.songIdx }">${vo.title }</a></div>
-                                    <div name="top100Artist">${vo.artist }</div>
-                                </td>
-                                <td class="align-middle"><button name="add_btn" type="button" class="btn" onclick="senddata(${vo.songIdx}, ${vo.isFile })"><i title="곡 추가" class="fas fa-plus"></i></button></td>
-                            </tr>
-                        </c:forEach> -->
-                        <% for(let i=0; i<data.title.length ; i++) { %>
+                        <% for(let i=0; i<data.title.length; i++) { %>
                             <tr>
                                 <td style="vertical-align: middle;"><input name="tch" type="checkbox" value=""></td>
                                 <td style="text-align: center; vertical-align: middle;"><%- i+1 %></td>
-                                <!-- <td><div class="imgBox ho" onclick="oneplay('songIdx', 'isFile')"><img name="top100Img" src="<%- data.img[i] %>"></div></td> -->
-                                <td><div class="imgBox ho" onclick='location.href="/songs/direct"'><img name="top100Img" src="<%- data.img[i] %>"></div></td>
+                                <td><div class="imgBox ho" onclick="oneplay(`<%- data.title[i] %>`, `<%- data.artist[i] %>`)"><img name="top100Img" src="<%- data.img[i] %>"></div></td>
                                 <td class="align-middle">
                                     <div name="top100Title"><a href=""><%- data.title[i] %></a></div>
                                     <div name="top100Artist"><%- data.artist[i] %></div>
@@ -130,9 +117,13 @@
 				return;
 			}
 			
-			location.href = "${ctp}/chart?date=" + calendar.value;
+			location.href = "/chart?date=" + calendar.value;
 		});
-		
+
+        function oneplay(title, artist) {
+            const url = `/songs/direct?title=${title}&artist=${artist}&autoPlay=1`
+            const player = window.open(url, 'player', 'width=1100px, heght=800px')
+        }
 	</script>
 
 </body>
