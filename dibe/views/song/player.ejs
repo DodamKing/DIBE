@@ -193,10 +193,8 @@
         }
         // 로드
         function load() {
-            let title = title_list[playerIndex]
-            let artist = artist_list[playerIndex]
-            
-            songUrl = `/songs/stream?title=${title}&artist=${artist}`;
+            const songId = idx_list[playerIndex]
+            songUrl = `/songs/stream?songId=${songId}`;
             
             // $.get(songUrl).fail(() => {
             //     next_btn.click();

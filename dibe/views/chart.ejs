@@ -40,14 +40,15 @@
                         </tr>
                         <% for(let i=0; i<data.title.length; i++) { %>
                             <tr>
-                                <td style="vertical-align: middle;"><input name="tch" type="checkbox" value=""></td>
+                                <td style="vertical-align: middle;"><input name="tch" type="checkbox" value="" <% if (data.isFile[i] === 0) { %> disabled <% } %> ></td>
                                 <td style="text-align: center; vertical-align: middle;"><%- i+1 %></td>
-                                <td><div class="imgBox ho" onclick="oneplay(`<%- data.title[i] %>`, `<%- data.artist[i] %>`)"><img name="top100Img" src="<%- data.img[i] %>"></div></td>
+                                <td><div class="imgBox ho" onclick="oneplay(`<%- data._id[i] %>`, `<%- data.isFile[i] %>`)"><img name="top100Img" src="<%- data.img[i] %>"></div></td>
                                 <td class="align-middle">
                                     <div name="top100Title"><a href=""><%- data.title[i] %></a></div>
                                     <div name="top100Artist"><%- data.artist[i] %></div>
                                 </td>
                                 <td class="align-middle"><button name="add_btn" type="button" class="btn" onclick="senddata('songIdx', 'isFile')"><i title="곡 추가" class="fas fa-plus"></i></button></td>
+                                <td style="display: none;"><%- data.isFile[i] %></td>
                             </tr>
                         <% } %>
                     </table>
@@ -120,8 +121,9 @@
 			location.href = "/chart?date=" + calendar.value;
 		});
 
-        function oneplay(title, artist) {
-            const url = `/songs/direct?title=${title}&artist=${artist}&autoPlay=1`
+        function oneplay(songId, isFile) {
+            // if (!songId || isFile === 0) return alert('준비중 입니다')
+            const url = `/songs/direct?songId=${songId}&isFile=${isFile}&autoPlay=1`
             const player = window.open(url, 'player', 'width=1100px, heght=800px')
         }
 	</script>

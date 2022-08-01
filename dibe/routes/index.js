@@ -10,10 +10,33 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/chart', (req, res) => {
+  const _id = []
+  const isFile = []
   const url = process.env.CHART_API_URL
-  request(url, (err, response, body) => {
+  request(url, async (err, response, body) => {
       if (err) return res.json(err)
       const data = JSON.parse(body)
+      for (let i=0; i<data.title.length; i++) {
+        const title = data.title[i]
+        const artist = data.artist[i]
+        const result = await db.Song.findOne({title : title, artist : artist})
+        if (result) {
+          _id.push(result._id)
+          isFile.push(result.isFile)
+        }
+        else {
+          db.Song.create({
+            title : title,
+            artist : artist,
+            img : data.img[i],
+            album : data.album[i],
+          })
+          _id.push(await db.Song.findOne({title : title, artist : artist}))
+          isFile.push(0)
+        }
+      }
+      data._id = _id
+      data.isFile = isFile
       res.render('chart', {data : data})
   })
   // db.Chart.find((err, result) => {

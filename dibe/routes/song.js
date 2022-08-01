@@ -4,6 +4,7 @@ const db = require('../models')
 const fs = require('fs')
 const request = require('request')
 const ytdl = require('ytdl-core')
+const { response } = require('express')
 
 router.get('/chart', (req, res) => {
     const url = process.env.CHART_API_URL
@@ -124,35 +125,55 @@ router.delete('/delete/:_id', async  (req, res) => {
     }
 })
 
-router.get('/direct', (req, res) => {
-    const title = req.query.title
-    const artist = req.query.artist
+router.get('/direct', async (req, res) => {
+    const songId = req.query.songId
+    const isFile = req.query.isFile
     const autoPlay = req.query.autoPlay
+
+    // if (isFile === '0') {
+    //     const song = await db.Song.findById(songId)
+    //     const title = song.title
+    //     const artist = song.artist
+    //     const options = {
+    //         uri : 'http://127.0.0.1:8080/chart/get_yt_url',
+    //         method : 'POST',
+    //         form : {title, artist},
+    //     }
+    //     request.post(options, async (err, response, body) => {
+    //         if (err) console.error(err)
+    //         const temp = await ytdl(body, {filter : 'audioonly'}).pipe(fs.createWriteStream('public/video/' + songId + '.mp4').on('finish', () => {
+    //             db.Song.findByIdAndUpdate(songId, {isFile : 1}, (err) => {
+    //                 if (err) return console.error(err)
+    //             })
+    //         }))
+    //         db.Song.findById(songId, (err, song) => {
+    //             if (err) return console.error(err)
+    //             const img1000 = song.img.replace('50', '1000')
+    //             const img2000 = song.img.replace('50', '2000')
+    //             res.render('song/player', {song, img1000, img2000, autoPlay})
+    //         })
+    //     })
+    // }
     
-    db.Song.findOne({title : title, artist :artist}, (err, song) => {
+    db.Song.findById(songId, (err, song) => {
         if (err) return console.error(err)
         const img1000 = song.img.replace('50', '1000')
         const img2000 = song.img.replace('50', '2000')
         res.render('song/player', {song, img1000, img2000, autoPlay})
     })
-
 })
 
 router.get('/stream', (req, res) => {
-    const title = req.query.title
-    const artist = req.query.artist
+    const songId = req.query.songId
 
     res.set({
         'Content-Type' : 'audio/mp3',
         'Transfer-Encoding' : 'chunked',
     })
     
-    db.Song.findOne({title : title, artist : artist}, (err, result) => {
+    fs.readFile('public/video/' + songId + '.mp4', (err, stream) => {
         if (err) return console.error(err)
-        fs.readFile('public/video/' + result._id + '.mp4', (err, stream) => {
-            if (err) return console.error(err)
-            res.send(stream)
-        })
+        res.send(stream)
     })
 })
 
