@@ -58,14 +58,3 @@ def file_down():
     #         time.sleep(2)
     
     # return '{} files downloaded'.format(cnt)
-
-    # data = OrderedDict()
-    # streams = []
-    # yt_url_list = ['https://www.youtube.com/watch?v=vN0AuAS25aQ', 'https://www.youtube.com/watch?v=o2qoo7I6k5U']
-    # for i in range(2):
-    #     yt = YouTube(yt_url_list[i])
-    #     audio = yt.streams.get_by_itag(251)
-    #     streams.append(audio.stream_to_buffer)
-    
-    # data['streams'] = streams
-    # return jsonify(streams)

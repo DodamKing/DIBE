@@ -1,4 +1,4 @@
-from flask import jsonify, Blueprint
+from flask import jsonify, Blueprint, request
 
 import requests
 from bs4 import BeautifulSoup as bs
@@ -40,6 +40,32 @@ def get_chart():
     data['album'] = album_list
 
     return jsonify(data)
+
+@chart.post('/get_yt_url')
+def get_yt_url_one():
+    # param = request.get_json()
+    title = request.form['title']
+    artist = request.form['artist']
+    keyword = '{} {} official audio, short'.format(title, artist)
+    url = 'https://www.youtube.com/results?search_query=' + keyword
+
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    driver.get(url)
+    soup = bs(driver.page_source, 'html.parser')
+
+    idx = 0
+    if len(soup.select('a#video-title')) > 0:
+        html = soup.select('a#video-title')[idx]
+        video_url = 'https://www.youtube.com' + html.get('href')
+        l = YouTube(video_url).length 
+        if l < 120 or l > 60 * 6:
+            idx += 1
+            html = soup.select('a#video-title')[idx]
+            video_url = 'https://www.youtube.com' + html.get('href')
+
+    return video_url
 
 @chart.route('/down')
 def get_chart_url():
