@@ -41,7 +41,7 @@ def get_chart():
 
     return jsonify(data)
 
-@chart.post('/get_yt_url')
+@chart.route('/get_yt_url', methods=['POST'])
 def get_yt_url_one():
     # param = request.get_json()
     title = request.form['title']

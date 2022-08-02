@@ -1,6 +1,5 @@
 from flask import Flask
 from chart import chart
-from down import down
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False

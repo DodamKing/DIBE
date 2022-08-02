@@ -122,7 +122,7 @@
 		});
 
         function oneplay(songId, isFile) {
-            // if (!songId || isFile === 0) return alert('준비중 입니다')
+            if (!songId || isFile === '0') return alert('준비중 입니다')
             const url = `/songs/direct?songId=${songId}&isFile=${isFile}&autoPlay=1`
             const player = window.open(url, 'player', 'width=1100px, heght=800px')
         }
