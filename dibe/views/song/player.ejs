@@ -15,7 +15,7 @@
     <div style="width: 1000px;">
 		<div class="loader" style="display: none;"></div>
         <!-- modal, more_show_modal, playList, controler 인클루드 하삼 -->
-        <%- include('../include/play-list') %>
+        <%- include('./play-list') %>
         <%- include('../include/controler') %>
 	</div>
 	
@@ -42,28 +42,25 @@
 		let repeat = 0;
 		let shuffle = 0;
 	
-        // <c:if test="${!empty vos }">
-        //     <c:forEach var="vo" items="${vos}">
-        //         idx_list.push(${vo.idx});
-        //         thum_list.push("${vo.img}");
-        //         title_list.push("${vo.title}");
-        //         artist_list.push("${vo.artist}");
-        //     </c:forEach>
-        // </c:if>
-        // <c:if test="${!empty vo }">
-        //     idx_list.push(${vo.idx});
-        //     thum_list.push("${vo.img}");
-        //     title_list.push("${vo.title}");
-        //     artist_list.push("${vo.artist}");
-        // </c:if>
+        <% if (locals.song) { %>
+            idx_list.push('<%- song._id %>')
+            thum_list.push('<%- song.img %>')
+            title_list.push(`<%- song.title %>`)
+            artist_list.push(`<%- song.artist %>`)
+        <% } %>
+        
+        // <% if (locals.songs) { %>
+        //     <% for (song of songs) { %>
+        //         idx_list.push('<%- song._id %>')
+        //         thum_list.push('<%- song.img %>')
+        //         title_list.push(`<%- song.title %>`)
+        //         artist_list.push(`<%- song.artist %>`)
+        //     <% } %>
+        // <% } %>
 
-        idx_list.push('<%- song._id %>')
-        thum_list.push('<%- song.img %>')
-        title_list.push(`<%- song.title %>`)
-        artist_list.push(`<%- song.artist %>`)
         
         // // 바로 재생
-        if ('<%- autoPlay === 1 %>') {
+        if ('<%- autoPlay %>' === '1') {
                 if (sw == 0) {
                     load();
                     sw = 1;
@@ -85,7 +82,7 @@
         
         //리스트 세팅
         function addList(data) {
-            if (!idx_list.includes(data.idx)) {
+            if (!idx_list.includes(data._id)) {
                 idx_list.push(data.idx);
                 thum_list.push(data.img);
                 title_list.push(data.title);
@@ -265,11 +262,11 @@
             player.volume = $("#volume_bar").val() / 100;
             $("#vol_no").html($("#volume_bar").val());
             
-            $.ajax({
-                type : "post",
-                url : "${ctp}/song/myvol",
-                data : {vol : player.volume}
-            });
+            // $.ajax({
+            //     type : "post",
+            //     url : "${ctp}/song/myvol",
+            //     data : {vol : player.volume}
+            // });
             
         });
 

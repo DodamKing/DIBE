@@ -37,7 +37,11 @@ router.get('/chart', (req, res) => {
       }
       data._id = _id
       data.isFile = isFile
-      res.render('chart', {data : data})
+
+      const date = new Date()
+      const today = date.toLocaleDateString()
+
+      res.render('chart', {data, today})
   })
   // db.Chart.find((err, result) => {
   //   if (err) return res.json(err)

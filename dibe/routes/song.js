@@ -170,10 +170,31 @@ router.get('/stream', (req, res) => {
         'Content-Type' : 'audio/mp3',
         'Transfer-Encoding' : 'chunked',
     })
-    
-    fs.readFile('public/video/' + songId + '.mp4', (err, stream) => {
+
+    fs.ReadStream('public/video/' + songId + '.mp4').pipe(res)
+})
+
+router.post('/add_song_many', async (req, res) => {
+    const songIds = req.body.songIds
+    const list = songIds.split('/')
+    const songs = []
+
+    for (let i=1; i<list.length-1; i++) {
+        const songId = list[i]
+        const song = await db.Song.findById(songId)
+        songs.push(song)
+    }
+    console.log(songs);
+    res.send(songs)
+})
+
+router.get('/open_player', (req, res) => {
+    const songId = req.query.songId
+    db.Song.findById(songId, (err, song) => {
         if (err) return console.error(err)
-        res.send(stream)
+        const img1000 = song.img.replace('50', '1000')
+        const img2000 = song.img.replace('50', '2000')
+        res.render('song/player', {song, img1000, img2000})
     })
 })
 

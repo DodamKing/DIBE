@@ -14,8 +14,7 @@
     <%- include('./include/searchBar') %>
     <%- include('./include/nav') %>
     <%- include('./include/header') %>
-	
-	<!-- <c:set var="today"><fmt:formatDate value="<%=new Date() %>" pattern="yyyy-MM-dd"/></c:set> -->
+    <%- include('./song/add-modal') %>
 	
 	<section>
         <div class="container">
@@ -25,34 +24,29 @@
                     <input type="date" id="calendar" min="" max="">
                     <div id="go_btn" class="btn btn-dark btn-sm">go</div>
                 </div>
-                <div id="top_btn" class="btn btn-dark" style="position: fixed; right: 30px; bottom: 100px;">top</div>
-                <!-- <c:if test="${!empty vos }"><div id="add_btn" class="btn btn-dark btn-sm" style="position: sticky; right: 30px; top: 50px; float: right;" onclick="">선택추가</div></c:if> -->
-                <div class="text-center h4">
-                    <!-- ${fn:replace(fn:split(vos[0].date, " ")[0], "-", ".") } --> 날짜 자리인가 봄
-                </div>
-                <!-- <c:if test="${empty vos }"><p class="h5 mt-5" style="padding-bottom: 400px;">${date }의 차트 데이터가 존재하지 않습니다.</p></c:if> -->
-                <c:if test="${!empty vos }">
-                    <table class="table">
+                <div id="top_btn" class="btn btn-dark btn-sm" style="position: fixed; right: 30px; bottom: 100px;">top</div>
+                <div class="text-center h4"><%- today %></div>
+                <!-- <div id="add_btn" class="btn btn-dark btn-sm" style="position: sticky; top: 50px;">선택추가</div> -->
+                <table class="table">
+                    <tr>
+                        <td style="border-top: none;"><input id="allch" type="checkbox" ></td>
+                        <td id="cnt_box" colspan="2" style="vertical-align: middle; border-top: none;">0 곡 선택 됨</td>
+                        <td colspan="2" class="text-right" style="border-top: none;"><div id="add_btn" class="btn btn-dark btn-sm" style="position: sticky; position: -webkit-sticky; right: 30px; top: 50px;" data-toggle="modal" data-target="#addMany">선택추가</div></td>
+                    </tr>
+                    <% for(let i=0; i<data.title.length; i++) { %>
                         <tr>
-                            <td style="border-top: none;"><input id="allch" type="checkbox" ></td>
-                            <td id="cnt_box" colspan="2" style="vertical-align: middle; border-top: none;">0 곡 선택 됨</td>
-                            <td colspan="2" class="text-right" style="border-top: none;"><div id="add_btn" class="btn btn-dark btn-sm" style="position: sticky; position: -webkit-sticky; right: 30px; top: 50px;">선택추가</div></td>
+                            <td style="vertical-align: middle;"><input name="tch" type="checkbox" value="<%- data._id[i] %>" <% if (data.isFile[i] === 0) { %> disabled <% } %> ></td>
+                            <td style="text-align: center; vertical-align: middle;"><%- i+1 %></td>
+                            <td><div class="imgBox ho" onclick="oneplay(`<%- data._id[i] %>`, `<%- data.isFile[i] %>`)"><img name="top100Img" src="<%- data.img[i] %>"></div></td>
+                            <td class="align-middle">
+                                <div name="top100Title"><a href=""><%- data.title[i] %></a></div>
+                                <div name="top100Artist"><%- data.artist[i] %></div>
+                            </td>
+                            <td class="align-middle"><button name="add_btn" type="button" class="btn" onclick="senddata('songIdx', 'isFile')"><i title="곡 추가" class="fas fa-plus"></i></button></td>
+                            <td style="display: none;"><%- data.isFile[i] %></td>
                         </tr>
-                        <% for(let i=0; i<data.title.length; i++) { %>
-                            <tr>
-                                <td style="vertical-align: middle;"><input name="tch" type="checkbox" value="" <% if (data.isFile[i] === 0) { %> disabled <% } %> ></td>
-                                <td style="text-align: center; vertical-align: middle;"><%- i+1 %></td>
-                                <td><div class="imgBox ho" onclick="oneplay(`<%- data._id[i] %>`, `<%- data.isFile[i] %>`)"><img name="top100Img" src="<%- data.img[i] %>"></div></td>
-                                <td class="align-middle">
-                                    <div name="top100Title"><a href=""><%- data.title[i] %></a></div>
-                                    <div name="top100Artist"><%- data.artist[i] %></div>
-                                </td>
-                                <td class="align-middle"><button name="add_btn" type="button" class="btn" onclick="senddata('songIdx', 'isFile')"><i title="곡 추가" class="fas fa-plus"></i></button></td>
-                                <td style="display: none;"><%- data.isFile[i] %></td>
-                            </tr>
-                        <% } %>
-                    </table>
-                </c:if>
+                    <% } %>
+                </table>
             </div>
         </div>
         <%- include('./include/footer') %>
@@ -65,6 +59,9 @@
 	<script src="javascripts/main.js"></script>
 
     <script>
+        let player
+        let sw
+
 		top_btn.addEventListener("click", () => {
 			window.scrollTo({top: 0, behavior: 'smooth'});
 		});
@@ -124,7 +121,7 @@
         function oneplay(songId, isFile) {
             if (!songId || isFile === '0') return alert('준비중 입니다')
             const url = `/songs/direct?songId=${songId}&isFile=${isFile}&autoPlay=1`
-            const player = window.open(url, 'player', 'width=1100px, heght=800px')
+            player = window.open(url, 'player', 'width=1100px, heght=800px')
         }
 	</script>
 
