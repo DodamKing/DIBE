@@ -7,6 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const songRouter = require('./routes/song');
+const adminRouter = require('./routes/admin')
 
 require('dotenv').config()
 require('./db/connect')()
@@ -26,6 +27,7 @@ app.use('/e', express.static(path.join('e:/music_db')))
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/songs', songRouter)
+app.use('/admin', adminRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

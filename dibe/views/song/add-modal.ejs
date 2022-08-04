@@ -141,16 +141,17 @@
 	}
 
     async function godata_many() {
+		const title = 'playerPop'
+        const url = `/songs/open_player`
+		const status = 'resizable=no, width=1100px, heght=800px'
+        myPlayer = await window.open(url, title, status)
+		console.log(myPlayer)
+		
 		const songIds = []
 		const items = $("input:checkbox[name='tch']")
 		for (item of items) {
 			if (item.checked) songIds.push(item.value)
 		}
-
-		const title = 'myPlayer'
-        const url = `/songs/open_player`
-		const status = 'resizable=no, width=1100px, heght=800px'
-        myPlayer = await window.open(url, title, status)
 
 		const res = await fetch('/songs/addsong', {
 			method : 'POST',

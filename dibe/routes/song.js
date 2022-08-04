@@ -46,34 +46,33 @@ router.get('/set/song', async (req, res) => {
     })
 })
 
-router.get('/downs/local', (req, res) => {
-    const url = process.env.SONG_TO_DB_URL
-    request(url, (err, response, body) => {
-        const data = JSON.parse(body)
-        // const data = req.body
-        const rows = []
-        for (let i=0; i<data.title.length; i++) {
-            const title = data.title[i]
-            const artist = data.artist[i]
-            db.Song.findOne({ title : title, artist : artist }, (err, result) => {
-                if (err) return console.error(err)
-                if (result) {
-                    const _id = result._id
-                    if (!result.isFile) {
-                        if (data.yt_url[i] === '') return
-                        ytdl(data.yt_url[i], {filter : 'audioonly'}).pipe(fs.createWriteStream('public/video/' + _id + '.mp4').on('finish', () => {
-                            db.Song.findByIdAndUpdate(_id, {isFile : 1}, (err, row) => {
-                                if (err) return console.error(err)
-                                rows.push(row)
-                            })
-                        }))
-                    }
-                }
-            })
+router.get('/downs/local', async (req, res) => {
+    const url = process.env.URL_GET_URL
+    const songs = []
+    const rows = await db.Song.find()
+    for (row of rows) {
+        if (row.isFile === 0)  {
+            songs.push(row)
         }
-        data.rows = rows
-        res.json(data)
+    }
+    
+    const options = {
+        uri : url,
+        method : 'POST',
+        body : {songs},
+        json : true,
+    }
+    request.post(options, (err, response, body) => {
+        for (let i=0; i<body.length; i++) {
+            ytdl(body[i], {filter : 'audioonly'}).pipe(fs.createWriteStream('public/video/' + songs[i]._id + '.mp4').on('finish', () => {
+                db.Song.findByIdAndUpdate(songs[i]._id, {isFile : 1}, (err) => {
+                    if (err) return console.error(err)
+                })
+            }))
+        }
     })
+    
+    res.json({songs})
 })
 
 router.get('/set/chart', (req, res) => {
