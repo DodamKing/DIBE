@@ -42,7 +42,6 @@
             <div class="modal-body">
                 <button type="button" class="btn btn-danger form-control" onclick="godata_many()" data-dismiss="modal">현재 재생 목록에 추가</button>
                 <button type="button" class="btn btn-danger form-control mt-3" onclick="getlist_many()">플레이리스트에 추가</button>
-                <div id="idx_box_many" style="display: none;"></div>
                 <div id="mylist_box_many" class="mt-5"></div>
                 <div id="message_box_many" style="display: none;" class="text-center">추가 되었습니다</div>
             </div>
@@ -141,24 +140,28 @@
 		mylist_box.innerHTML = "";
 	}
 
-    function godata_many() {
-        const songIds = idx_box_many.innerHTML
-        const songId = songIds.split('/')[0]
-        const url = `/songs/direct?songId=${songId}`
-        player = window.open(url, 'player', 'width=1100px, heght=800px')
-        fetch('/songs/add_song_many', {
-            method : 'POST',
-            headers : {'Content-Type' : 'application/json'},
-            body : JSON.stringify({songIds}),
-        })
-        .then(data => data.json())
-        .then(data => {
-            for (d of data) {
-                player.addList(d)
-                player.setList()
-            }
-        })
-        .catch((err) => console.error(err))
+    async function godata_many() {
+		const songIds = []
+		const items = $("input:checkbox[name='tch']")
+		for (item of items) {
+			if (item.checked) songIds.push(item.value)
+		}
+
+		const title = 'myPlayer'
+        const url = `/songs/open_player`
+		const status = 'resizable=no, width=1100px, heght=800px'
+        myPlayer = await window.open(url, title, status)
+
+		const res = await fetch('/songs/addsong', {
+			method : 'POST',
+			headers : {'Content-Type' : 'application/json'},
+			body : JSON.stringify({songIds})
+		})
+		const json = await res.json()
+		const songs = json.songs
+		for (song of songs) {
+			myPlayer.setList(song)
+		}
     }
 	
 </script>

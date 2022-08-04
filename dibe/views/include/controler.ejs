@@ -2,41 +2,14 @@
     <input id="play_bar" type="range" value="0">
     <div class="d-flex">
         <div class="controls-song ml-2 mt-2 pt-3 pl-1">
-            <div id="controls_title" class="mb-1" title="<%- song.title %>" >
-                <% if (song.title.length <= 10) { %> 
-                <%- song.title %>
-                <% } else { %>
-                <marquee scrollamount=3><%- song.title %></marquee> 
-                <% } %>
-            </div>
-            <div id="controls_artist" title="<%- song.artist %>"><%- song.artist %></div>
+            <div id="controls_title" class="mb-1"></div>
+            <div id="controls_artist"></div>
         </div>
-        <!-- <c:if test="${!empty vos }">
-            <div class="row">
-                <div class="controls-song ml-2 mt-2">
-                    <div id="controls_title" class="mb-1" title="${vos[0].title }">
-                        <c:if test="${fn:length(vo.title) <= 10 }">${vos[0].title }</c:if>
-                        <c:if test="${fn:length(vo.title) <= 10 }"><marquee scrollamount=3>${vos[0].title }</marquee></c:if>
-                    </div>
-                    <div id="controls_artist" title="${vos[0].artist }">${vos[0].artist }</div>
-                </div>
-            </div>
-        </div> -->
         <div class="col-3 p-3 mt-1">
             <c:if test="${empty sMid }">
                 <button id="like_btn1" class="btn" type="button" title="좋아요"><i class="fa-regular fa-heart" style="color: #fff;"></i></button>
                 <button id="like_btn2" style="display: none;" class="btn" type="button"><i class="fa-solid fa-heart text-danger" style="color: #fff;"></i></button>
             </c:if>
-            <!-- <c:if test="${!empty sMid }">
-                <c:if test="${fn:contains(vo.likeList, sMid) || fn:contains(vos[0].likeList, sMid)}">
-                    <button id="like_btn1" style="display: none;" class="btn" type="button" title="좋아요"><i class="fa-regular fa-heart" style="color: #fff;"></i></button>
-                    <button id="like_btn2" class="btn" type="button"><i class="fa-solid fa-heart text-danger" style="color: #fff;"></i></button>
-                </c:if>
-                <c:if test="${!(fn:contains(vo.likeList, sMid) || fn:contains(vos[0].likeList, sMid))}">
-                    <button id="like_btn1" class="btn" type="button" title="좋아요"><i class="fa-regular fa-heart" style="color: #fff;"></i></button>
-                <button id="like_btn2" style="display: none;" class="btn" type="button"><i class="fa-solid fa-heart text-danger" style="color: #fff;"></i></button>
-                </c:if>
-            </c:if> -->
             <button id="lyrics_btn" class="btn" type="button" title="가사" data-toggle="modal" data-target="#myModal"><i class="fa-solid fa-music" style="color: #fff;"></i></button>
             <button id="addmore_btn" class="btn" type="button" title="더보기" data-toggle="modal" data-target="#moreShowModal"><i class="fa-solid fa-ellipsis" style="color: #fff;"></i></button>
         </div>
@@ -61,8 +34,8 @@
             <!-- <div class="ml-1 mt-1"><input id="volume_bar" type="range" min="0" max="100" <c:if test="${!empty cVol }">value="${cVol * 100 }"</c:if> /></div> -->
             <div class="ml-1 mt-1"><input id="volume_bar" type="range" min="0" max="100" /></div>
             <div id="vol_no" class="ml-1" style="font-size: 8px; margin-top: 12px;">
-                <!-- <c:if test="${empty cVol }">50</c:if>
-                <c:if test="${!empty cVol }">${fn:split(cVol * 100, ".")[0] }</c:if> -->
+                50
+                <!-- <c:if test="${!empty cVol }">${fn:split(cVol * 100, ".")[0] }</c:if> -->
             </div>
         </div>
     </div>

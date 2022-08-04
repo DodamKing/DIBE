@@ -129,6 +129,7 @@ router.get('/direct', async (req, res) => {
     const songId = req.query.songId
     const isFile = req.query.isFile
     const autoPlay = req.query.autoPlay
+    const songs = []
 
     // if (isFile === '0') {
     //     const song = await db.Song.findById(songId)
@@ -157,9 +158,8 @@ router.get('/direct', async (req, res) => {
     
     db.Song.findById(songId, (err, song) => {
         if (err) return console.error(err)
-        const img1000 = song.img.replace('50', '1000')
-        const img2000 = song.img.replace('50', '2000')
-        res.render('song/player', {song, img1000, img2000, autoPlay})
+        songs.push(song)
+        res.render('song/player', {songs, autoPlay})
     })
 })
 
@@ -174,28 +174,19 @@ router.get('/stream', (req, res) => {
     fs.ReadStream('public/video/' + songId + '.mp4').pipe(res)
 })
 
-router.post('/add_song_many', async (req, res) => {
-    const songIds = req.body.songIds
-    const list = songIds.split('/')
+router.post('/addsong', async (req, res) => {
     const songs = []
-
-    for (let i=1; i<list.length-1; i++) {
-        const songId = list[i]
-        const song = await db.Song.findById(songId)
+    const songIds = req.body.songIds
+    for (let i=0; i<songIds.length; i++) {
+        const song = await db.Song.findById(songIds[i])
         songs.push(song)
+        if (i === songIds.length-1) res.json({songs})
     }
-    console.log(songs);
-    res.send(songs)
 })
 
 router.get('/open_player', (req, res) => {
-    const songId = req.query.songId
-    db.Song.findById(songId, (err, song) => {
-        if (err) return console.error(err)
-        const img1000 = song.img.replace('50', '1000')
-        const img2000 = song.img.replace('50', '2000')
-        res.render('song/player', {song, img1000, img2000})
-    })
+    const autoPlay = 0
+    res.render('song/player', {autoPlay})
 })
 
 module.exports = router

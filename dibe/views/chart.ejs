@@ -59,8 +59,7 @@
 	<script src="javascripts/main.js"></script>
 
     <script>
-        let player
-        let sw
+        let myPlayer
 
 		top_btn.addEventListener("click", () => {
 			window.scrollTo({top: 0, behavior: 'smooth'});
@@ -90,38 +89,11 @@
             }
         });
         
-        //선택 추가 버튼
-        add_btn.addEventListener("click", () => {
-            let idxs = "";
-            
-            for (let i=0; i<100; i++) {
-                if($("input:checkbox[name='tch']")[i].checked) {
-                    if ($("input:checkbox[name='tch']")[i].value != 0) {
-                        idxs += $("input:checkbox[name='tch']")[i].value + "/";
-                    }
-                }
-            }
-            
-            $('#hiden_btn_many').click();
-            idx_box_many.innerHTML = idxs;
-        });
-			
-		go_btn.addEventListener("click", () => {
-			let date1 = new Date(calendar.value);
-			let date2 = new Date("${minDate}");
-			let date3 = new Date("${today}");
-			
-			if (date1 < date2 || date1 > date3) {
-				return;
-			}
-			
-			location.href = "/chart?date=" + calendar.value;
-		});
 
         function oneplay(songId, isFile) {
             if (!songId || isFile === '0') return alert('준비중 입니다')
             const url = `/songs/direct?songId=${songId}&isFile=${isFile}&autoPlay=1`
-            player = window.open(url, 'player', 'width=1100px, heght=800px')
+            myPlayer = window.open(url, 'myPlayer', 'width=1100px, heght=800px')
         }
 	</script>
 

@@ -12,28 +12,28 @@
 </style>
 
 <div id="play_listContainer">
-	<img id="play_listbg" src="<%- img2000 %>">
+	<img id="play_listbg">
 	<div id="play_listImg">
 		<div>
-			<img id="play_listImg_img" style="width: 100%;" src="<%- img1000 %>">
+			<img id="play_listImg_img" style="width: 100%;">
 		</div>
 	</div>
-	<div id="play_listBox">
-		<div id="listCnt">
-			<!-- <c:if test="${!empty vo }">1 곡</c:if>
-			<c:if test="${!empty vos }">${fn:length(vos) } 곡</c:if> -->
-		</div>
+    <div id="play_listBox">
+        <div id="listCnt">
+            0 곡
+        </div>
         <div class="mt-3">
             <div id="play_list" class="pfc" tabindex="0">
-                <c:if test="${!empty vo }">
-                    <div id="p_${vo.idx }" class='d-flex p-3'>
+            <% if (locals.songs) { %> 
+                <% for (song of songs) { %>
+                    <div id="p_<%- song._id %>" class='d-flex p-3 get-songId'>
                         <div class='imgBox mr-3'>
-                            <img src='<%- song.img %>' title="재생" onclick="startThis()">
+                            <img class="playlist_i" src='<%- song.img %>' title="재생" onclick="startThis()">
                         </div>
                         <div>
                             <div class='playlist_t' title="<%- song.title %>">
                                 <% if (song.title.length > 13) { %>
-                                    <%- song.title.substring(0, 13) %>...
+                                    <%- song.title.substring(0, 14) %>...
                                 <% } else { %>
                                     <%- song.title %>
                                 <% } %>
@@ -47,33 +47,13 @@
                             </div>
                         </div>
                         <div class='ml-auto'>
-                            <button name='delete_btn' type='button' class='btn' onclick='delList()' ><i title="플레이리스트에서 제거" class='fa-regular fa-trash-can'></i></button>
+                            <!-- <button name='delete_btn' type='button' class='btn' onclick='delList(`<%- song._id %>`)' ><i title="플레이리스트에서 제거" class='fa-regular fa-trash-can'></i></button> -->
+                            <button name='delete_btn' type='button' class='btn'><i title="플레이리스트에서 제거" class='fa-regular fa-trash-can'></i></button>
                         </div>
                     </div>
-                </c:if>
-                <!-- <c:if test="${!empty vos }">
-                    <c:forEach var="vo" items="${vos }" varStatus="st">
-                        <div id="p_${vo.idx }" class='d-flex p-3'>
-                            <div class='imgBox mr-3'>
-                                <img src='${vo.img}' title="재생" onclick="startThis(${vo.idx})">
-                            </div>
-                            <div>
-                                <div class='playlist_t' title="${vo.title }">
-                                    <c:if test="${fn:length(vo.title) > 13 }">${fn:substring(vo.title, 0, 13) }...</c:if>
-                                    <c:if test="${fn:length(vo.title) <= 13 }">${vo.title }</c:if>
-                                </div>
-                                <div class='playlist_a' title="${vo.artist }">
-                                    <c:if test="${fn:length(vo.artist) > 13 }">${fn:substring(vo.artist, 0, 13) }...</c:if>
-                                    <c:if test="${fn:length(vo.artist) <= 13 }">${vo.artist }</c:if>
-                                </div>
-                            </div>
-                            <div class='ml-auto'>
-                                <button name='delete_btn' type='button' class='btn' onclick='delList(${vo.idx })' ><i title="플레이리스트에서 제거" class='fa-regular fa-trash-can'></i></button>
-                            </div>
-                        </div>
-                    </c:forEach>
-                </c:if> -->
+                <% } %>
+            <% } %>
             </div>
         </div>
-	</div>
+    </div>
 </div>
