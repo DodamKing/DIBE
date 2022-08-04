@@ -43,29 +43,40 @@ def get_chart():
 
 @chart.route('/get_yt_url', methods=['POST'])
 def get_yt_url_one():
-    # param = request.get_json()
-    title = request.form['title']
-    artist = request.form['artist']
-    keyword = '{} {} official audio, short'.format(title, artist)
-    url = 'https://www.youtube.com/results?search_query=' + keyword
-
+    param = request.get_json()
+    songs = param['songs']
+    url_list = []
+    
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    driver.get(url)
-    soup = bs(driver.page_source, 'html.parser')
 
-    idx = 0
-    if len(soup.select('a#video-title')) > 0:
-        html = soup.select('a#video-title')[idx]
-        video_url = 'https://www.youtube.com' + html.get('href')
-        l = YouTube(video_url).length 
-        if l < 120 or l > 60 * 6:
-            idx += 1
+    for song in songs:
+        title = song['title']
+        artist = song['artist']
+        keyword = '{} {} official audio, short'.format(title, artist)
+        url = 'https://www.youtube.com/results?search_query=' + keyword
+
+        driver.get(url)
+        soup = bs(driver.page_source, 'html.parser')
+
+        idx = 0
+        if len(soup.select('a#video-title')) > 0:
             html = soup.select('a#video-title')[idx]
             video_url = 'https://www.youtube.com' + html.get('href')
+            l = YouTube(video_url).length 
+            if l < 120 or l > 60 * 6:
+                idx += 1
+                html = soup.select('a#video-title')[idx]
+                video_url = 'https://www.youtube.com' + html.get('href')
 
-    return video_url
+        url_list.append(video_url)
+
+    driver.close()
+    driver.quit()
+
+    print(url_list)
+    return jsonify(url_list)
 
 @chart.route('/down')
 def get_chart_url():
