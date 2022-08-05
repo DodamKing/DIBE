@@ -141,19 +141,20 @@
 	}
 
     async function godata_many() {
-		const title = 'playerPop'
-        const url = `/songs/open_player`
-		const status = 'resizable=no, width=1100px, heght=800px'
-        myPlayer = await window.open(url, title, status)
-		console.log(myPlayer)
-		
 		const songIds = []
 		const items = $("input:checkbox[name='tch']")
 		for (item of items) {
 			if (item.checked) songIds.push(item.value)
 		}
 
-		const res = await fetch('/songs/addsong', {
+		if (!myPlayer) {
+			const title = 'playerPop'
+			const url = `/songs/open_player?songId=${songIds[0]}`
+			const status = 'resizable=no, width=1100px, heght=800px'
+			myPlayer = await window.open(url, title, status)
+		}
+
+		const res = await fetch('/songs/addsongs', {
 			method : 'POST',
 			headers : {'Content-Type' : 'application/json'},
 			body : JSON.stringify({songIds})
@@ -164,5 +165,9 @@
 			myPlayer.setList(song)
 		}
     }
+
+	function popClose() {
+		myPlayer = ''
+	}
 	
 </script>

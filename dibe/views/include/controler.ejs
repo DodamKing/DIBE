@@ -2,8 +2,8 @@
     <input id="play_bar" type="range" value="0">
     <div class="d-flex">
         <div class="controls-song ml-2 mt-2 pt-3 pl-1">
-            <div id="controls_title" class="mb-1"></div>
-            <div id="controls_artist"></div>
+            <div id="controls_title" class="mb-1"><%- song.title %></div>
+            <div id="controls_artist"><%- song.artist %></div>
         </div>
         <div class="col-3 p-3 mt-1">
             <c:if test="${empty sMid }">
@@ -31,14 +31,11 @@
                         class="fa-solid fa-volume-high" style="color: #fff;"></i></button></div>
             <div id="mute_btn2" class="ml-2" style="display: none;"><button class="btn" type="button"><i
                         class="fa-solid fa-volume-xmark" style="color: #fff;"></i></button></div>
-            <!-- <div class="ml-1 mt-1"><input id="volume_bar" type="range" min="0" max="100" <c:if test="${!empty cVol }">value="${cVol * 100 }"</c:if> /></div> -->
             <div class="ml-1 mt-1"><input id="volume_bar" type="range" min="0" max="100" /></div>
             <div id="vol_no" class="ml-1" style="font-size: 8px; margin-top: 12px;">
                 50
-                <!-- <c:if test="${!empty cVol }">${fn:split(cVol * 100, ".")[0] }</c:if> -->
             </div>
         </div>
     </div>
     <audio id="player" src=""></audio>
-    <!-- <audio id="player" src="" <c:if test="${!empty cVol }">onloadstart="this.volume=${cVol }"</c:if>></audio> -->
 </footer>

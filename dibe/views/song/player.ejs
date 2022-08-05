@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIBE <% if (locals.songs) { %>  <%- songs[0].title %> - <%- songs[0].artist %> <% } %></title>
+    <title>DIBE <%- song.title %> - <%- song.artist %></title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/stylesheets/main.css">
@@ -48,32 +48,47 @@
         // 플레이 리스트 음원 삭제
         function delList(songId) {
             $(`#p_${songId}`).remove()
+            $('#listCnt').html(`${$('.get-songId').length} 곡`)
         }
-
-        $('button[name=delete_btn]').on('click', (e) => {
-            const index = $(e.target).closest('.get-songId').index()
-            $(e.target).closest('.get-songId').remove()
-
-            if (playerIndex >= index) playerIndex--
-        })
-
+        
+        // document.addEventListener('click', () => {
+        //     $('button[name=delete_btn]').on('click', (e) => {
+        //         const index = $(e.target).closest('.get-songId').index()
+        //         if (playerIndex >= index) playerIndex--
+                
+        //         $(e.target).closest('.get-songId').remove()
+        //         const cnt = $('.get-songId').length
+        //         $('#listCnt').html(`${cnt} 곡`)
+        //     })
+        // })
+        
         // 원하는 곡 재생
-        function startThis(idx) {
-            let index = idx_list.indexOf(idx);
-            playerIndex = index;
-            load();
-            $(play_btn).hide();
-            $(pause_btn).show();
-            player.play();
-            sw = 1;
+        function startThis(songId) {
+            const rows = $('.get-songId')
+            for (let i=0; i<rows.length; i++) {
+                if (rows[i].id.split('_')[1] === songId) {
+                    playerIndex = i;
+                    load();
+                    $(play_btn).hide();
+                    $(pause_btn).show();
+                    player.play();
+                    sw = 1;
+                    return
+                }
+            }
         }
 
         // 플레이 리스트에 데이터 뿌리기
         async function setList(song) {
+            const rows = $('.get-songId')
+            for (row of rows) {
+                if (row.id.split('_')[1] === song._id) return
+            }
+
             let res = `
                 <div id="p_${song._id}" class='d-flex p-3 get-songId'>
                     <div class='imgBox mr-3'>
-                        <img class="playlist_i" src='${song.img}' title="재생" onclick="startThis()">
+                        <img class="playlist_i" src='${song.img}' title="재생" onclick="startThis('${song._id}')">
                     </div>
                     <div>
                         <div class='playlist_t' title="${song.title}">`
@@ -81,16 +96,16 @@
             else res += `${song.title}`
             res += `    </div>
                         <div class='playlist_a' title="${song.artist}">`
-            if (song.artist.length > 13) res += `${song.artist.substring(0, 13)}`
+            if (song.artist.length > 13) res += `${song.artist.substring(0, 13)}...`
             else res+= `${song.artist}`
             res += `    </div>
                     </div>
                     <div class='ml-auto'>
-                        <button name='delete_btn' type='button' class='btn'><i title="플레이리스트에서 제거" class='fa-regular fa-trash-can'></i></button>
+                        <button name='delete_btn' type='button' class='btn' onclick="delList('${song._id}')"><i title="플레이리스트에서 제거" class='fa-regular fa-trash-can'></i></button>
                     </div>
                 </div>`
             
-            $('#play_list').append(`<div>${res}</div>`)
+            $('#play_list').append(res)
             const cnt = $('.get-songId').length
             $('#listCnt').html(`${cnt} 곡`)
         }
@@ -102,7 +117,8 @@
             const title = $('.playlist_t')[playerIndex].title
             const artist = $('.playlist_a')[playerIndex].title
             const img = $('.playlist_i')[playerIndex].src
-            songUrl = `/songs/stream?songId=${songId}`;
+            // songUrl = `/songs/stream?songId=${songId}`
+            songUrl = `/track/${songId}.mp4`
             
             // $.get(songUrl).fail(() => {
             //     next_btn.click();
@@ -123,29 +139,7 @@
             document.title = "DIBE " + title + " - " + artist
             
             // 현재 재생 음악 포커스
-            // focus_cur()
-            
-            // 재생 수 증가
-            // playCntUp(idx_list[playerIndex]);
-            
-            //로드 할 때 좋아요도 로드 해야 할 듯
-            // if (${empty sMid}) return;
-            
-            // $.ajax({
-            //     type : "post",
-            //     url : "${ctp}/song/likebtn",
-            //     data : {idx : idx_list[playerIndex]},
-            //     success : (data) => {
-            //         if (data.includes("${sMid}")) {
-            //             $("#like_btn1").hide();
-            //             $("#like_btn2").show();
-            //         }
-            //         else {
-            //             $("#like_btn1").show();
-            //             $("#like_btn2").hide();
-            //         }
-            //     }
-            // });
+            focus_cur()
         }
 
 
@@ -195,6 +189,14 @@
             $("#mute_btn1").show();
         });
 
+        // 재생바 이동
+        $("#play_bar").on("input", (e) => {
+            const point = $("#play_bar").val();
+            const current = point * player.duration / 100
+            play_bar = point;
+            player.currentTime = current
+        });
+
         //재생바
         $("#player").on("timeupdate", () => {
             let per = (player.currentTime / player.duration) * 100;
@@ -238,21 +240,13 @@
             // }
         });
 
-
-        // 재생바 이동
-        $("#play_bar").on("change", () => {
-            let point = $("#play_bar").val();
-            play_bar = point;
-            player.currentTime = point * player.duration / 100;
-        });
-
         // next button
         $("#next_btn").click(() => {
             $(play_btn).hide();
             $(pause_btn).show();
             
             playerIndex++;
-            if (playerIndex >= thum_list.length) {
+            if (playerIndex >= $('.get-songId').length) {
                 playerIndex = 0;
             };
             load();
@@ -278,7 +272,7 @@
         $("#player").on("ended", () => {
             playerIndex++;
             if (repeat == 2) playerIndex--;
-            if (playerIndex >= thum_list.length) {
+            if (playerIndex >= $('.get-songId').length) {
                 $(play_btn).show();
                 $(pause_btn).hide();
                 playerIndex = 0;
@@ -305,15 +299,15 @@
             $("#modal_t").html($("#controls_title").html());
             $("#modal_a").html($("#controls_artist").html());
             
-            $.ajax({
-                type : "post",
-                url : "${ctp}/song/lyrics",
-                data : {idx : idx_list[playerIndex]},
-                success : (data) => {
-                    data = data.replace(/\n/g, "<br>");
-                    $("#modal_c").html(data);
-                }
-            });
+            // $.ajax({
+            //     type : "post",
+            //     url : "${ctp}/song/lyrics",
+            //     data : {idx : idx_list[playerIndex]},
+            //     success : (data) => {
+            //         data = data.replace(/\n/g, "<br>");
+            //         $("#modal_c").html(data);
+            //     }
+            // });
             
         });
         
@@ -365,7 +359,7 @@
         
         //셔플
         $("#shuffle_btn").click(() => {
-            if (idx_list.length <= 1) return;
+            if ($('.get-songId').length <= 1) return;
             
             if (shuffle == 0)  {
                 $('.loader').show();
@@ -422,9 +416,9 @@
         
         // 현재 음악 포커스
         function focus_cur() {
-            if (idx_list.length == 0) return;
+            if ($('.get-songId').length == 0) return;
             
-            let focu = document.getElementById("p_" + idx_list[playerIndex]);
+            let focu = $('.get-songId')[playerIndex]
             
             focu.scrollIntoView();
             focu.style.backgroundColor = "#bbccdd";
@@ -432,7 +426,7 @@
             focu.style.borderRadius = "5px";
             
             if (playerIndex != playerIndex_) {
-                let focu_ = document.getElementById("p_" + idx_list[playerIndex_]);
+                let focu_ = $('.get-songId')[playerIndex_]
                 focu_.style.backgroundColor = "";
                 focu_.style.opacity = "1";
                 focu_.style.borderRadius = "0";
@@ -447,11 +441,7 @@
         
         // 창 닫기 이벤트
         window.addEventListener("unload", () => {
-            //$.ajax({
-            //	type : "post",
-            //	url : "${ctp}/song/close"
-            //});
-            opener.player_close();
+            opener.popClose()
         });
         
         //크기 고정

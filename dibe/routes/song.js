@@ -124,41 +124,13 @@ router.delete('/delete/:_id', async  (req, res) => {
     }
 })
 
-router.get('/direct', async (req, res) => {
+router.get('/direct', (req, res) => {
     const songId = req.query.songId
-    const isFile = req.query.isFile
     const autoPlay = req.query.autoPlay
-    const songs = []
 
-    // if (isFile === '0') {
-    //     const song = await db.Song.findById(songId)
-    //     const title = song.title
-    //     const artist = song.artist
-    //     const options = {
-    //         uri : 'http://127.0.0.1:8080/chart/get_yt_url',
-    //         method : 'POST',
-    //         form : {title, artist},
-    //     }
-    //     request.post(options, async (err, response, body) => {
-    //         if (err) console.error(err)
-    //         const temp = await ytdl(body, {filter : 'audioonly'}).pipe(fs.createWriteStream('public/video/' + songId + '.mp4').on('finish', () => {
-    //             db.Song.findByIdAndUpdate(songId, {isFile : 1}, (err) => {
-    //                 if (err) return console.error(err)
-    //             })
-    //         }))
-    //         db.Song.findById(songId, (err, song) => {
-    //             if (err) return console.error(err)
-    //             const img1000 = song.img.replace('50', '1000')
-    //             const img2000 = song.img.replace('50', '2000')
-    //             res.render('song/player', {song, img1000, img2000, autoPlay})
-    //         })
-    //     })
-    // }
-    
     db.Song.findById(songId, (err, song) => {
         if (err) return console.error(err)
-        songs.push(song)
-        res.render('song/player', {songs, autoPlay})
+        res.render('song/player', {song, autoPlay})
     })
 })
 
@@ -166,14 +138,20 @@ router.get('/stream', (req, res) => {
     const songId = req.query.songId
 
     res.set({
-        'Content-Type' : 'audio/mp3',
+        'Content-Type' : 'audio/mp4',
         'Transfer-Encoding' : 'chunked',
     })
-
+    
     fs.ReadStream('public/video/' + songId + '.mp4').pipe(res)
 })
 
-router.post('/addsong', async (req, res) => {
+router.get('/addsong', async (req, res) => {
+    const songId = req.query.songId
+    const song = await db.Song.findById(songId)
+    res.json({song})
+})
+
+router.post('/addsongs', async (req, res) => {
     const songs = []
     const songIds = req.body.songIds
     for (let i=0; i<songIds.length; i++) {
@@ -183,9 +161,11 @@ router.post('/addsong', async (req, res) => {
     }
 })
 
-router.get('/open_player', (req, res) => {
+router.get('/open_player', async (req, res) => {
     const autoPlay = 0
-    res.render('song/player', {autoPlay})
+    const songId = req.query.songId
+    const song = await db.Song.findById(songId)
+    res.render('song/player', {autoPlay, song})
 })
 
 module.exports = router
