@@ -1,24 +1,16 @@
 <nav>
 <div class="card-body nav-w">
     <div>
-        <c:if test="${sVO == null }">
+        <% if (!locals.user) { %>
             <div class="text-center"><a href="/users/login">로그인</a></div>
-        </c:if>
-        <!-- <div class="row">
-            <c:if test="${sVO != null }">
-                <c:if test="${empty sVO.profileImg }">
-                    <div class="col-2"><i class="fa-solid fa-user"></i></div>
-                </c:if>
-                <c:if test="${!empty sVO.profileImg }">
-                    <div class="col-2 mr-2" style="margin-top: -2px;"><img src="${ctp }/resources/img/${sVO.profileImg}"></div>
-                </c:if>
+        <% } else { %>
+            <div class="row">
                 <div class="col ho" id="dropMenu" >
-                    <c:if test="${!empty sVO.nickNm }">${sVO.nickNm }</c:if>
-                    <c:if test="${empty sVO.nickNm }">${sMid}</c:if>
+                    <%- user.userId %>
                     <i class="fa-solid fa-caret-down"></i>
                 </div>
-            </c:if>
-        </div> -->
+            </div>
+        <% } %>
         <div class="list-group my-group">
             <ul>
                 <c:if test="${sVO != null }">

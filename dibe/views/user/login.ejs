@@ -57,6 +57,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	
 	<script>
+        alert('<%- loginError %>')
 		$("#loginCheck").click(() => {
 			if ($("#loginCheck").prop("checked")) {
 				if(confirm("다음 로그인 부터 로그인 상태를 유지하시겠습니까?\n단, 사용자에 브라우저에서 쿠키사용을 허용해야만 정상 작동 합니다.\n정상 로그아웃을 하면 로그인 상태 유지가 해지 됩니다.")) {

@@ -29,6 +29,7 @@ const userSchema = new Schema({
         type : Date,
         default : Date().toLocaleString()
     },
+    visitAt : Date,
 })
 
 module.exports = mongoose.model('User', userSchema)
