@@ -17,7 +17,7 @@ router.get('/list', async (req, res) => {
 })
 
 router.get('/login', isNotLoggedIn, (req, res) => {
-  const _title = 'Dive 로그인'
+  const _title = 'DIBE 로그인'
   const loginError = req.query.loginError
   res.render('user/login', {
     _title : _title,
@@ -65,10 +65,20 @@ router.get('/overlapcheck', (req, res) => {
   })
 })
 
-router.get('/logout', isLoggedIn, (req, res) => {
-  req.logout()
-  req.session.destroy()
+router.get('/kakao', passport.authenticate('kakao'))
+
+router.get('/kakao/callback', passport.authenticate('kakao', {
+  failureRedirect : '/',
+}), (req, res) => {
   res.redirect('/')
+})
+
+router.get('/logout', isLoggedIn, (req, res) => {
+  req.logout((err) => {
+    if (err) return console.error(err)
+    req.session.destroy()
+    res.redirect('/')
+  })
 })
 
 module.exports = router;

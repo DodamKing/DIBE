@@ -153,7 +153,7 @@
 			const status = 'resizable=no, width=1100px, heght=800px'
 			myPlayer = await window.open(url, title, status)
 		}
-
+		
 		const res = await fetch('/songs/addsongs', {
 			method : 'POST',
 			headers : {'Content-Type' : 'application/json'},

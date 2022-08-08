@@ -7,6 +7,6 @@ exports.isNotLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) next()
     else {
         const message = encodeURIComponent('로그인한 상태입니다.')
-        res.redirec(`/?error=${message}`)
+        res.redirect(`/?error=${message}`)
     }
 }

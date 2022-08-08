@@ -37,8 +37,14 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
+app.use((req, res, next) => {
+  res.locals.user = req.user
+  next()
+})
+
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/track', express.static(path.join('public/video')))
+app.use('/img', express.static(path.join('public/images')))
 app.use('/e', express.static(path.join('e:/music_db')))
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

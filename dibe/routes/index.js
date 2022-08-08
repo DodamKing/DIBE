@@ -6,7 +6,8 @@ const request = require('request')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'DIBE' });
+  const error = req.query.error
+  res.render('index', { title: 'DIBE', error });
 });
 
 router.get('/chart', (req, res) => {

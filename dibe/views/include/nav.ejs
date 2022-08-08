@@ -1,27 +1,20 @@
 <nav>
 <div class="card-body nav-w">
     <div>
-        <% if (!locals.user) { %>
+        <% if (!user) { %>
             <div class="text-center"><a href="/users/login">로그인</a></div>
         <% } else { %>
             <div class="row">
                 <div class="col ho" id="dropMenu" >
-                    <%- user.userId %>
+                    <%- user.nickNm %>
                     <i class="fa-solid fa-caret-down"></i>
                 </div>
             </div>
         <% } %>
         <div class="list-group my-group">
             <ul>
-                <c:if test="${sVO != null }">
-                    <li class="list-group-item list-group-item-light"><a href="/user/membership/${sVO.idx}">My 멤버십</a></li>
-                    <li class="list-group-item list-group-item-light"><a href="/review/list?kategorie=공지">공지사항</a></li>
-                    <li class="list-group-item list-group-item-light"><a href="/user/profile/${sVO.idx}">계정설정</a></li>
-                    <c:if test="${sVO.membership == -1}">
-                        <li class="list-group-item list-group-item-light"><a href="/admin/main" target="_blank">관리자</a></li>
-                    </c:if>
-                    <li class="list-group-item list-group-item-light"><a onclick="return confirm('로그아웃 하시겠습니까?')" href="/user/logout">로그아웃</a></li>
-                </c:if>
+                <li class="list-group-item list-group-item-light"><a href="/user/profile/${sVO.idx}">계정설정</a></li>
+                <li class="list-group-item list-group-item-light"><a onclick="return confirm('로그아웃 하시겠습니까?')" href="/users/logout">로그아웃</a></li>
             </ul>
         </div>
     </div>
@@ -32,7 +25,7 @@
             <li><a href="/temp">DJ 스테이션</a></li>
             <li><a href="/rank">이달의 노래</a></li>
         </ul>
-        <c:if test="${sVO != null }">
+        <% if (user) { %>
             <ul>
                 <div>보관함</div>
                 <li><a href="/temp">믹스테잎</a></li>
@@ -41,7 +34,7 @@
                 <li><a href="/gift">받은노래</a></li>
                 <li><a href="/song/mp3">구매한 MP3</a></li>
             </ul>
-        </c:if>
+        <% } %>
         <ul>
             <li><a href="/myranking">#내돈내듣</a></li>
             <li><a href="/intro">서비스 소개</a></li>

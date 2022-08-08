@@ -21,6 +21,8 @@
                 <div class="form-container">
                     <form method="post">
                         <h2>로그인</h2>
+                        <div class="mb-3 control-r" onclick="location.href='/users/kakao'"><img src="/img/kakao-login.png"></div>
+                        <div class="mb-3">-------------------- or ----------------------</div>
                         <div class="form-group">
                             <input class="form-control input-control" type="text" id="userId" name="userId" placeholder="아이디" autofocus required>
                         </div>
@@ -28,9 +30,9 @@
                             <input class="form-control input-control" type="password" id="pwd" name="pwd"
                                 placeholder="비밀번호" required>
                         </div>
-                        <div class="form-group">
-                            <input class="check-control" type="checkbox" id="loginCheck" name="loginCheck" onchange="info()"> <span class="login-status ho" onclick="loginCheck.click()">로그인
-                                상태 유지</span>
+                        <div class="form-group custom-control custom-switch">
+                            <input class="custom-control-input" type="checkbox" id="loginCheck" name="loginCheck" onchange="info()" style="display: none;">
+                            <label class="custom-control-label" for="loginCheck">로그인 상태 유지</label>
                         </div>
                         <div id="demo" class="demo-box"></div>
                         <div class="form-group">
@@ -57,7 +59,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	
 	<script>
-        alert('<%- loginError %>')
+        if ('<%- loginError %>') alert('<%- loginError %>')
 		$("#loginCheck").click(() => {
 			if ($("#loginCheck").prop("checked")) {
 				if(confirm("다음 로그인 부터 로그인 상태를 유지하시겠습니까?\n단, 사용자에 브라우저에서 쿠키사용을 허용해야만 정상 작동 합니다.\n정상 로그아웃을 하면 로그인 상태 유지가 해지 됩니다.")) {
