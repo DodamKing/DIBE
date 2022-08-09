@@ -81,4 +81,9 @@ router.get('/logout', isLoggedIn, (req, res) => {
   })
 })
 
+router.get('/profile/:_id', isLoggedIn, (req, res) => {
+  const _id = req.params._id
+  console.log(_id);
+})
+
 module.exports = router;
