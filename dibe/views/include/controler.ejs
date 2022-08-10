@@ -2,8 +2,8 @@
     <input id="play_bar" type="range" value="0">
     <div class="d-flex">
         <div class="controls-song ml-2 mt-2 pt-3 pl-1">
-            <div id="controls_title" class="mb-1"><%- song.title %></div>
-            <div id="controls_artist"><%- song.artist %></div>
+            <div id="controls_title" class="mb-1"><%- songs[0].title %></div>
+            <div id="controls_artist"><%- songs[0].artist %></div>
         </div>
         <div class="col-3 p-3 mt-1">
             <c:if test="${empty sMid }">

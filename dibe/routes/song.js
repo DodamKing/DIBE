@@ -130,7 +130,8 @@ router.get('/direct', (req, res) => {
 
     db.Song.findById(songId, (err, song) => {
         if (err) return console.error(err)
-        res.render('song/player', {song, autoPlay})
+        const songs = [song]
+        res.render('song/player', {songs, autoPlay})
     })
 })
 
@@ -165,7 +166,20 @@ router.get('/open_player', async (req, res) => {
     const autoPlay = 0
     const songId = req.query.songId
     const song = await db.Song.findById(songId)
-    res.render('song/player', {autoPlay, song})
+    const songs = [song]
+    res.render('song/player', {autoPlay, songs})
+})
+
+router.post('/open_player', async (req, res) => {
+    const songs = []
+    const autoPlay = 0
+    // const reqSongIds = req.body.songIds
+    const songIds = req.body.songIds.split(',')
+    for (songId of songIds) {
+        const song = await db.Song.findById(songId)
+        songs.push(song)
+    }
+    res.render('song/player', {autoPlay, songs})
 })
 
 module.exports = router
