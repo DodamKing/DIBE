@@ -231,11 +231,11 @@
             let res = min_cur + ":" + sec_cur + " / " + min_dur + ":" + sec_dur;
             $("#controls_time").html(res);
 
-            // if () {
-            //     if (player.currentTime > 60 && player.currentTime < player.duration) {
-            //         player.currentTime = player.duration
-            //     }
-            // }
+            if ('<%- isAuthenticated %>' === 'false') {
+                if (player.currentTime > 60 && player.currentTime < player.duration) {
+                    player.currentTime = player.duration
+                }
+            }
         });
 
         // next button
