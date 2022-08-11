@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIBE-내정보</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="https://i1.sndcdn.com/avatars-000606604806-j6ghpm-t500x500.jpg" />
+    <style>
+        .profileImg {
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+            border-radius: 100%;
+        }
+        
+        .profileImg:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../include/title') %>
+	<div class="container p-5">
+		<h2 class="text-center mb-5">DIBE 프로필</h2>
+		<div class="card-body" style="background: #F7F7F7;">
+			<table class="table table-borderless mt-5 p-3" style="margin: auto; width: 60%;">
+                <% if (user.userId) { %>
+				<tr>
+					<th class="btn-warning" style="width: 200px;">아이디</th>
+					<td><%- user.userId %></td>
+				</tr>
+                <% } %>
+				<tr>
+					<th class="btn-warning">이메일 주소</th>
+					<td><%- user.email %></td>
+				</tr>
+				<tr>
+					<th class="btn-warning">휴대폰 번호</th>
+					<td><%- user.phoneNb %></td>
+				</tr>
+				<tr>
+					<th class="btn-warning">이름</th>
+					<td><%- user.userNm %></td>
+				</tr>
+				<tr>
+					<th class="btn-warning">별명</th>
+					<td><%- user.nickNm %></td>
+				</tr>
+				<tr><td style="background: #F7F7F7;"></td><td style="background: #F7F7F7;"></td></tr>
+				<tr>
+					<td style="background: #F7F7F7; text-align: right;" colspan="3">
+						<div class="btn-group btn-group-lg">
+							<input type="button" value="비밀번호 변경" class="btn btn-warning" onclick="location.href='/users/pwdcha/<%- user._id %>'" />
+							<input type="button" value="정보 수정" class="btn btn-warning" onclick="location.href='/users/update/<%- user._id %>'" />
+							<input type="button" value="회원 탈퇴" class="btn btn-warning" onclick="cf()" />
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        function cf() {
+			if (confirm("정말 탈퇴 하시겠습니까?")) {
+				if (confirm("탈퇴 시 고객님의 정보는 1개월간 보관 됩니다. 그래도 탈퇴 하시겠습니까?")) {
+					location.href="/users/withdrawal/<%- user._id %>";
+				}
+			}
+		}
+    </script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

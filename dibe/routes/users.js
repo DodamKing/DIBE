@@ -81,9 +81,17 @@ router.get('/logout', isLoggedIn, (req, res) => {
   })
 })
 
-router.get('/profile/:_id', isLoggedIn, (req, res) => {
+router.get('/profile/:_id', isLoggedIn, async (req, res) => {
   const _id = req.params._id
-  console.log(_id);
+  const user = await db.User.findById(_id)
+  res.render('user/profile', {user})
+})
+
+router.get('/withdrawal/:_id', isLoggedIn, async (req, res) => {
+  const _id = req.params._id
+  const result = await db.User.findByIdAndUpdate(_id, {del : true})
+  console.log(result)
+  res.redirect('/users/logout')
 })
 
 module.exports = router;

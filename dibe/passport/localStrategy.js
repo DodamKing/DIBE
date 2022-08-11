@@ -9,7 +9,7 @@ module.exports = () => {
         passwordField : 'pwd',
     }, async (userId, pwd, done) => {
         try {
-            const user = await db.User.findOne({userId : userId})
+            const user = await db.User.findOne({userId : userId, del : false})
             if (user) {
                 const check = await bcrypt.compare(pwd, user.pwd)
                 if (check) done(null, user)
