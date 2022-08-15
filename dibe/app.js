@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const session = require('express-session')
 const passport = require('passport')
+const flash = require('connect-flash')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -36,6 +37,7 @@ app.use(session({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(flash())
 
 app.use((req, res, next) => {
   res.locals.user = req.user

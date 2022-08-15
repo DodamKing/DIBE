@@ -84,7 +84,8 @@ router.get('/logout', isLoggedIn, (req, res) => {
 router.get('/profile/:_id', isLoggedIn, async (req, res) => {
   const _id = req.params._id
   const user = await db.User.findById(_id)
-  res.render('user/profile', {user})
+  const msg = req.flash('msg')
+  res.render('user/profile', {user, msg})
 })
 
 router.get('/withdrawal/:_id', isLoggedIn, async (req, res) => {
@@ -92,6 +93,45 @@ router.get('/withdrawal/:_id', isLoggedIn, async (req, res) => {
   const result = await db.User.findByIdAndUpdate(_id, {del : true})
   console.log(result)
   res.redirect('/users/logout')
+})
+
+router.get('/pwdcha/:_id', isLoggedIn, (req, res) => {
+  const msg = req.flash('msg')
+  res.render('user/pwdcha', {msg})
+})
+
+router.post('/pwdcha/:id', isLoggedIn, async (req, res) => {
+  const _id = req.user._id
+  const pwd = req.user.pwd
+  const pwd1 = req.body.pwd1
+  const pwd2 = await bcrypt.hash(req.body.pwd2, 12) 
+  const check = await bcrypt.compare(pwd1, pwd)
+  if (check) {
+    await db.User.findByIdAndUpdate(_id, {pwd : pwd2})
+    req.flash('msg', '비밀번호가 정상적으로 변경 되었습니다.')
+    res.redirect('/users/profile/' + _id)
+  }
+  else {
+    req.flash('msg', '기존 비밀번호가 틀립니다.')
+    res.redirect('/users/pwdcha/' + _id)
+  }
+})
+
+router.get('/update', isLoggedIn, (req, res) => {
+  const msg = req.flash('msg')
+  res.render('user/update', {msg})
+})
+
+router.post('/update', isLoggedIn, async (req, res) => {
+  const _id = req.user._id
+  const email = req.body.email
+  const telecom = req.body.telecom
+  const phoneNb = req.body.phoneNb
+  const userNm = req.body.userNm
+  const nickNm = req.body.nickNm
+  await db.User.findByIdAndUpdate(_id, {email, telecom, phoneNb, userNm, nickNm})
+  req.flash('msg', '정보가 정상적으로 변경 되었습니다.')
+  res.redirect('/users/update')
 })
 
 module.exports = router;
