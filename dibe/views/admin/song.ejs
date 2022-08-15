@@ -4,18 +4,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIBE</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>DIBE</title>
 </head>
 <body>
     <div class="container mt-5">
         <div class="card-body">
-            <h1>관리자</h1>
-            <a href="/" class="btn btn-secondary btn-sm">돌아가기</a>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='/admin/users'">사용자 관리</button>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='/admin/songs'">음원 관리</button>
-            <div id="resultDiv"></div>
+            <h1>음원관리</h1>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='/admin/index'">돌아가기</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="localDown()">음원 다운</button>
         </div>
     </div>
 

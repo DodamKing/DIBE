@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>DIBE</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='/admin/index'">돌아가기</button>
+        <div class="card-body">
+            <h1>사용자 리스트</h1>
+            <table class="table table-hover text-center mt-3">
+                <tr>
+                    <td>아이디</td>
+                    <td>닉네임</td>
+                    <td>이메일</td>
+                    <td>최근접속</td>
+                    <td>가입일</td>
+                    <td>탈퇴신청</td>
+                </tr>
+                <% for (user of users) { %>
+                    <tr>
+                        <td><%- user.userId %></td>
+                        <td><%- user.nickNm %></td>
+                        <td><%- user.email %></td>
+                        <td><% if (user.visitedAt) { %> <%- moment(user.visitedAt).format('YYYY-MM-DD hh:mm:ss') %> <% } %> </td>
+                        <td><%- moment(user.createdAt).format('YYYY-MM-DD hh:mm:ss') %></td>
+                        <td><% if (user.del) { %> O <% } %> </td>
+                    </tr>
+                <% } %>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

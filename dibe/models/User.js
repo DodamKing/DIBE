@@ -25,7 +25,7 @@ const userSchema = new Schema({
         type : Date,
         default : Date().toLocaleString()
     },
-    visitAt : Date,
+    visitedAt : Date,
     del : {
         type : Boolean,
         default : false,

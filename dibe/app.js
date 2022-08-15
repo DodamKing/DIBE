@@ -11,7 +11,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const songRouter = require('./routes/song');
 const adminRouter = require('./routes/admin')
-const passportConfig = require('./passport')
+const passportConfig = require('./passport');
+const { isLoggedIn } = require('./routes/middlewares');
 
 require('dotenv').config()
 require('./db/connect')()

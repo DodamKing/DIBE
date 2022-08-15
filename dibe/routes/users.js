@@ -3,19 +3,9 @@ var router = express.Router();
 const db = require('../models')
 const passport = require('passport')
 const bcrypt = require('bcrypt');
-const { isNotLoggedIn, isLoggedIn } = require('./middlewares');
+const { isNotLoggedIn, isLoggedIn, getCurrentDate } = require('./middlewares');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
-
-router.get('/list', async (req, res) => {
-  const result = await db.User.find()
-  console.log(result);
-  res.json(result)
-})
-
 router.get('/login', isNotLoggedIn, (req, res) => {
   const _title = 'DIBE 로그인'
   const loginError = req.query.loginError
@@ -29,8 +19,9 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (authError, user, info) => {
     if (authError) return next(authError)
     if (!user) return res.redirect(`/users/login?loginError=${info.message}`)
-    return req.login(user, (loginError) => {
+    return req.login(user, async (loginError) => {
       if (loginError) return next(loginError)
+      const result = await db.User.findByIdAndUpdate(user._id, {visitedAt : new Date()})
       res.redirect('/')
     })
   })(req, res, next)
