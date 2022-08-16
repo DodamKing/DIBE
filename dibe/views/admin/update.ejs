@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>DIBE</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class='card-body'>
+            <h1>곡정보</h1>
+            <button type="button" class="btn btn-primary" onclick="javascript:history.back()">뒤로가기</button>
+            <form method="post" class="mt-5">
+                <input style="display: none;" value="<%- song._id %>" name="_id">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">제목</span>
+                    </div>
+                    <input type="text" class="form-control" value="<%- song.title %>" name="title">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">가수</span>
+                    </div>
+                    <input type="text" class="form-control" value="<%- song.artist %>" name="artist">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">앨범</span>
+                    </div>
+                    <input type="text" class="form-control" value="<%- song.album %>" name="album">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">발매일</span>
+                    </div>
+                    <input type="text" class="form-control" value="<%- song.release %>" name="release">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">장르</span>
+                    </div>
+                    <input type="text" class="form-control" value="<%- song.genre %>" name="genre">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">작곡</span>
+                    </div>
+                    <input type="text" class="form-control" value="<%- song.write %>" name="write">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">작사</span>
+                    </div>
+                    <input type="text" class="form-control" value="<%- song.words %>" name="words">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">편곡</span>
+                    </div>
+                    <input type="text" class="form-control" value="<%- song.arrange %>" name="arrange">
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-success">적용</button>
+                </div>
+            </form>
+
+            <div class="mt-5">
+                <audio src="/track/<%-song._id%>.mp4" controls></audio>
+            </div>
+
+            <div class="input-group mb-3 mt-5">
+                <input type="text" class="form-control url" placeholder="url을 입력하세요">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button">미리듣기</button>
+                    <button class="btn btn-danger down" type="button">음원다운</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $('.down').on('click', async () => {
+            const res = fetch('/admin/downsong?url=' + $('.url').val())
+        })
+    </script>
+</body>
+</html>

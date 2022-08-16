@@ -60,7 +60,9 @@ router.get('/kakao', passport.authenticate('kakao'))
 
 router.get('/kakao/callback', passport.authenticate('kakao', {
   failureRedirect : '/',
-}), (req, res) => {
+}), async (req, res) => {
+  const _id = req.user._id
+  await db.User.findByIdAndUpdate(_id, {visitedAt : new Date()})
   res.redirect('/')
 })
 

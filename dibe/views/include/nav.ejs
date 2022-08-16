@@ -15,7 +15,7 @@
             <div class="list-group my-group">
                 <ul>
                     <li class="list-group-item list-group-item-light"><a href="/users/profile/<%- user._id %>">계정설정</a></li>
-                    <% if (user.userId === 'admin') { %><li class="list-group-item list-group-item-light"><a href="/admin/index">관리자</a></li><% } %>
+                    <% if (user.userId === 'admin') { %><li class="list-group-item list-group-item-light"><a href="/admin">관리자</a></li><% } %>
                     <li class="list-group-item list-group-item-light"><a onclick="return confirm('로그아웃 하시겠습니까?')" href="/users/logout">로그아웃</a></li>
                 </ul>
             </div>

@@ -6,15 +6,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>DIBE</title>
+    <style>
+        .ho {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
         <div class="card-body">
             <h1>음원관리</h1>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='/admin/index'">돌아가기</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='/admin'">돌아가기</button>
             <button type="button" class="btn btn-secondary btn-sm" onclick="localDown()">음원 다운</button>
+            <div class="mt-5">
+                <form method="post">
+                    <div class="input-group mb-3">
+                        <input name="query" type="text" class="form-control query" placeholder="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-success search" type="submit">검색</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div id="search-result">
+                <table class="table  table-hover ho">
+                    <% if (locals.songs) { %>
+                        <% for (song of songs) { %>
+                            <tr onclick="location.href='/admin/update?songId=<%-song._id%>'">
+                                <td><%- song.title %></td>
+                                <td><%- song.artist %></td>
+                            </tr>
+                        <% } %>
+                    <% } %>
+                </table>
+            </div>
+
+            <div id="resultDiv"></div>
         </div>
     </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
 
     <script>
         async function localDown() {
@@ -24,10 +60,10 @@
             write += `${JSON.stringify(data.songs)} <br><br>`
             $('#resultDiv').html(write)
         }
-    </script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+        $('.query').on('keyup', (e) => {
+            if (e.keyCode === 13) $('.search').click()
+        })
+
+    </script>
 </html>
