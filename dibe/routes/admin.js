@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const db = require('../models')
 const moment = require('moment')
+const ytdl = require('ytdl-core')
+const fs = require('fs')
 
 router.get('/', (req, res) => {
     res.render('admin/index')
@@ -33,8 +35,26 @@ router.post('/update', async (req, res) => {
     res.redirect('/admin/update?songId=' + req.body._id)
 })
 
-router.get('/downsong', async (req, res) => {
-    console.log(req.query.url);
+router.post('/downsong', async (req, res) => {
+    const _id = req.body._id
+    const url = req.body.url
+    await ytdl(url, {filter : 'audioonly'}).pipe(fs.createWriteStream('public/video/' + _id + '.mp4').on('finish', () => {
+        db.Song.findByIdAndUpdate(_id, {isFile : 1}, (err) => {
+            if (err) return console.error(err)
+        })
+    }))
+    res.send(true)
+})
+
+router.post('/preview', async (req, res) => {
+    const url = req.body.url
+
+    res.set({
+        'Content-Type' : 'audio/mp4',
+        'Transfer-Encoding' : 'chunked',
+    })
+    
+    ytdl(url, {filter : 'audioonly'}).pipe(res)
 })
 
 module.exports = router

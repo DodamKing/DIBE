@@ -12,7 +12,6 @@
     <link rel="shortcut icon" href="https://i1.sndcdn.com/avatars-000606604806-j6ghpm-t500x500.jpg" />
 </head>
 <body>
-    <%- include('../include/title') %>
     <%- include('../include/findModal') %>
 
     <section>
@@ -23,7 +22,7 @@
                     <form method="post">
                         <h2>로그인</h2>
                         <div class="mb-3 control-r" onclick="location.href='/users/kakao'"><img src="/img/kakao-login.png"></div>
-                        <div class="mb-3">-------------------- or ----------------------</div>
+                        <hr>
                         <div class="form-group">
                             <input class="form-control input-control" type="text" id="userId" name="userId" placeholder="아이디" autofocus required>
                         </div>

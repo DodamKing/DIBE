@@ -3,11 +3,15 @@ var router = express.Router();
 const db = require('../models')
 const fs = require('fs')
 const request = require('request')
+const MobileDetect = require('mobile-detect')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   const error = req.query.error
-  res.render('index', { title: 'DIBE', error });
+  const md = new MobileDetect(req.headers['user-agent'])
+  if (md.mobile() && !req.isAuthenticated()) return res.redirect('/users/login')
+  else if (md.mobile()) return res.render('mobile/index')
+  res.render('index', { title: 'DIBE', error })
 });
 
 router.get('/chart', (req, res) => {

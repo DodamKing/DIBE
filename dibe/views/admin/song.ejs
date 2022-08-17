@@ -29,19 +29,20 @@
                 </form>
             </div>
             
-            <div id="search-result">
-                <table class="table  table-hover ho">
-                    <% if (locals.songs) { %>
-                        <% for (song of songs) { %>
-                            <tr onclick="location.href='/admin/update?songId=<%-song._id%>'">
-                                <td><%- song.title %></td>
-                                <td><%- song.artist %></td>
-                            </tr>
-                        <% } %>
-                    <% } %>
-                </table>
-            </div>
-
+            <% if (locals.songs) { %>
+                <div>
+                    <div class="text-right"><%- songs.length %> 곡</div>
+                    <table class="table table-hover ho">
+                            <% for (song of songs) { %>
+                                <tr onclick="location.href='/admin/update?songId=<%-song._id%>'">
+                                    <td><%- song.title %></td>
+                                    <td><%- song.artist %></td>
+                                </tr>
+                            <% } %>
+                    </table>
+                </div>
+            <% } %>
+                
             <div id="resultDiv"></div>
         </div>
     </div>

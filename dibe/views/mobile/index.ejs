@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIEB</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="stylesheets/main.css">
+    <link rel="shortcut icon" href="https://i1.sndcdn.com/avatars-000606604806-j6ghpm-t500x500.jpg" />
+</head>
+<body>
+    <div class="card-body nav-w">
+        <div>
+            <% if (!user) { %>
+                <div class="text-center"><a href="/users/login">로그인</a></div>
+            <% } else { %>
+                <div class="row">
+                    <div class="col ho" id="dropMenu" >
+                        <%- user.nickNm %>
+                        <i class="fa-solid fa-caret-down"></i>
+                    </div>
+                </div>
+            <% } %>
+            <% if (user) { %>
+                <div class="list-group my-group">
+                    <ul>
+                        <li class="list-group-item list-group-item-light"><a href="/users/profile/<%- user._id %>">계정설정</a></li>
+                        <% if (user.userId === 'admin') { %><li class="list-group-item list-group-item-light"><a href="/admin">관리자</a></li><% } %>
+                        <li class="list-group-item list-group-item-light"><a onclick="return confirm('로그아웃 하시겠습니까?')" href="/users/logout">로그아웃</a></li>
+                    </ul>
+                </div>
+            <% } %>
+        </div>
+        <div>
+            <ul>
+                <li><a href="/">투데이</a></li>
+                <li><a href="/chart">차트</a></li>
+                <li><a href="">DJ 스테이션</a></li>
+                <li><a href="">이달의 노래</a></li>
+            </ul>
+            <% if (user) { %>
+                <ul>
+                    <div>보관함</div>
+                    <li><a href="">믹스테잎</a></li>
+                    <li><a href="">아티스트</a></li>
+                    <li><a href="">플레이리스트</a></li>
+                    <li><a href="">받은노래</a></li>
+                    <li><a href="">구매한 MP3</a></li>
+                </ul>
+            <% } %>
+            <ul>
+                <li><a href="">#내돈내듣</a></li>
+                <li><a href="">서비스 소개</a></li>
+                <li><a href="">사용자 리뷰</a></li>
+                <li><a href="">커밍쑨 DDMusic</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="javascripts/main.js"></script>
+</body>
+</html>

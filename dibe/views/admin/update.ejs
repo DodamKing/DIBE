@@ -11,7 +11,7 @@
     <div class="container mt-5">
         <div class='card-body'>
             <h1>곡정보</h1>
-            <button type="button" class="btn btn-primary" onclick="javascript:history.back()">뒤로가기</button>
+            <button type="button" class="btn btn-primary" onclick="location.href='/admin/songs'">뒤로가기</button>
             <form method="post" class="mt-5">
                 <input style="display: none;" value="<%- song._id %>" name="_id">
                 <div class="input-group mb-3">
@@ -74,9 +74,13 @@
             <div class="input-group mb-3 mt-5">
                 <input type="text" class="form-control url" placeholder="url을 입력하세요">
                 <div class="input-group-append">
-                    <button class="btn btn-primary" type="button">미리듣기</button>
+                    <button class="btn btn-primary play" type="button">미리듣기</button>
                     <button class="btn btn-danger down" type="button">음원다운</button>
                 </div>
+            </div>
+
+            <div class="mt-5">
+                <audio id="preview" controls></audio>
             </div>
         </div>
     </div>
@@ -87,7 +91,29 @@
 
     <script>
         $('.down').on('click', async () => {
-            const res = fetch('/admin/downsong?url=' + $('.url').val())
+            const _id = `<%- song._id %>`
+            const url = $('.url').val()
+            const res = await fetch('/admin/downsong', {
+                method : 'POST',
+                headers : {"Content-Type": "application/json"},
+                body : JSON.stringify({_id, url}) 
+            })
+            const json = await res.json()
+            if (json) alert('음원 다운이 완료되었습니다.')
+            location.reload()
+        })
+
+        $('.play').on('click', async () => {
+            const url = $('.url').val()
+            const res = await fetch('/admin/preview', {
+                method : 'POST',
+                headers : {"Content-Type": "application/json"},
+                body : JSON.stringify({url}) 
+            })
+            const blob = await res.blob()
+            const src = URL.createObjectURL(blob)
+            preview.src = src
+            preview.play()
         })
     </script>
 </body>
