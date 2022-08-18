@@ -24,15 +24,16 @@ router.post('/songs', async (req, res) => {
     res.render('admin/song', {songs})
 })
 
-router.get('/update', async (req, res) => {
-    const songId = req.query.songId
+router.get('/update/:songId', async (req, res) => {
+    const songId = req.params.songId
     const song = await db.Song.findById(songId)
     res.render('admin/update', {song})
 })
 
-router.post('/update', async (req, res) => {
-    console.log(req.body);
-    res.redirect('/admin/update?songId=' + req.body._id)
+router.post('/update/:songId', async (req, res) => {
+    const songId = req.params.songId
+    await db.Song.findByIdAndUpdate(songId, req.body)
+    res.redirect(`/admin/update/${songId}`)
 })
 
 router.post('/downsong', async (req, res) => {

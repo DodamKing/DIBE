@@ -37,7 +37,8 @@ const songSchema = new Schema({
     arrange : { //편곡
         type : String,
         // default : '',
-    }, 
+    },
+    lyrics : String, //가사
     likes : { //좋아요
         type : Number, 
         default : 0,

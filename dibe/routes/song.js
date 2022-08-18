@@ -74,6 +74,30 @@ router.get('/downs/local', async (req, res) => {
     res.json({songs})
 })
 
+router.post('/streaming', async (req, res) => {
+    const songId = req.body.songId
+    const url = process.env.URL_GET_URL
+    const song = await db.Song.findById(songId)
+    const songs = [song]
+    
+    const options = {
+        uri : url,
+        method : 'POST',
+        body : {songs},
+        json : true,
+    }
+
+    res.set({
+        'Content-Type' : 'audio/mp4',
+        'Transfer-Encoding' : 'chunked',
+    })
+
+    request.post(options, async (err, response, body) => {
+        const ytUrl = await body[0]
+        ytdl(ytUrl, {filter : 'audioonly'}).pipe(res)
+    })
+})
+
 router.get('/set/chart', (req, res) => {
     const url = process.env.CHART_API_URL
     request(url, (err, response, body) => {

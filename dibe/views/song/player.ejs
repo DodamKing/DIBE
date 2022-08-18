@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIBE <%- songs[0].title %> - <%- songs[0].artist %></title>
+    <title>DIBE(다이브)</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/stylesheets/main.css">
@@ -86,9 +86,9 @@
             }
 
             let res = `
-                <div id="p_${song._id}" class='d-flex p-3 get-songId'>
+                <div id="p_${song._id}" class='d-flex p-3 get-songId' draggable='true'>
                     <div class='imgBox mr-3'>
-                        <img class="playlist_i" src='${song.img}' title="재생" onclick="startThis('${song._id}')">
+                        <img class="playlist_i" src='${song.img}' title="재생" onclick="startThis('${song._id}')" draggable='false'>
                     </div>
                     <div>
                         <div class='playlist_t' title="${song.title}">`
@@ -111,7 +111,7 @@
         }
         
         // 로드
-        function load() {
+        async function load() {
             const getId = $('.get-songId')[playerIndex].id
             const songId = getId.split('_')[1]
             const title = $('.playlist_t')[playerIndex].title
@@ -120,8 +120,14 @@
             // songUrl = `/songs/stream?songId=${songId}`
             songUrl = `/track/${songId}.mp4`
             
-            // $.get(songUrl).fail(() => {
-            //     next_btn.click();
+            // await $.get(songUrl).fail(async () => {
+            //     const res = fetch('/songs/streaming', {
+            //         method : 'POST',
+            //         headers : {"Content-Type": "application/json"},
+            //         body : JSON.stringify({songId}) 
+            //     })
+            //     const blob = await res.blob()
+            //     songUrl = URL.createObjectURL(blob)
             // });
             
             player.src = songUrl;
@@ -136,7 +142,7 @@
             
             
             //타이틀 변경
-            document.title = "DIBE " + title + " - " + artist
+            document.title = title + " - " + artist + " DIBE(다이브)"
             
             // 현재 재생 음악 포커스
             focus_cur()

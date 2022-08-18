@@ -13,7 +13,6 @@
             <h1>곡정보</h1>
             <button type="button" class="btn btn-primary" onclick="location.href='/admin/songs'">뒤로가기</button>
             <form method="post" class="mt-5">
-                <input style="display: none;" value="<%- song._id %>" name="_id">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text">제목</span>
@@ -62,6 +61,12 @@
                     </div>
                     <input type="text" class="form-control" value="<%- song.arrange %>" name="arrange">
                 </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">가사</span>
+                    </div>
+                    <textarea class="form-control" name="lyrics" style="height: auto; resize: none;"><%- song.lyrics %></textarea>
+                </div>
                 <div class="text-center">
                     <button class="btn btn-success">적용</button>
                 </div>
@@ -90,6 +95,12 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
+        function textareaHeightAuto() {
+            const textareaHeight = $('textarea').prop('scrollHeight')
+            $('textarea').css('height', textareaHeight)
+        }
+        textareaHeightAuto()
+
         $('.down').on('click', async () => {
             const _id = `<%- song._id %>`
             const url = $('.url').val()

@@ -26,9 +26,9 @@
         <div class="mt-3">
             <div id="play_list" class="pfc" tabindex="0">
                 <% for (song of songs) { %>
-                    <div id="p_<%- song._id %>" class='d-flex p-3 get-songId'>
+                    <div id="p_<%- song._id %>" class='d-flex p-3 get-songId' draggable="true">
                         <div class='imgBox mr-3'>
-                            <img class="playlist_i" src='<%- song.img %>' title="재생" onclick="startThis('<%- song._id %>')">
+                            <img class="playlist_i" src='<%- song.img %>' title="재생" onclick="startThis('<%- song._id %>')" draggable="false">
                         </div>
                         <div>
                             <div class='playlist_t' title="<%- song.title %>">

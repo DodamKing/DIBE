@@ -26,8 +26,8 @@
                         <td><%- user.userId %></td>
                         <td><%- user.nickNm %></td>
                         <td><%- user.email %></td>
-                        <td><% if (user.visitedAt) { %> <%- moment(user.visitedAt).format('YYYY-MM-DD hh:mm:ss') %> <% } %> </td>
-                        <td><%- moment(user.createdAt).format('YYYY-MM-DD hh:mm:ss') %></td>
+                        <td><% if (user.visitedAt) { %> <%- moment(user.visitedAt).format('YYYY-MM-DD HH:mm:ss') %> <% } %> </td>
+                        <td><%- moment(user.createdAt).format('YYYY-MM-DD HH:mm:ss') %></td>
                         <td><% if (user.del) { %> O <% } %> </td>
                     </tr>
                 <% } %>
