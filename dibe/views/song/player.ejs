@@ -117,7 +117,6 @@
             const title = $('.playlist_t')[playerIndex].title
             const artist = $('.playlist_a')[playerIndex].title
             const img = $('.playlist_i')[playerIndex].src
-            // songUrl = `/songs/stream?songId=${songId}`
             songUrl = `/track/${songId}.mp4`
             
             // await $.get(songUrl).fail(async () => {
@@ -368,52 +367,39 @@
             if (shuffle == 0)  {
                 $('.loader').show();
                 
-                idx_list_ = Object.assign([], idx_list);
-                thum_list_ = Object.assign([], thum_list);
-                title_list_ = Object.assign([], title_list);
-                artist_list_ = Object.assign([], artist_list);
-                
-                setTimeout(() => {
-                    $.ajax({
-                        type : "post",
-                        url : "${ctp}/song/shuffle",
-                        async : false,
-                        dataType : "json",
-                        contentType :   "application/x-www-form-urlencoded; charset=UTF-8",
-                        data : {idxs : idx_list, curIdx : idx_list[playerIndex]},
-                        success : (data) => {
-                            for (let i=0; i<idx_list.length; i++) {
-                                idx_list[i] = data[i].idx;
-                                thum_list[i] = data[i].img;
-                                title_list[i] = data[i].title;
-                                artist_list[i] = data[i].artist;
-                            }
-                            
-                            playerIndex = idx_list.indexOf(idx_list_[playerIndex]);
+                playerIndex_ = playerIndex
+                const songs = $('.get-songId')
+                const currentId = songs[playerIndex].id
 
-                            shuffle_btn.style.opacity = "1";
-                            shuffle = 1;
-                            
-                            setList();
-                            focus_cur();
-                            $('.loader').fadeOut();
-                        }
-                    });
-                }, 100);
+                new Promise((resolve, reject) => {
+                    for (let i=0; i<songs.length; i++) {
+                        const idx = Math.floor(Math.random() * songs.length-1) + 1
+                        const idx2 = Math.floor(Math.random() * songs.length-1) + 1
+                        songs.eq(idx).before(songs.eq(idx2))
+                    }
+                    resolve($('.get-songId')) 
+                })
+                .then((songs) => {
+                    let i = 0
+                    for (song of songs) {
+                        if (song.id === currentId) return playerIndex = i
+                        i++
+                    }
+                })
+                .then(() => focus_cur())
+                
+                shuffle_btn.style.opacity = "1";
+                // shuffle = 1;
+                
+                $('.loader').fadeOut();
             }
                 
             else if (shuffle == 1)  {
-                playerIndex = idx_list_.indexOf(idx_list[playerIndex]);
-                
-                idx_list = Object.assign([], idx_list_);
-                thum_list = Object.assign([], thum_list_);
-                title_list = Object.assign([], title_list_);
-                artist_list = Object.assign([], artist_list_);
+                // playerIndex = idx_list_.indexOf(idx_list[playerIndex]);
                 
                 shuffle_btn.style.opacity = "0.5";
                 shuffle = 0;
                 
-                setList();
                 focus_cur();
             }
         });

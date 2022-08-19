@@ -159,7 +159,7 @@ router.get('/direct', (req, res) => {
 })
 
 router.get('/stream', (req, res) => {
-    const songId = req.query.songId
+    const songId = req.params.songId
 
     res.set({
         'Content-Type' : 'audio/mp4',
