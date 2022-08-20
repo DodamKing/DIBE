@@ -6,6 +6,10 @@ const bcrypt = require('bcrypt');
 const { isNotLoggedIn, isLoggedIn, getCurrentDate } = require('./middlewares');
 
 /* GET users listing. */
+router.get('/sns_login', isNotLoggedIn, (req, res) => {
+  res.render('user/sns_login')
+})
+
 router.get('/login', isNotLoggedIn, (req, res) => {
   const _title = 'DIBE 로그인'
   const loginError = req.query.loginError
@@ -59,6 +63,16 @@ router.get('/overlapcheck', (req, res) => {
 router.get('/kakao', passport.authenticate('kakao'))
 
 router.get('/kakao/callback', passport.authenticate('kakao', {
+  failureRedirect : '/',
+}), async (req, res) => {
+  const _id = req.user._id
+  await db.User.findByIdAndUpdate(_id, {visitedAt : new Date()})
+  res.redirect('/')
+})
+
+router.get('/naver', passport.authenticate('naver', {authType : 'reprompt'}))
+
+router.get('/naver/callback', passport.authenticate('naver', {
   failureRedirect : '/',
 }), async (req, res) => {
   const _id = req.user._id

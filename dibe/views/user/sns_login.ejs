@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIBE 로그인</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/login.css">
+    <link rel="stylesheet" href="/stylesheets/loader.css">
+    <link rel="shortcut icon" href="https://i1.sndcdn.com/avatars-000606604806-j6ghpm-t500x500.jpg" />
+</head>
+<body>
+    <%- include('../include/findModal') %>
+
+    <section>
+        <div class="main-container">
+            <h5 class="text-right"><a href="/">DIBE</a></h5>
+            <div class="container p-3 my-3 border">
+                <div class="form-container">
+                    <h2>로그인</h2>
+                    <div class="mb-3 control-r" onclick="location.href='/users/kakao'"><img src="/img/kakao-login.png"></div>
+                    <div class="mb-3 control-r" onclick="location.href='/users/naver'"><img style="width: 300px; object-fit: cover;" src="/img/naver-login.png"></div>
+                    <button class="form-control login-control" onclick="location.href='/users/login'">DIBE 로그인</button>
+                </div>
+            </div>
+            <footer class="container">
+                Copyright <strong>© DoubleD.</strong> All rights reserved.
+            </footer>
+        </div>
+    </section>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

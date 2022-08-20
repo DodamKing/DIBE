@@ -9,7 +9,7 @@ const MobileDetect = require('mobile-detect')
 router.get('/', function(req, res, next) {
   const error = req.query.error
   const md = new MobileDetect(req.headers['user-agent'])
-  if (md.mobile() && !req.isAuthenticated()) return res.redirect('/users/login')
+  if (md.mobile() && !req.isAuthenticated()) return res.redirect('/users/sns_login')
   else if (md.mobile()) return res.render('mobile/index')
   res.render('index', { title: 'DIBE', error })
 });

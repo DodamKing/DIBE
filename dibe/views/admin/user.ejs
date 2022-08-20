@@ -16,6 +16,7 @@
                 <tr>
                     <td>아이디</td>
                     <td>닉네임</td>
+                    <td></td>
                     <td>이메일</td>
                     <td>최근접속</td>
                     <td>가입일</td>
@@ -25,6 +26,7 @@
                     <tr>
                         <td><%- user.userId %></td>
                         <td><%- user.nickNm %></td>
+                        <td><%- user.provider %></td>
                         <td><%- user.email %></td>
                         <td><% if (user.visitedAt) { %> <%- moment(user.visitedAt).format('YYYY-MM-DD HH:mm:ss') %> <% } %> </td>
                         <td><%- moment(user.createdAt).format('YYYY-MM-DD HH:mm:ss') %></td>
