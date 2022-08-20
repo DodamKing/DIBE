@@ -20,7 +20,7 @@ router.get('/songs', async (req, res) => {
 
 router.post('/songs', async (req, res) => {
     const query = req.body.query
-    const songs = await db.Song.find({$or : [{title : {$regex : query}}, {artist : {$regex : query}}]})
+    const songs = await db.Song.find({$or : [{title : {$regex : query, $options : 'i'}}, {artist : {$regex : query, $options : 'i'}}]})
     res.render('admin/song', {songs})
 })
 

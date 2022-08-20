@@ -28,10 +28,9 @@
 		let playerIndex = 0;
 		let playerIndex_ = 0;
 		let sw = 0;
-		let pisw1 = 0;
-		let pisw2 = 0;
 		let repeat = 0;
 		let shuffle = 0;
+        let exSongs
 	
         // 바로 재생
         if ('<%- autoPlay %>' === '1') {
@@ -361,14 +360,14 @@
         });
         
         //셔플
-        $("#shuffle_btn").click(() => {
+        $("#shuffle_btn").click(async () => {
             if ($('.get-songId').length <= 1) return;
             
-            if (shuffle == 0)  {
-                $('.loader').show();
-                
+            $('.loader').show()
+            
+            if (shuffle === 0)  {
                 playerIndex_ = playerIndex
-                const songs = $('.get-songId')
+                const songs = exSongs = $('.get-songId')
                 const currentId = songs[playerIndex].id
 
                 new Promise((resolve, reject) => {
@@ -377,7 +376,7 @@
                         const idx2 = Math.floor(Math.random() * songs.length-1) + 1
                         songs.eq(idx).before(songs.eq(idx2))
                     }
-                    resolve($('.get-songId')) 
+                    resolve( $('.get-songId')) 
                 })
                 .then((songs) => {
                     let i = 0
@@ -389,19 +388,33 @@
                 .then(() => focus_cur())
                 
                 shuffle_btn.style.opacity = "1";
-                // shuffle = 1;
-                
-                $('.loader').fadeOut();
+                shuffle = 1;
             }
                 
-            else if (shuffle == 1)  {
-                // playerIndex = idx_list_.indexOf(idx_list[playerIndex]);
-                
+            else if (shuffle === 1)  {
+                const songs = $('.get-songId')
+                const currentId = songs[playerIndex].id
+
+                play_list.innerHTML = ''
+
+                new Promise((resolve, reject) => {
+                    for (song of exSongs) {
+                        play_list.append(song)
+                    }
+                    resolve(exSongs)
+                })
+                .then((exSongs) => {
+                    let i = 0
+                    for (song of exSongs) {
+                        if (song.id === currentId) return playerIndex = i
+                        i++
+                    }
+                })
+                .then(() => focus_cur())
                 shuffle_btn.style.opacity = "0.5";
                 shuffle = 0;
-                
-                focus_cur();
             }
+            $('.loader').fadeOut()
         });
         
         // 현재 음악 포커스
