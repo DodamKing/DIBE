@@ -80,6 +80,16 @@ router.get('/naver/callback', passport.authenticate('naver', {
   res.redirect('/')
 })
 
+router.get('/google', passport.authenticate('google', {scope : ['profile', 'email']}))
+
+router.get('/google/callback', passport.authenticate('google', {failureRedirect : '/'}),
+async (req, res) => {
+  const _id = req.user._id
+  await db.User.findByIdAndUpdate(_id, {visitedAt : new Date()})
+  res.redirect('/')
+  }
+)
+
 router.get('/logout', isLoggedIn, (req, res) => {
   req.logout((err) => {
     if (err) return console.error(err)

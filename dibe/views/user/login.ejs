@@ -10,6 +10,12 @@
     <link rel="stylesheet" href="/stylesheets/login.css">
     <link rel="stylesheet" href="/stylesheets/loader.css">
     <link rel="shortcut icon" href="https://i1.sndcdn.com/avatars-000606604806-j6ghpm-t500x500.jpg" />
+    <style>
+        .ho:hover{
+            cursor: pointer;
+            opacity: 0.5;
+        }
+    </style>
 </head>
 <body>
     <%- include('../include/findModal') %>
@@ -18,6 +24,7 @@
         <div class="main-container">
             <h5 class="text-right"><a href="/">DIBE</a></h5>
             <div class="container p-3 my-3 border">
+                <div class="ho" onclick="location.href='/users/sns_login'">SNS 로그인</div>
                 <div class="form-container">
                     <form method="post">
                         <h2>로그인</h2>

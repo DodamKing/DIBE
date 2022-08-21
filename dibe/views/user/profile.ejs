@@ -39,8 +39,8 @@
 				</tr>
 				<tr>
 					<th class="btn-warning">휴대폰 번호</th>
-					<% if (user.provider === 'naver') { %> <td><%- user.phoneNb%></td> <% } else { %>
-					<td><%- user.phoneNb.substring(0,3) %>-<%- user.phoneNb.substring(3,7) %>-<%- user.phoneNb.substring(7,11) %></td> <% } %>
+					<% if (user.provider === 'naver') { %> <td><%- user.phoneNb%></td>
+					<% } else if (user.phoneNb) { %> <td><%- user.phoneNb.substring(0,3) %>-<%- user.phoneNb.substring(3,7) %>-<%- user.phoneNb.substring(7,11) %></td> <% } %>
 				</tr>
 				<tr>
 					<th class="btn-warning">이름</th>

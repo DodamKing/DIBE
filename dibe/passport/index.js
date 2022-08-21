@@ -3,6 +3,7 @@ const db = require('../models')
 const local = require('./localStrategy')
 const kakao = require('./kakao')
 const naver = require('./naver')
+const google = require('./google')
 
 module.exports = () => {
     passport.serializeUser((user, done) => {
@@ -18,4 +19,5 @@ module.exports = () => {
     local()
     kakao()
     naver()
+    google()
 }
