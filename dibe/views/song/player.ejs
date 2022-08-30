@@ -118,16 +118,6 @@
             const img = $('.playlist_i')[playerIndex].src
             songUrl = `/track/${songId}.mp4`
             
-            // await $.get(songUrl).fail(async () => {
-            //     const res = fetch('/songs/streaming', {
-            //         method : 'POST',
-            //         headers : {"Content-Type": "application/json"},
-            //         body : JSON.stringify({songId}) 
-            //     })
-            //     const blob = await res.blob()
-            //     songUrl = URL.createObjectURL(blob)
-            // });
-            
             player.src = songUrl;
             player.load();
             controls_title.innerHTML = title
