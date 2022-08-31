@@ -82,7 +82,7 @@
 		
 		$.ajax({
 			type : "post",
-			url : "/user/finduserId",
+			url : "/users/finduserId",
 			data : data,
 			success : (mid) => {
 				if (mid == "") {
@@ -106,7 +106,7 @@
 			
 			$.ajax({
 				type : "post",
-				url : "/user/finduserPwd",
+				url : "/users/finduserPwd",
 				data : data,
 				success : (data) => {
 					if (data == "1") {

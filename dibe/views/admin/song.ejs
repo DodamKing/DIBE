@@ -17,7 +17,7 @@
         <div class="card-body">
             <h1>음원관리</h1>
             <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='/admin'">돌아가기</button>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="localDown()">음원 다운</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="localDown()">url 추출</button>
             <div class="mt-5">
                 <form method="post">
                     <div class="input-group mb-3">
@@ -43,7 +43,7 @@
                 </div>
             <% } %>
                 
-            <div id="resultDiv"></div>
+            <pre id="resultDiv"></pre>
         </div>
     </div>
 
@@ -55,10 +55,10 @@
 
     <script>
         async function localDown() {
-            const res = await fetch('/songs/downs/local')
+            const res = await fetch('/admin/setYtUrl')
             const data = await res.json()
             let write = 'songs <br>'
-            write += `${JSON.stringify(data.songs)} <br><br>`
+            write += `${JSON.stringify(data.results, null, 2)} <br><br>`
             $('#resultDiv').html(write)
         }
 

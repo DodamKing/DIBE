@@ -4,6 +4,7 @@ const db = require('../models')
 const moment = require('moment')
 const ytdl = require('ytdl-core')
 const fs = require('fs')
+const request = require('request')
 
 router.get('/', (req, res) => {
     res.render('admin/index')
@@ -56,6 +57,41 @@ router.post('/preview', async (req, res) => {
     })
     
     ytdl(url, {filter : 'audioonly'}).pipe(res)
+})
+
+router.get('/setYtUrl', async (req, res) => {
+    const url = process.env.URL_GET_URL
+    const songs = []
+    const results = []
+    const rows = await db.Song.find()
+    // for (row of rows) {
+    //     if (!row.ytURL) {
+    //         songs.push(row)
+    //     }
+    // }
+    for (let i=5; i<10; i++) {
+        songs.push(rows[i])
+    }
+    
+    const options = {
+        uri : url,
+        method : 'POST',
+        body : {songs},
+        json : true,
+    }
+    request.post(options, async (err, response, body) => {
+        for (let i=0; i<body.length; i++) {
+            console.log(body[i]);
+            await db.Song.findByIdAndUpdate(songs[i]._id, {ytURL : body[i]})
+            const result = await db.Song.findById(songs[i]._id)
+            results.push(result)
+
+            if (i === body.length-1) {
+                console.log(results)
+                res.json({results})
+            }
+        }
+    })
 })
 
 module.exports = router

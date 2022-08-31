@@ -43,6 +43,7 @@ const songSchema = new Schema({
         type : Number, 
         default : 0,
     },
+    ytURL : String,
     isFile : { //음원파일 유무
         type : Number,
         default : 0,
