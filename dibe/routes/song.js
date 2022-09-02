@@ -85,6 +85,7 @@ router.post('/streaming', async (req, res) => {
     request(url, (err, response, body) => {
         if (err) {
             console.error(err)
+            console.log('잘못된 url: ', url)
             res.json(false)
             return
         }
@@ -142,18 +143,7 @@ router.delete('/delete/:_id', async  (req, res) => {
     }
 })
 
-router.get('/close', (req, res) => {
-    req.session.sPlayer = 0
-    req.session.save()
-    console.log(req.session.sPlayer);
-})
-
 router.get('/direct', (req, res) => {
-    const sPlayer = req.session.sPlayer
-    if (!sPlayer) {
-        req.session.sPlayer = 1
-        req.session.save()
-    }
     const songId = req.query.songId
     const autoPlay = req.query.autoPlay
 

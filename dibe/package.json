@@ -1,6 +1,6 @@
 {
-  "name": "dive",
-  "version": "0.0.0",
+  "name": "dibe",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www"
