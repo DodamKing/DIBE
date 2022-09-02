@@ -50,12 +50,12 @@ router.post('/downsong', async (req, res) => {
 
 router.post('/preview', async (req, res) => {
     const url = req.body.url
-
+    
     res.set({
         'Content-Type' : 'audio/mp4',
         'Transfer-Encoding' : 'chunked',
     })
-    
+
     ytdl(url, {filter : 'audioonly'}).pipe(res)
 })
 
@@ -64,14 +64,14 @@ router.get('/setYtUrl', async (req, res) => {
     const songs = []
     const results = []
     const rows = await db.Song.find()
-    // for (row of rows) {
-    //     if (!row.ytURL) {
-    //         songs.push(row)
-    //     }
-    // }
-    for (let i=5; i<10; i++) {
-        songs.push(rows[i])
+    for (row of rows) {
+        if (!row.ytURL) {
+            songs.push(row)
+        }
     }
+    // for (let i=0; i<rows.length; i++) {
+    //     songs.push(rows[i])
+    // }
     
     const options = {
         uri : url,

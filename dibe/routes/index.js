@@ -17,6 +17,7 @@ router.get('/', function(req, res, next) {
 router.get('/chart', (req, res) => {
   const _id = []
   const isFile = []
+  const ytURL = []
   const url = process.env.CHART_API_URL
   request(url, async (err, response, body) => {
       if (err) return res.json(err)
@@ -28,6 +29,7 @@ router.get('/chart', (req, res) => {
         if (result) {
           _id.push(result._id)
           isFile.push(result.isFile)
+          ytURL.push(result.ytURL)
         }
         else {
           db.Song.create({
@@ -42,6 +44,7 @@ router.get('/chart', (req, res) => {
       }
       data._id = _id
       data.isFile = isFile
+      data.ytURL = ytURL
 
       const date = new Date()
       const today = date.toLocaleDateString()

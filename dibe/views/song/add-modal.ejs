@@ -14,7 +14,7 @@
                 <button type="button" class="btn btn-danger form-control mt-3" onclick="gift()">선물하기</button>
                 <button type="button" class="btn btn-danger form-control mt-3" onclick="getlist()">플레이리스트에 추가</button>
                 <div id="idx_box" style="display: none;"></div>
-                <div id="isFile_box" style="display: none;"></div>
+                <div id="ytURL_box" style="display: none;"></div>
                 <div id="mylist_box" class="mt-5"></div>
                 <div id="message_box1" style="display: none;" class="text-center">추가 되었습니다</div>
                 <div id="message_box2" style="display: none;" class="text-center">이미 추가 된 곡입니다</div>
@@ -142,8 +142,8 @@
 
 	async function senddata() {
             const songId = idx_box.innerHTML
-            const isFile = isFile_box.innerHTML
-            if (!songId || isFile === '0') return alert('준비중 입니다')
+            const ytURL = ytURL_box.innerHTML
+            if (!songId || !ytURL) return alert('준비중 입니다')
 
             if (!myPlayer) {
                 const title = 'playerPop'

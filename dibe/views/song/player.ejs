@@ -33,16 +33,18 @@
         let exSongs
 	
         // 바로 재생
-        if ('<%- autoPlay %>' === '1') {
-                if (sw == 0) {
-                    load();
-                    sw = 1;
-                }
-                
-                $(play_btn).hide();
-                $(pause_btn).show();
-                player.play();
-        }
+        $(document).ready(async () => {
+            if ('<%- autoPlay %>' === '1') {
+                    if (sw == 0) {
+                        await load()
+                        sw = 1;
+                    }
+                    
+                    $(play_btn).hide();
+                    $(pause_btn).show();
+                    player.play();
+            }
+        })
         
         // 플레이 리스트 음원 삭제
         function delList(songId) {
@@ -112,6 +114,7 @@
         
         // 로드
         async function load() {
+            $('.loader').fadeIn()
             const getId = $('.get-songId')[playerIndex].id
             const songId = getId.split('_')[1]
             const title = $('.playlist_t')[playerIndex].title
@@ -120,12 +123,14 @@
             const url = $('.playlist_url')[playerIndex].innerHTML
             // songUrl = `/track/${songId}.mp4`
 
-            const res = await fetch('/admin/preview', {
+            const res = await fetch('/songs/streaming', {
                 method : 'POST',
                 headers : {"Content-Type": "application/json"},
                 body : JSON.stringify({url}) 
             })
+
             const blob = await res.blob()
+            if (blob.size < 10) return next_btn.click()
             const src = await URL.createObjectURL(blob)
             player.src = src
 
@@ -146,6 +151,7 @@
             
             // 현재 재생 음악 포커스
             focus_cur()
+            $('.loader').fadeOut()
         }
 
 
