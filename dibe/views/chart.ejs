@@ -53,7 +53,7 @@
     </section>
 
     <script>
-        let myPlayer = ''
+        // let myPlayer = ''
 
 		top_btn.addEventListener("click", () => {
 			window.scrollTo({top: 0, behavior: 'smooth'});
@@ -83,17 +83,14 @@
             }
         });
 
-        function oneplay(songId, ytURL) {
+        async function oneplay(songId, ytURL) {
             // if (isFile === '0') return alert('준비중 입니다')
             if (!ytURL) return alert('준비중 입니다')
             const url = `/songs/direct?songId=${songId}&autoPlay=1`
-            myPlayer = window.open(url, 'playerPop', 'width=1100px, heght=800px')
+            myPlayer = await window.open(url, 'playerPop', 'width=1100px, heght=800px')
+            location.reload()
         }
 
-        function setdata(songId, ytURL) {
-            idx_box.innerHTML = songId
-            ytURL_box.innerHTML = ytURL
-        }
 	</script>
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

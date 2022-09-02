@@ -142,7 +142,18 @@ router.delete('/delete/:_id', async  (req, res) => {
     }
 })
 
+router.get('/close', (req, res) => {
+    req.session.sPlayer = 0
+    req.session.save()
+    console.log(req.session.sPlayer);
+})
+
 router.get('/direct', (req, res) => {
+    const sPlayer = req.session.sPlayer
+    if (!sPlayer) {
+        req.session.sPlayer = 1
+        req.session.save()
+    }
     const songId = req.query.songId
     const autoPlay = req.query.autoPlay
 
@@ -191,13 +202,19 @@ router.get('/open_player', async (req, res) => {
 router.post('/open_player', async (req, res) => {
     const songs = []
     const autoPlay = 0
-    // const reqSongIds = req.body.songIds
     const songIds = req.body.songIds.split(',')
     for (songId of songIds) {
         const song = await db.Song.findById(songId)
         songs.push(song)
     }
     res.render('song/player', {autoPlay, songs})
+})
+
+router.get('/search', async (req, res) => {
+    const query = req.query.srchKwd
+    const songs = await db.Song.find({$or : [{title : {$regex : query, $options : 'i'}}, {artist : {$regex : query, $options : 'i'}}]})
+    console.log(songs)
+    res.render('song/list', {songs, srchKwd : query})
 })
 
 module.exports = router

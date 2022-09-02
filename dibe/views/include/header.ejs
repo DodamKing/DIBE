@@ -1,6 +1,6 @@
 <header>
     <div id="srch_bar">
-        <form name="myform" class="form-inline" action="/srch" method="get">
+        <form name="myform" class="form-inline" action="/songs/search" method="get">
             <input class="form-control mr-2 col" type="text" id="srchKwd" name="srchKwd" value="" placeholder="DIBE 검색" autofocus>
             <button id="srch_btn" class="btn btn-secondary col-1" type="button">Search</button>
         </form>
@@ -8,22 +8,3 @@
 </header>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-<script>
-    // 검색 내용 없을 때 엔터 막기
-    $("#srchKwd").keydown((e) => {
-        if (e.keyCode == 13) {
-            if ($("#srchKwd").val().trim() == "") {
-                e.preventDefault();
-            }
-        }
-    });
-    
-    // 검색 내용 없을 때 버튼 클릭 비활성
-    $("#srch_btn").click(() => {
-        if ($("#srchKwd").val().trim() == "") {
-            return;
-        }
-        myform.submit();
-    });
-</script>

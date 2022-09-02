@@ -3,6 +3,7 @@ $().ready(() => {
     $("video").on("ended", mainVideoPlay);
 });
 
+let myPlayer = ''
 
 function mainVideoPlay() {
     let mainVideoH;
@@ -32,14 +33,57 @@ $("#main_srch").click(() => {
     $("header > div:first-child").toggle();
 });
 
+// 검색 내용 없을 때 엔터 막기
+$("#srchKwd").keydown((e) => {
+    if (e.keyCode == 13) {
+        if ($("#srchKwd").val().trim() == "") {
+            e.preventDefault();
+        }
+    }
+});
+
+// 검색 내용 없을 때 버튼 클릭 비활성
+$("#srch_btn").click(() => {
+    if ($("#srchKwd").val().trim() == "") {
+        return;
+    }
+    myform.submit();
+});
+
 // 네비 드롭 다운
 $("#dropMenu").click((e) => {
     e.stopPropagation();
     $(".my-group").toggle();
 });
 
-
 // 땅찍어서 닫기
 $(document).click((e) => {
     $(".my-group").hide();
 });
+
+// 필요 정보 임시 저장
+function setdata(songId, ytURL) {
+    idx_box.innerHTML = songId
+    ytURL_box.innerHTML = ytURL
+}
+
+// 플레이어에 세팅
+// async function senddata() {
+//     const songId = idx_box.innerHTML
+//     const ytURL = ytURL_box.innerHTML
+//     if (!songId || !ytURL) return alert('준비중 입니다')
+
+//     if (!myPlayer) {
+//         const title = 'playerPop'
+//         const url = `/songs/open_player?songId=${songId}`
+//         const status = 'resizable=no, width=1100px, heght=800px'
+//         myPlayer = await window.open(url, title, status)
+//         return
+//     }
+
+//     const res = await fetch('/songs/addsong?songId=' + songId)
+//     console.log(res);
+//     const json = await res.json()
+//     const song = json.song
+//     myPlayer.setList(song)
+// }
