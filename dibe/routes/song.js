@@ -150,7 +150,8 @@ router.get('/direct', (req, res) => {
     db.Song.findById(songId, (err, song) => {
         if (err) return console.error(err)
         const songs = [song]
-        res.render('song/player', {songs, autoPlay})
+        // res.render('song/player', {songs, autoPlay})
+        res.json({songs, autoPlay})
     })
 })
 

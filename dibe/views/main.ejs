@@ -8,23 +8,22 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="stylesheets/main.css">
+        <link rel="stylesheet" href="stylesheets/top100.css">
+        <link rel="stylesheet" href="/stylesheets/loader.css">
         <link rel="shortcut icon" href="https://i1.sndcdn.com/avatars-000606604806-j6ghpm-t500x500.jpg" />
     </head>
     <body>
         <%- include('./include/searchBar') %>
         <%- include('./include/nav') %>
+        <%- include('./include/header') %>
+        <%- include('./song/add-modal') %>
+        <%- include('./song/play-list') %>
 
-        <header>
-            <div id="srch_bar">
-                <form name="myform" class="form-inline" action="/songs/search" method="get">
-                    <input class="form-control mr-2 col" type="text" id="srchKwd" name="srchKwd" value="" placeholder="DIBE 검색" autofocus>
-                    <button id="srch_btn" class="btn btn-secondary col-1" type="button">Search</button>
-                </form>
-            </div>
-                <video style="width: 100%;" src="" autoplay muted></video>
-        </header>
-            
         <section>
+            <div class="loader" style="display: none; z-index: 1055;"></div>
+            <% if (flag === 'index') { %> <video style="width: 100%;" src="" autoplay muted></video>
+            <% } else if (flag === 'chart') { %> <%- include('chart') %> <% } %>
+            
             <%- include('./include/footer') %>
         </section>
         <%- include('./include/controler') %>
@@ -33,9 +32,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="javascripts/main.js"></script>
+        <script src="javascripts/player.js"></script>
     </body>
-
-    <script>
-        if ('<%- error %>') alert('<%- error %>')
-    </script>
 </html>

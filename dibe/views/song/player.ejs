@@ -322,28 +322,28 @@
         });
         
         // 좋아요 버튼 이벤트
-        // $("#like_btn1").click(() => {
-        //     $("#like_btn1").hide();
-        //     $("#like_btn2").show();
+        $("#like_btn1").click(() => {
+            $("#like_btn1").hide();
+            $("#like_btn2").show();
             
-        //     if (${empty sMid}) return;
-        //     $.ajax({
-        //         type : "post",
-        //         url : "${ctp}/song/like",
-        //         data : {idx : idx_list[playerIndex]},
-        //     });
-        // }); 
-        // $("#like_btn2").click(() => {
-        //     $("#like_btn2").hide();
-        //     $("#like_btn1").show();
+            // if (${empty sMid}) return;
+            // $.ajax({
+            //     type : "post",
+            //     url : "${ctp}/song/like",
+            //     data : {idx : idx_list[playerIndex]},
+            // });
+        }); 
+        $("#like_btn2").click(() => {
+            $("#like_btn2").hide();
+            $("#like_btn1").show();
             
-        //     if (${empty sMid}) return;
-        //     $.ajax({
-        //         type : "post",
-        //         url : "${ctp}/song/unlike",
-        //         data : {idx : idx_list[playerIndex]},
-        //     });
-        // });
+            // if (${empty sMid}) return;
+            // $.ajax({
+            //     type : "post",
+            //     url : "${ctp}/song/unlike",
+            //     data : {idx : idx_list[playerIndex]},
+            // });
+        });
         
         //반복 재생 버튼
         $("#repeat_btn").click(() => {

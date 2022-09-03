@@ -1,0 +1,58 @@
+<style>
+	.imgBox:hover {
+		opacity: 0.7;
+		cursor: pointer;
+	}
+	
+	#listCnt {
+		position: fixed;
+		top: 15px;
+		right: 50px;
+	}
+</style>
+
+<div id="play_listContainer">
+	<img id="play_listbg">
+	<div id="play_listImg">
+		<div>
+			<img id="play_listImg_img" style="width: 100%;" src="/img/music.png">
+		</div>
+	</div>
+    <div id="play_listBox">
+        <div id="listCnt">
+            <% if (songs.length !== 1) { %> <%- songs.length %> 곡 
+            <% } else { %> 1 곡 <% } %>
+        </div>
+        <div class="mt-3">
+            <div id="play_list" class="pfc" tabindex="0">
+                <% for (song of songs) { %>
+                    <div id="p_<%- song._id %>" class='d-flex p-3 get-songId' draggable="true">
+                        <div style='display: none;' class='playlist_url'><%- song.ytURL %></div>
+                        <div class='imgBox mr-3'>
+                            <img class="playlist_i" src='<%- song.img %>' title="재생" onclick="startThis('<%- song._id %>')" draggable="false">
+                        </div>
+                        <div>
+                            <div class='playlist_t' title="<%- song.title %>">
+                                <% if (song.title.length > 13) { %>
+                                    <%- song.title.substring(0, 14) %>...
+                                <% } else { %>
+                                    <%- song.title %>
+                                <% } %>
+                            </div>
+                            <div class='playlist_a' title="<%- song.artist %>">
+                                <% if (song.artist.length > 13) { %>
+                                    <%- song.artist.substring(0, 13) %>...
+                                <% } else { %>
+                                    <%- song.artist %>
+                                <% } %>
+                            </div>
+                        </div>
+                        <div class='ml-auto'>
+                            <button name='delete_btn' type='button' class='btn' onclick="delList('<%- song._id %>')"><i title="플레이리스트에서 제거" class='fa-regular fa-trash-can'></i></button>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>

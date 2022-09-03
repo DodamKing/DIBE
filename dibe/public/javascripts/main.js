@@ -1,6 +1,11 @@
 $().ready(() => {
     mainVideoPlay();
     $("video").on("ended", mainVideoPlay);
+    
+    if ($('.get-songId').length > 0) {
+        $('#list_up_btn1').hide()
+        $('#list_up_btn2').show()
+    }
 });
 
 let myPlayer = ''
@@ -66,6 +71,22 @@ function setdata(songId, ytURL) {
     idx_box.innerHTML = songId
     ytURL_box.innerHTML = ytURL
 }
+
+$('#list_up_btn2').on('click', () => {
+    $('#list_up_btn2').hide()
+    $('#list_down_btn').show()
+})
+
+$('#list_down_btn').on('click', () => {
+    $('#list_up_btn2').show()
+    $('#list_down_btn').hide()
+    $('#play_list_modal').modal('hide')
+})
+
+$('#play_list_modal').on('hidden.bs.modal', () => {
+    $('#list_up_btn2').show()
+    $('#list_down_btn').hide()
+})
 
 // 플레이어에 세팅
 // async function senddata() {

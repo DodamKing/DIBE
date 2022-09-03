@@ -12,7 +12,7 @@ router.get('/sns_login', isNotLoggedIn, (req, res) => {
 
 router.get('/login', isNotLoggedIn, (req, res) => {
   const _title = 'DIBE 로그인'
-  const loginError = req.query.loginError
+  const loginError = req.flash('loginError')
   res.render('user/login', {
     _title : _title,
     loginError,
@@ -22,7 +22,10 @@ router.get('/login', isNotLoggedIn, (req, res) => {
 router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (authError, user, info) => {
     if (authError) return next(authError)
-    if (!user) return res.redirect(`/users/login?loginError=${info.message}`)
+    if (!user) {
+      req.flash('loginError', info.message)
+      return res.redirect(`/users/login`)
+    } 
     return req.login(user, async (loginError) => {
       if (loginError) return next(loginError)
       const result = await db.User.findByIdAndUpdate(user._id, {visitedAt : new Date()})

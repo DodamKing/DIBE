@@ -1,100 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIBE Top 100</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="stylesheets/main.css">
-    <link rel="stylesheet" href="stylesheets/top100.css">
-    <link rel="shortcut icon" href="https://i1.sndcdn.com/avatars-000606604806-j6ghpm-t500x500.jpg" />
-</head>
-<body>
-    <%- include('./include/searchBar') %>
-    <%- include('./include/nav') %>
-    <%- include('./include/header') %>
-    <%- include('./song/add-modal') %>
-	
-	<section>
-        <div class="container">
-            <div class="card-body">
-                <h2 class="mt-5 mb-5">DIBE Top 100</h2>
-                <div>
-                    <input type="date" id="calendar" min="" max="">
-                    <div id="go_btn" class="btn btn-dark btn-sm">go</div>
-                </div>
-                <div id="top_btn" class="btn btn-dark btn-sm" style="position: fixed; right: 30px; bottom: 100px;">top</div>
-                <div class="text-center h4"><%- today %></div>
-                <!-- <div id="add_btn" class="btn btn-dark btn-sm" style="position: sticky; top: 50px;">선택추가</div> -->
-                <table class="table">
-                    <tr>
-                        <td style="border-top: none;"><input id="allch" type="checkbox" ></td>
-                        <td id="cnt_box" colspan="2" style="vertical-align: middle; border-top: none;">0 곡 선택 됨</td>
-                        <td colspan="2" class="text-right" style="border-top: none;"><div id="add_btn" class="btn btn-dark btn-sm" style="position: sticky; position: -webkit-sticky; right: 30px; top: 50px;" data-toggle="modal" data-target="#addMany">선택추가</div></td>
-                    </tr>
-                    <% for(let i=0; i<data.title.length; i++) { %>
-                        <tr>
-                            <td style="vertical-align: middle;"><input name="tch" type="checkbox" value="<%- data._id[i] %>" <% if (!data.ytURL[i]) { %> disabled <% } %> ></td>
-                            <td style="text-align: center; vertical-align: middle;"><%- i+1 %></td>
-                            <td><div class="imgBox ho" onclick="oneplay(`<%- data._id[i] %>`, `<%- data.ytURL[i] %>`)"><img name="top100Img" src="<%- data.img[i] %>"></div></td>
-                            <td class="align-middle">
-                                <div name="top100Title"><a href=""><%- data.title[i] %></a></div>
-                                <div name="top100Artist"><%- data.artist[i] %></div>
-                            </td>
-                            <td class="align-middle"><button name="add_btn" type="button" class="btn" data-toggle="modal" data-target="#addOne" onclick="setdata('<%- data._id[i] %>', '<%- data.ytURL[i] %>')"><i title="곡 추가" class="fas fa-plus"></i></button></td>
-                        </tr>
-                    <% } %>
-                </table>
-            </div>
+<div class="container">
+    <div class="card-body">
+        <h2 class="mt-5 mb-5">DIBE Top 100</h2>
+        <div>
+            <input type="date" id="calendar" min="" max="">
+            <div id="go_btn" class="btn btn-dark btn-sm">go</div>
         </div>
-        <%- include('./include/footer') %>
-    </section>
-
-    <script>
-        // let myPlayer = ''
-
-		top_btn.addEventListener("click", () => {
-			window.scrollTo({top: 0, behavior: 'smooth'});
-		});
-		
-
-        const allch = document.getElementById('allch')
-        // 전체선택
-        allch.addEventListener("click", () => {
-            if (allch.checked) {
-                $("input:checkbox[name='tch']:not(:disabled)").prop("checked", true);
-            }
-            else {
-                $("input:checkbox[name='tch']").prop("checked", false);
-            }
-            cnt_box.innerHTML = $("input:checkbox[name='tch']:checked").length + " 곡 선택 됨"
-        });
-        
-        //전체선택 해제
-        $("input:checkbox[name='tch']").click(() => {
-            cnt_box.innerHTML = $("input:checkbox[name='tch']:checked").length + " 곡 선택 됨"
-            for (let i=0; i<100; i++) {
-                if (!$("input:checkbox[name='tch']")[i].checked) {
-                    $("#allch").prop("checked", false);
-                    return;
-                }
-            }
-        });
-
-        async function oneplay(songId, ytURL) {
-            // if (isFile === '0') return alert('준비중 입니다')
-            if (!ytURL) return alert('준비중 입니다')
-            const url = `/songs/direct?songId=${songId}&autoPlay=1`
-            myPlayer = await window.open(url, 'playerPop', 'width=1100px, heght=800px')
-        }
-
-	</script>
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	<script src="javascripts/main.js"></script>
-</body>
-</html>
+        <div id="top_btn" class="btn btn-dark btn-sm" style="position: fixed; right: 30px; bottom: 100px;">top</div>
+        <div class="text-center h4"><%- today %></div>
+        <table class="table">
+            <tr>
+                <td style="border-top: none;"><input id="allch" type="checkbox" ></td>
+                <td id="cnt_box" colspan="2" style="vertical-align: middle; border-top: none;">0 곡 선택 됨</td>
+                <td colspan="2" class="text-right" style="border-top: none;"><div id="add_btn" class="btn btn-dark btn-sm" style="position: sticky; position: -webkit-sticky; right: 30px; top: 50px;" data-toggle="modal" data-target="#addMany">선택추가</div></td>
+            </tr>
+            <% for(let i=0; i<data.title.length; i++) { %>
+                <tr>
+                    <td style="vertical-align: middle;"><input name="tch" type="checkbox" value="<%- data._id[i] %>" <% if (!data.ytURL[i]) { %> disabled <% } %> ></td>
+                    <td style="text-align: center; vertical-align: middle;"><%- i+1 %></td>
+                    <td><div class="imgBox ho" onclick="oneplay(`<%- data._id[i] %>`, `<%- data.ytURL[i] %>`)"><img name="top100Img" src="<%- data.img[i] %>"></div></td>
+                    <td class="align-middle">
+                        <div name="top100Title"><a href=""><%- data.title[i] %></a></div>
+                        <div name="top100Artist"><%- data.artist[i] %></div>
+                    </td>
+                    <td class="align-middle"><button name="add_btn" type="button" class="btn" data-toggle="modal" data-target="#addOne" onclick="setdata('<%- data._id[i] %>', '<%- data.ytURL[i] %>')"><i title="곡 추가" class="fas fa-plus"></i></button></td>
+                </tr>
+            <% } %>
+        </table>
+    </div>
+</div>
+<script src="javascripts/chart.js"></script>
