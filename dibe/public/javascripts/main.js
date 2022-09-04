@@ -87,24 +87,3 @@ $('#play_list_modal').on('hidden.bs.modal', () => {
     $('#list_up_btn2').show()
     $('#list_down_btn').hide()
 })
-
-// 플레이어에 세팅
-// async function senddata() {
-//     const songId = idx_box.innerHTML
-//     const ytURL = ytURL_box.innerHTML
-//     if (!songId || !ytURL) return alert('준비중 입니다')
-
-//     if (!myPlayer) {
-//         const title = 'playerPop'
-//         const url = `/songs/open_player?songId=${songId}`
-//         const status = 'resizable=no, width=1100px, heght=800px'
-//         myPlayer = await window.open(url, title, status)
-//         return
-//     }
-
-//     const res = await fetch('/songs/addsong?songId=' + songId)
-//     console.log(res);
-//     const json = await res.json()
-//     const song = json.song
-//     myPlayer.setList(song)
-// }

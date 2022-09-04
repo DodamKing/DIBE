@@ -6,7 +6,7 @@ const ytdl = require('ytdl-core')
 const fs = require('fs')
 const request = require('request')
 
-router.get('/', (req, res) => {
+router.get('/index', (req, res) => {
     res.render('admin/index')
 })
 

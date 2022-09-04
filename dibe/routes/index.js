@@ -12,11 +12,12 @@ router.get('/', (req, res) => {
 
 router.get('/:flag', async (req, res) => {
 	const flag = req.params.flag
+	const vol = req.cookies.vol
 	if (flag === 'index') {
 		const md = new MobileDetect(req.headers['user-agent'])
 		if (md.mobile() && !req.isAuthenticated()) return res.redirect('/users/login')
 		else if (md.mobile()) return res.render('mobile/index')
-		res.render('main', { flag })
+		res.render('main', { flag, vol })
 	}
 	else if (flag === 'chart') {
 		const _id = []
@@ -53,8 +54,14 @@ router.get('/:flag', async (req, res) => {
 			const date = new Date()
 			const today = date.toLocaleDateString()
 
-			res.render('main', {flag, data, today})
+			res.render('main', {flag, data, today, vol})
 		})
+	}
+	else if (flag === 'search') {
+		const query = req.query.srchKwd
+		const songs = await db.Song.find({$or : [{title : {$regex : query, $options : 'i'}}, {artist : {$regex : query, $options : 'i'}}]})
+		console.log(songs)
+		res.render('main', {flag, songs, srchKwd : query, vol})
 	}
 });
 

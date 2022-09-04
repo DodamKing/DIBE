@@ -41,10 +41,43 @@ async function senddata() {
     $('#list_up_btn2').show()
 }
 
+// 여러곡 선택 추가
+async function godata_many() {
+    const songIds = []
+    let strSongIds = ''
+    const items = $("input:checkbox[name='tch']")
+    for (item of items) {
+        if (item.checked) {
+            songIds.push(item.value)
+            strSongIds += item.value + '/'
+        }
+    }
+    
+    const res = await fetch('/songs/addsongs', {
+        method : 'POST',
+        headers : {'Content-Type' : 'application/json'},
+        body : JSON.stringify({songIds})
+    })
+    const json = await res.json()
+    const songs = json.songs
+    for (song of songs) {
+        await setList(song)
+    }
+    $('#list_up_btn1').hide()
+    $('#list_up_btn2').show()
+}
+
 // 플레이 리스트 음원 삭제
 async function delList(songId) {
     const currentId = $('.get-songId')[playerIndex].id
     if (currentId === `p_${songId}`) {
+        if ($('.get-songId').length - 1 === playerIndex) {
+            $(`#p_${songId}`).remove()
+            $('#listCnt').html(`${$('.get-songId').length} 곡`)
+            player.currentTime = player.duration
+            playerIndex_ = 0
+            return 
+        }
         next_btn.click()
         playerIndex--
     }
@@ -200,6 +233,7 @@ $("#volume_bar").on("input", () => {
     //     url : "${ctp}/song/myvol",
     //     data : {vol : player.volume}
     // });
+    fetch(`/songs/myvol/${player.volume}`)
     
 });
 
@@ -464,11 +498,6 @@ function focus_cur() {
 // 더보기 버튼 클릭
 addmore_btn.addEventListener("click", () => {
     
-});
-
-// 창 닫기 이벤트
-window.addEventListener("unload", () => {
-    opener.popClose()
 });
 
 //크기 고정

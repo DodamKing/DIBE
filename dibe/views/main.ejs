@@ -22,7 +22,8 @@
         <section>
             <div class="loader" style="display: none; z-index: 1055;"></div>
             <% if (flag === 'index') { %> <video style="width: 100%;" src="" autoplay muted></video>
-            <% } else if (flag === 'chart') { %> <%- include('chart') %> <% } %>
+            <% } else if (flag === 'chart') { %> <%- include('chart') %>
+            <% } else if (flag === 'search') { %> <%- include('song/list') %> <% } %>
             
             <%- include('./include/footer') %>
         </section>

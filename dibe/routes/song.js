@@ -208,4 +208,10 @@ router.get('/search', async (req, res) => {
     res.render('song/list', {songs, srchKwd : query})
 })
 
+router.get('/myvol/:vol', async (req, res) => {
+    const vol = req.params.vol * 100
+    res.cookie('vol', vol, {maxAge : 900000})
+    res.end()
+})
+
 module.exports = router
