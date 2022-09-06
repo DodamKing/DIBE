@@ -8,8 +8,7 @@ const MobileDetect = require('mobile-detect')
 /* GET home page. */
 router.get('/', (req, res) => {
 	const md = new MobileDetect(req.headers['user-agent'])
-	if (md.mobile() && !req.isAuthenticated()) return res.redirect('/users/login')
-	else if (md.mobile()) return res.render('mobile/index')
+	if (md.mobile()) return res.render('mobile/temp')
 	res.redirect('/index')
 })
 
