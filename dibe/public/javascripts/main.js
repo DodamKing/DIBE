@@ -87,3 +87,65 @@ $('#play_list_modal').on('hidden.bs.modal', () => {
     $('#list_up_btn2').show()
     $('#list_down_btn').hide()
 })
+
+$('.nav').on('click', async (e) => {
+    $('.loader').fadeIn()
+    const url = e.target.dataset.url
+    
+    if (url === '/today') {
+        history.pushState(null, 'DIBE', location.origin + url)
+        main.innerHTML = `<video style="width: 100%;" src="" autoplay muted></video>`
+        mainVideoPlay();
+    }
+    
+    else if (url === '/chart') {
+        history.pushState(null, 'DIBE 차트', location.origin + url)
+        const response = await fetch('/songs/chart')
+        const result = await response.json()
+        const data = result.data
+        const today = result.today
+
+        let chart = `
+            <div class="container">
+                <div class="card-body">
+                    <h2 class="mt-5 mb-5">DIBE Top 100</h2>
+                    <div>
+                        <input type="date" id="calendar" min="" max="">
+                        <div id="go_btn" class="btn btn-dark btn-sm">go</div>
+                    </div>
+                    <div id="top_btn" class="btn btn-dark btn-sm" style="position: fixed; right: 30px; bottom: 100px;">top</div>
+                    <div class="text-center h4">${today}</div>
+                    <table class="table">
+                        <tr>
+                            <td style="border-top: none;"><input id="allch" type="checkbox" ></td>
+                            <td id="cnt_box" colspan="2" style="vertical-align: middle; border-top: none;">0 곡 선택 됨</td>
+                            <td colspan="2" class="text-right" style="border-top: none;"><div id="add_btn" class="btn btn-dark btn-sm" style="position: sticky; position: -webkit-sticky; right: 30px; top: 50px;" data-toggle="modal" data-target="#addMany">선택추가</div></td>
+                        </tr>
+        `
+        for (let i=0; i<data.title.length; i++) {
+            let disabled = ''
+            if (!data.ytURL[i]) disabled = 'disabled'
+            chart += `
+                <tr>
+                    <td style="vertical-align: middle;"><input name="tch" type="checkbox" value="${data._id[i]}" ${disabled}></td>
+                    <td style="text-align: center; vertical-align: middle;">${i+1}</td>
+                    <td><div class="imgBox ho" onclick="oneplay(` + `${data._id[i]}` + `,` + `${data.ytURL[i]}` + `)"><img name="top100Img" src="${data.img[i]}"></div></td>
+                    <td class="align-middle">
+                        <div name="top100Title"><a href="">${data.title[i]}</a></div>
+                        <div name="top100Artist">${data.artist[i]}</div>
+                    </td>
+                    <td class="align-middle"><button name="add_btn" type="button" class="btn" data-toggle="modal" data-target="#addOne" onclick="setdata('${data._id[i]}', '${data.ytURL[i]}')"><i title="곡 추가" class="fas fa-plus"></i></button></td>
+                </tr>
+            `
+        }
+        chart += `
+                    </table>
+                </div>
+            </div>
+        `
+
+        main.innerHTML = chart
+        $('#script_sec').append(`<script src="javascripts/chart.js"></script>`)
+    }
+    $('.loader').fadeOut()
+})

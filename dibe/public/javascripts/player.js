@@ -33,7 +33,6 @@ async function senddata() {
     if (!songId || !ytURL) return alert('준비중 입니다')
 
     const res = await fetch('/songs/addsong?songId=' + songId)
-    console.log(res);
     const json = await res.json()
     const song = json.song
     await setList(song)
@@ -224,17 +223,17 @@ pause_btn.addEventListener("click", () => {
 });
 
 //볼륨
-$("#volume_bar").on("input", () => {
-    player.volume = $("#volume_bar").val() / 100;
-    $("#vol_no").html($("#volume_bar").val());
+$("#volume_bar").on("input", async () => {
+    const vol = $("#volume_bar").val()
+    player.volume = vol / 100;
+    $("#vol_no").html(vol);
     
     // $.ajax({
     //     type : "post",
     //     url : "${ctp}/song/myvol",
     //     data : {vol : player.volume}
     // });
-    fetch(`/songs/myvol/${player.volume}`)
-    
+    await fetch(`/songs/myvol/${vol}`)
 });
 
 // 음소거

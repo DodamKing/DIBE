@@ -21,18 +21,22 @@
 
         <section>
             <div class="loader" style="display: none; z-index: 1055;"></div>
-            <% if (flag === 'index') { %> <video style="width: 100%;" src="" autoplay muted></video>
-            <% } else if (flag === 'chart') { %> <%- include('chart') %>
-            <% } else if (flag === 'search') { %> <%- include('song/list') %> <% } %>
+            <div id="main">
+                <% if (flag === 'index') { %> <video style="width: 100%;" src="" autoplay muted></video>
+                <% } else if (flag === 'chart') { %> <%- include('chart') %>
+                <% } else if (flag === 'search') { %> <%- include('song/list') %> <% } %>
+            </div>
             
             <%- include('./include/footer') %>
         </section>
         <%- include('./include/controler') %>
-            
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="javascripts/main.js"></script>
-        <script src="javascripts/player.js"></script>
+        
+        <div id="script_sec">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <script src="javascripts/main.js"></script>
+            <script src="javascripts/player.js"></script>
+        </div>
     </body>
 </html>

@@ -6,10 +6,41 @@ const request = require('request')
 const ytdl = require('ytdl-core')
 
 router.get('/chart', (req, res) => {
+    const _id = []
+    const isFile = []
+    const ytURL = []
     const url = process.env.CHART_API_URL
-    request(url, (err, response, body) => {
+    request(url, async (err, response, body) => {
         if (err) return res.json(err)
-        res.json(JSON.parse(body))
+        const data = JSON.parse(body)
+        for (let i=0; i<data.title.length; i++) {
+            const title = data.title[i]
+            const artist = data.artist[i]
+            const result = await db.Song.findOne({title : title, artist : artist})
+            if (result) {
+                _id.push(result._id)
+                isFile.push(result.isFile)
+                ytURL.push(result.ytURL)
+            }
+            else {
+                db.Song.create({
+                    title : title,
+                    artist : artist,
+                    img : data.img[i],
+                    album : data.album[i],
+                })
+                _id.push(await db.Song.findOne({title : title, artist : artist}))
+                isFile.push(0)
+            }
+        }
+        data._id = _id
+        data.isFile = isFile
+        data.ytURL = ytURL
+
+        const date = new Date()
+        const today = date.toLocaleDateString()
+
+        res.json({data, today})
     })
 })
 
@@ -208,8 +239,8 @@ router.get('/search', async (req, res) => {
     res.render('song/list', {songs, srchKwd : query})
 })
 
-router.get('/myvol/:vol', async (req, res) => {
-    const vol = req.params.vol * 100
+router.get('/myvol/:vol', (req, res) => {
+    const vol = req.params.vol
     res.cookie('vol', vol, {maxAge : 900000})
     res.end()
 })
