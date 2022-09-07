@@ -9,13 +9,13 @@ const MobileDetect = require('mobile-detect')
 router.get('/', (req, res) => {
 	const md = new MobileDetect(req.headers['user-agent'])
 	if (md.mobile()) return res.render('mobile/temp')
-	res.redirect('/index')
+	res.redirect('/today')
 })
 
 router.get('/:flag', async (req, res) => {
 	const flag = req.params.flag
 	const vol = req.cookies.vol
-	if (flag === 'index') {
+	if (flag === 'today') {
 		const md = new MobileDetect(req.headers['user-agent'])
 		if (md.mobile() && !req.isAuthenticated()) return res.redirect('/users/login')
 		else if (md.mobile()) return res.render('mobile/index')
@@ -62,7 +62,6 @@ router.get('/:flag', async (req, res) => {
 	else if (flag === 'search') {
 		const query = req.query.srchKwd
 		const songs = await db.Song.find({$or : [{title : {$regex : query, $options : 'i'}}, {artist : {$regex : query, $options : 'i'}}]})
-		console.log(songs)
 		res.render('main', {flag, songs, srchKwd : query, vol})
 	}
 });

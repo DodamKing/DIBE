@@ -22,7 +22,8 @@
         <section>
             <div class="loader" style="display: none; z-index: 1055;"></div>
             <div id="main">
-                <% if (flag === 'index') { %> <video style="width: 100%;" src="" autoplay muted></video>
+                <!-- <video style="width: 100%;" src="" autoplay muted></video> -->
+                <% if (flag === 'today') { %> <video style="width: 100%;" src="" autoplay muted></video>
                 <% } else if (flag === 'chart') { %> <%- include('chart') %>
                 <% } else if (flag === 'search') { %> <%- include('song/list') %> <% } %>
             </div>

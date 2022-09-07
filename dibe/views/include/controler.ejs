@@ -45,5 +45,5 @@
         <div id="list_up_btn2" class="mt-3 mr-1" style="display: none;"><button class="btn"><i class="fa-solid fa-list fa-2x" data-toggle="modal" data-target="#play_list_modal" style="color: #fff;"></i></button></div>
         <div id="list_down_btn" class="mt-3 mr-1" style="display: none;"><button class="btn"><i class="fa-solid fa-list fa-2x" style="color: red;"></i></button></div>
     </div>
-    <audio id="player" src=""></audio>
+    <audio id="player" <% if (locals.vol) { %> onloadstart="this.volume= `<%- vol/100 %>`" <% } %>></audio>
 </footer>

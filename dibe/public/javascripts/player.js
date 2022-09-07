@@ -177,7 +177,7 @@ async function load() {
     })
 
     const blob = await res.blob()
-    if (blob.size < 10) return next_btn.click()
+    if (blob.size < 10 && playerIndex === $('.get-songId')) return next_btn.click()
     const src = await URL.createObjectURL(blob)
     player.src = src
 
@@ -195,7 +195,7 @@ async function load() {
     
     
     //타이틀 변경
-    document.title = title + " - " + artist + " DIBE(다이브)"
+    document.title = " DIBE(다이브) " + title + " - " + artist
     
     // 현재 재생 음악 포커스
     focus_cur()

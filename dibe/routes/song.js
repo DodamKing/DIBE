@@ -235,13 +235,12 @@ router.post('/open_player', async (req, res) => {
 router.get('/search', async (req, res) => {
     const query = req.query.srchKwd
     const songs = await db.Song.find({$or : [{title : {$regex : query, $options : 'i'}}, {artist : {$regex : query, $options : 'i'}}]})
-    console.log(songs)
-    res.render('song/list', {songs, srchKwd : query})
+    res.json(songs)
 })
 
 router.get('/myvol/:vol', (req, res) => {
     const vol = req.params.vol
-    res.cookie('vol', vol, {maxAge : 900000})
+    res.cookie('vol', vol, {maxAge : 60 * 60 * 24 * 30})
     res.end()
 })
 

@@ -52,18 +52,19 @@ $("#srch_btn").click(() => {
     if ($("#srchKwd").val().trim() == "") {
         return;
     }
-    myform.submit();
+    search($("#srchKwd").val())
 });
 
 // 네비 드롭 다운
 $("#dropMenu").click((e) => {
-    e.stopPropagation();
-    $(".my-group").toggle();
+    e.stopPropagation()
+    $(".my-group").toggle()
 });
 
 // 땅찍어서 닫기
 $(document).click((e) => {
     $(".my-group").hide();
+    if (e.target.parentElement.id !== 'main_srch' && e.target.id !== 'srchKwd') $('#srch_bar').hide()
 });
 
 // 필요 정보 임시 저장
@@ -88,6 +89,46 @@ $('#play_list_modal').on('hidden.bs.modal', () => {
     $('#list_down_btn').hide()
 })
 
+async function search(srchKwd) {
+    history.pushState(null, 'DIBE', location.origin + '/search?srchKwd=' + srchKwd)
+    const response = await fetch('/songs/search?srchKwd=' + srchKwd)
+    const songs = await response.json()
+    let list = `
+        <div class="container">
+            <div class="card-body" style="padding-bottom: 300px;">
+                <h2 class="mt-5 mb-5">DIBE '${srchKwd}' 검색결과</h2>
+    `
+    if (songs.length < 1) {
+        list += `
+            <br><br>
+            <p class="text-center">'<%- srchKwd %>'에 대한 검색 결과가 없습니다. </p>
+            `
+    }
+    list += `<table class="table" style="width: 80%; margin: auto;">`
+    for (song of songs) {
+        list += `
+            <tr>
+                <td><div class="imgBox"><img name="top100Img" src="${song.img}" alt=""></div></td>
+                <td>
+                    <div name="top100Title">
+                        <a href="">${song.title}</a>
+                    </div>
+                    <div name="top100Artist">${song.artist}</div>
+                </td> 
+                <td class="align-middle"><button name="add_btn" type="button" class="btn" data-toggle="modal" data-target="#addOne" onclick="setdata('${song._id}', '${song.ytURL}')"><i title="곡 추가" class="fas fa-plus"></i></button></td>
+            </tr>
+        `
+    }
+    list += `
+                </table>
+            </div>
+        </div>
+    
+    `
+    main.innerHTML = list
+}
+
+// 페이지 이동
 $('.nav').on('click', async (e) => {
     $('.loader').fadeIn()
     const url = e.target.dataset.url
@@ -99,7 +140,7 @@ $('.nav').on('click', async (e) => {
     }
     
     else if (url === '/chart') {
-        history.pushState(null, 'DIBE 차트', location.origin + url)
+        history.pushState(null, 'DIBE', location.origin + url)
         const response = await fetch('/songs/chart')
         const result = await response.json()
         const data = result.data
@@ -149,3 +190,9 @@ $('.nav').on('click', async (e) => {
     }
     $('.loader').fadeOut()
 })
+
+// 뒤로가기 - 제어하기 빡심
+window.onpopstate = (e) => {
+    e.preventDefault()
+    // history.back()
+}
