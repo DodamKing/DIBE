@@ -40,9 +40,10 @@ $("#main_srch").click(() => {
 
 // 검색 내용 없을 때 엔터 막기
 $("#srchKwd").keydown((e) => {
+    e.preventDefault()
     if (e.keyCode == 13) {
-        if ($("#srchKwd").val().trim() == "") {
-            e.preventDefault();
+        if ($("#srchKwd").val().trim() !== "") {
+            search($("#srchKwd").val())
         }
     }
 });
@@ -131,6 +132,7 @@ async function search(srchKwd) {
 // 페이지 이동
 $('.nav').on('click', async (e) => {
     $('.loader').fadeIn()
+    e.preventDefault()
     const url = e.target.dataset.url
     
     if (url === '/today') {
@@ -191,8 +193,6 @@ $('.nav').on('click', async (e) => {
     $('.loader').fadeOut()
 })
 
-// 뒤로가기 - 제어하기 빡심
 window.onpopstate = (e) => {
-    e.preventDefault()
-    // history.back()
+    location.reload()
 }

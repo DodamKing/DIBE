@@ -9,6 +9,13 @@ let exSongs
 // 한 곡 재생
 async function oneplay(songId, ytURL) {
     if (!ytURL) return alert('준비중 입니다')
+
+    if ($('.get-songId').length !== 0) {
+        for (let song of $('.get-songId')) {
+            if (song.id === `p_${songId}`) return alert('이미 추가된 곡입니다.')
+        }
+    }
+
     const res = await fetch(`/songs/direct?songId=${songId}&autoPlay=1`)
     const json = await res.json()
     const song = json.songs[0]
@@ -159,6 +166,20 @@ async function setList(song) {
     songOfPlayListLength = cnt
 }
 
+async function streaming() {
+    const url = $('.playlist_url')[playerIndex].innerHTML
+    const res = await fetch('/songs/streaming', {
+        method : 'POST',
+        headers : {"Content-Type": "application/json"},
+        body : JSON.stringify({url}) 
+    })
+    
+    const blob = await res.blob()
+    if (blob.size < 10 && playerIndex === $('.get-songId')) return next_btn.click()
+    const src = await URL.createObjectURL(blob)
+    return src
+}
+
 // 로드
 async function load() {
     $('.loader').fadeIn()
@@ -167,22 +188,19 @@ async function load() {
     const title = $('.playlist_t')[playerIndex].title
     const artist = $('.playlist_a')[playerIndex].title
     const img = $('.playlist_i')[playerIndex].src
-    const url = $('.playlist_url')[playerIndex].innerHTML
     // songUrl = `/track/${songId}.mp4`
-
-    const res = await fetch('/songs/streaming', {
-        method : 'POST',
-        headers : {"Content-Type": "application/json"},
-        body : JSON.stringify({url}) 
-    })
-
-    const blob = await res.blob()
-    if (blob.size < 10 && playerIndex === $('.get-songId')) return next_btn.click()
-    const src = await URL.createObjectURL(blob)
+    // player.src = songUrl
+    const src = await streaming()
     player.src = src
 
-    
-    // player.src = songUrl;
+    // $.get(songUrl).done(() => {
+    //     player.src = songUrl
+    // }).fail(() => {
+    //     streaming().then((result) => {
+    //         player.src = result
+    //     })
+    // })
+
     player.load()
     controls_img.src = img
     controls_title.innerHTML = title
