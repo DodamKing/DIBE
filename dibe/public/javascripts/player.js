@@ -278,6 +278,7 @@ $("#play_bar").on("input", (e) => {
 
 //재생바
 $("#player").on("timeupdate", () => {
+    const isAuthenticated = $('.isAuthenticated')[0].innerHTML
     let per = (player.currentTime / player.duration) * 100;
     $("#play_bar").val(per);
     
@@ -310,7 +311,7 @@ $("#player").on("timeupdate", () => {
     let res = min_cur + ":" + sec_cur + " / " + min_dur + ":" + sec_dur;
     $("#controls_time").html(res);
 
-    if ('<%- isAuthenticated %>' === 'false') {
+    if (isAuthenticated === 'false') {
         if (player.currentTime > 60 && player.currentTime < player.duration) {
             player.currentTime = player.duration
         }
