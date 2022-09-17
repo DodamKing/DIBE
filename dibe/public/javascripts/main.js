@@ -8,8 +8,6 @@ $().ready(() => {
     }
 });
 
-let myPlayer = ''
-
 function mainVideoPlay() {
     let mainVideoH;
     let mainVideoM;
@@ -40,8 +38,8 @@ $("#main_srch").click(() => {
 
 // 검색 내용 없을 때 엔터 막기
 $("#srchKwd").keydown((e) => {
-    e.preventDefault()
     if (e.keyCode == 13) {
+        e.preventDefault()
         if ($("#srchKwd").val().trim() !== "") {
             search($("#srchKwd").val())
         }
@@ -90,6 +88,32 @@ $('#play_list_modal').on('hidden.bs.modal', () => {
     $('#list_down_btn').hide()
 })
 
+$('#top_btn').on('click', () => {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+})
+
+// 전체선택
+$('#allch').on('click', () => {
+    if (allch.checked) {
+        $("input:checkbox[name='tch']:not(:disabled)").prop("checked", true);
+    }
+    else {
+        $("input:checkbox[name='tch']").prop("checked", false);
+    }
+    cnt_box.innerHTML = $("input:checkbox[name='tch']:checked").length + " 곡 선택 됨"
+});
+
+//전체선택 해제
+$("input:checkbox[name='tch']").click(() => {
+    cnt_box.innerHTML = $("input:checkbox[name='tch']:checked").length + " 곡 선택 됨"
+    for (let i=0; i<100; i++) {
+        if (!$("input:checkbox[name='tch']")[i].checked) {
+            $("#allch").prop("checked", false);
+            return;
+        }
+    }
+});
+
 async function search(srchKwd) {
     history.pushState(null, 'DIBE', location.origin + '/search?srchKwd=' + srchKwd)
     const response = await fetch('/songs/search?srchKwd=' + srchKwd)
@@ -102,14 +126,14 @@ async function search(srchKwd) {
     if (songs.length < 1) {
         list += `
             <br><br>
-            <p class="text-center">'<%- srchKwd %>'에 대한 검색 결과가 없습니다. </p>
+            <p class="text-center">'${srchKwd}'에 대한 검색 결과가 없습니다. </p>
             `
     }
     list += `<table class="table" style="width: 80%; margin: auto;">`
     for (song of songs) {
         list += `
             <tr>
-                <td><div class="imgBox"><img name="top100Img" src="${song.img}" alt=""></div></td>
+                <td><div class="imgBox" onclick="oneplay('${song._id}', '${song.ytURL}')"><img name="top100Img" src="${song.img}" alt=""></div></td>
                 <td>
                     <div name="top100Title">
                         <a href="">${song.title}</a>
@@ -172,7 +196,7 @@ $('.nav').on('click', async (e) => {
                 <tr>
                     <td style="vertical-align: middle;"><input name="tch" type="checkbox" value="${data._id[i]}" ${disabled}></td>
                     <td style="text-align: center; vertical-align: middle;">${i+1}</td>
-                    <td><div class="imgBox ho" onclick="oneplay(` + `${data._id[i]}` + `,` + `${data.ytURL[i]}` + `)"><img name="top100Img" src="${data.img[i]}"></div></td>
+                    <td><div class="imgBox ho" onclick="oneplay('${data._id[i]}', '${data.ytURL[i]}')"><img name="top100Img" src="${data.img[i]}"></div></td>
                     <td class="align-middle">
                         <div name="top100Title"><a href="">${data.title[i]}</a></div>
                         <div name="top100Artist">${data.artist[i]}</div>
@@ -185,10 +209,10 @@ $('.nav').on('click', async (e) => {
                     </table>
                 </div>
             </div>
+            <script src="javascripts/chart.js"></script>
         `
 
-        main.innerHTML = chart
-        $('#script_sec').append(`<script src="javascripts/chart.js"></script>`)
+        $('#main').html(chart)
     }
     $('.loader').fadeOut()
 })

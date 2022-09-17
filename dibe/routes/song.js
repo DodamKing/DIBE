@@ -244,4 +244,11 @@ router.get('/myvol/:vol', (req, res) => {
     res.end()
 })
 
+router.get('/exists/:songId', async (req, res) => {
+    const songId = req.params.songId
+    const path = `public/video/${songId}.mp4`
+    const exists = await fs.existsSync(path)
+    res.send(exists)
+})
+
 module.exports = router

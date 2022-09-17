@@ -29,7 +29,9 @@ async function oneplay(songId, ytURL) {
         await load()
         $(play_btn).hide();
         $(pause_btn).show();
-        player.play();
+        player.oncanplaythrough = () => {
+            player.play();
+        }
     }
 }
 
@@ -188,18 +190,14 @@ async function load() {
     const title = $('.playlist_t')[playerIndex].title
     const artist = $('.playlist_a')[playerIndex].title
     const img = $('.playlist_i')[playerIndex].src
-    // songUrl = `/track/${songId}.mp4`
-    // player.src = songUrl
-    const src = await streaming()
-    player.src = src
-
-    // $.get(songUrl).done(() => {
-    //     player.src = songUrl
-    // }).fail(() => {
-    //     streaming().then((result) => {
-    //         player.src = result
-    //     })
-    // })
+    songUrl = `/track/${songId}.mp4`
+    
+    const exists = await (await fetch('/songs/exists/' + songId)).json()
+    if (exists) player.src = songUrl
+    else {
+        const src = await streaming()
+        player.src = src
+    }
 
     player.load()
     controls_img.src = img
