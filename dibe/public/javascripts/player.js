@@ -29,9 +29,7 @@ async function oneplay(songId, ytURL) {
         await load()
         $(play_btn).hide();
         $(pause_btn).show();
-        player.oncanplaythrough = () => {
-            player.play();
-        }
+        player.play();
     }
 }
 
