@@ -6,6 +6,7 @@ var logger = require('morgan');
 const session = require('express-session')
 const passport = require('passport')
 const flash = require('connect-flash')
+const cron = require('node-cron')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -13,6 +14,7 @@ const songRouter = require('./routes/song');
 const adminRouter = require('./routes/admin')
 const passportConfig = require('./passport');
 const { isLoggedIn } = require('./routes/middlewares');
+const myModule = require('./public/javascripts/myModule')
 
 require('dotenv').config()
 require('./db/connect')()
@@ -70,5 +72,9 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+cron.schedule('11 23 * * *', async () => {
+  console.log(await myModule.setURLScheduler());
+})
 
 module.exports = app;

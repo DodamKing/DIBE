@@ -8,7 +8,7 @@ let exSongs
 
 // 한 곡 재생
 async function oneplay(songId, ytURL) {
-    if (!ytURL) return alert('준비중 입니다')
+    if (!ytURL || ytURL === 'null') return alert('준비중 입니다')
 
     if ($('.get-songId').length !== 0) {
         for (let song of $('.get-songId')) {
