@@ -1,11 +1,10 @@
-top_btn.addEventListener("click", () => {
+$('#top_btn').on('click', () => {
     window.scrollTo({top: 0, behavior: 'smooth'});
 });
 
-const allch = document.getElementById('allch')
 // 전체선택
-allch.addEventListener("click", () => {
-    if (allch.checked) {
+$('#allch').on('click', () => {
+    if ($('#allch').is(':checked')) {
         $("input:checkbox[name='tch']:not(:disabled)").prop("checked", true);
     }
     else {
