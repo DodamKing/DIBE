@@ -56,6 +56,7 @@ def get_yt_url_one():
         artist = song['artist']
         keyword = '{} {} official audio, short'.format(title, artist)
         url = 'https://www.youtube.com/results?search_query=' + keyword
+        video_url = ''
 
         driver.get(url)
         soup = bs(driver.page_source, 'html.parser')

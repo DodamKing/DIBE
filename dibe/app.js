@@ -73,8 +73,10 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-cron.schedule('11 23 * * *', async () => {
-  console.log(await myModule.setURLScheduler());
+cron.schedule('0 12 * * *', async () => {
+  console.log(new Date().toLocaleString(), 'url 크롤링 시작')
+  console.log(await myModule.setURLScheduler())
+  console.log(new Date().toLocaleString(), 'url 크롤링 종료')
 })
 
 module.exports = app;

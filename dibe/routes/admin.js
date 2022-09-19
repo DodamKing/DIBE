@@ -69,9 +69,6 @@ router.get('/setYtUrl', async (req, res) => {
             songs.push(row)
         }
     }
-    // for (let i=0; i<rows.length; i++) {
-    //     songs.push(rows[i])
-    // }
     
     const options = {
         uri : url,
