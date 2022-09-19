@@ -6,6 +6,7 @@ var logger = require('morgan');
 const session = require('express-session')
 const passport = require('passport')
 const flash = require('connect-flash')
+const cron = require('node-cron')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -70,5 +71,11 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+const test = require('./public/javascripts/scheduler')
+cron.schedule('23 18 * * *', async () => {
+  test.cronTest()
+  console.log(await test.getYTUrl())
+})
 
 module.exports = app;
