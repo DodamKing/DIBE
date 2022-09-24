@@ -7,6 +7,7 @@ const chartSchema = new Schema({
     artist : String,
     img : String,
     isFile : Number,
+    ytURL : String,
     createdAt: {
         type: Date,
         default: Date().toLocaleString()

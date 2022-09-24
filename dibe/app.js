@@ -74,6 +74,10 @@ app.use(function(err, req, res, next) {
 });
 
 cron.schedule('0 12 * * *', async () => {
+  console.log(new Date().toLocaleString(), 'chart setting')
+})
+
+cron.schedule('5 12 * * *', async () => {
   console.log(new Date().toLocaleString(), 'url 크롤링 시작')
   console.log(await myModule.setURLScheduler())
   console.log(new Date().toLocaleString(), 'url 크롤링 종료')
