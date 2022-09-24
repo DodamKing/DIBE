@@ -56,7 +56,7 @@ function setTodayChart() {
                 await db.Chart.create({songId, title, artist, img, isFile, ytURL})
             } else {
                 await db.Song.create({ title, artist, img, album })
-                await db.Chart.create({songId, title, artist, img, isFile, ytURL})
+                await db.Chart.create({songId, title, artist, img})
             }
         }
 

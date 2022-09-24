@@ -74,6 +74,7 @@ app.use(function(err, req, res, next) {
 });
 
 cron.schedule('0 12 * * *', async () => {
+  myModule.setTodayChart()
   console.log(new Date().toLocaleString(), 'chart setting')
 })
 

@@ -34,6 +34,7 @@ function mainVideoPlay() {
 // 검색버튼 클릭 이벤트
 $("#main_srch").click(() => {
     $("header > div:first-child").toggle();
+    $('#srchKwd').focus()
 });
 
 // 검색 내용 없을 때 엔터 막기
@@ -163,19 +164,19 @@ $('.nav').on('click', async (e) => {
                             <td colspan="2" class="text-right" style="border-top: none;"><div id="add_btn" class="btn btn-dark btn-sm" style="position: sticky; position: -webkit-sticky; right: 30px; top: 50px;" data-toggle="modal" data-target="#addMany">선택추가</div></td>
                         </tr>
         `
-        for (let i=0; i<data.title.length; i++) {
+        for (const [i, song] of data.entries()) {
             let disabled = ''
-            if (!data.ytURL[i]) disabled = 'disabled'
+            if (!song.ytURL) disabled = 'disabled'
             chart += `
                 <tr>
-                    <td style="vertical-align: middle;"><input name="tch" type="checkbox" value="${data._id[i]}" ${disabled}></td>
+                    <td style="vertical-align: middle;"><input name="tch" type="checkbox" value="${song.songId}" ${disabled}></td>
                     <td style="text-align: center; vertical-align: middle;">${i+1}</td>
-                    <td><div class="imgBox ho" onclick="oneplay('${data._id[i]}', '${data.ytURL[i]}')"><img name="top100Img" src="${data.img[i]}"></div></td>
+                    <td><div class="imgBox ho" onclick="oneplay('${song.songId}', '${song.ytURL}')"><img name="top100Img" src="${song.img}"></div></td>
                     <td class="align-middle">
-                        <div name="top100Title"><a href="">${data.title[i]}</a></div>
-                        <div name="top100Artist">${data.artist[i]}</div>
+                        <div name="top100Title"><a href="">${song.title}</a></div>
+                        <div name="top100Artist">${song.artist}</div>
                     </td>
-                    <td class="align-middle"><button name="add_btn" type="button" class="btn" data-toggle="modal" data-target="#addOne" onclick="setdata('${data._id[i]}', '${data.ytURL[i]}')"><i title="곡 추가" class="fas fa-plus"></i></button></td>
+                    <td class="align-middle"><button name="add_btn" type="button" class="btn" data-toggle="modal" data-target="#addOne" onclick="setdata('${song.songId}', '${song.ytURL}')"><i title="곡 추가" class="fas fa-plus"></i></button></td>
                 </tr>
             `
         }
