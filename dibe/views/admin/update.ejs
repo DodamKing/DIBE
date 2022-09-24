@@ -79,19 +79,17 @@
                 </div>
             </form>
 
-            <!-- <div class="mt-5">
-                <audio src="/track/<%-song._id%>.mp4" controls></audio>
-            </div> -->
-
             <div class="input-group mb-3 mt-5">
                 <input type="text" class="form-control url" placeholder="url을 입력하세요">
                 <div class="input-group-append">
+                    <button class="btn btn-warning srch" type="button">검색</button>
                     <button class="btn btn-primary play" type="button">미리듣기</button>
                     <button class="btn btn-danger down" type="button">음원다운</button>
                 </div>
             </div>
 
             <div class="mt-5">
+                <audio controls src="/track/<%-song._id%>.mp4"></audio>
                 <audio id="preview" controls></audio>
             </div>
         </div>
@@ -134,6 +132,14 @@
             const src = URL.createObjectURL(blob)
             preview.src = src
             preview.play()
+            $('.loader').fadeOut()
+        })
+
+        $('.srch').on('click', async () => {
+            $('.loader').show()
+            const response = await fetch('/admin/getYtUTL?songId=<%-song._id%>')
+            const url = await response.json()
+            $('.url').val(url)
             $('.loader').fadeOut()
         })
     </script>

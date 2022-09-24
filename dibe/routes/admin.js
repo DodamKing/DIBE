@@ -91,4 +91,22 @@ router.get('/setYtUrl', async (req, res) => {
     })
 })
 
+router.get('/getYtUTL', async (req, res) => {
+    const songId = req.query.songId
+    const song = await db.Song.findById(songId)
+    const songs = []
+    songs.push(song)
+    const url = process.env.URL_GET_URL
+
+    const options = {
+        uri : url,
+        method : 'POST',
+        body : {songs},
+        json : true,
+    }
+    request.post(options, async (err, response, body) => {
+        res.json(body)
+    })
+})
+
 module.exports = router

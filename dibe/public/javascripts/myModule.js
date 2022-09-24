@@ -1,5 +1,7 @@
 const request = require('request')
 const db = require('../../models')
+const fs = require ('fs')
+const ytdl = require('ytdl-core')
 const myModule = {}
 
 function setURLScheduler() {
@@ -63,7 +65,28 @@ function setTodayChart() {
     })
 }
 
+async function setSongsFile() {
+    const result = await db.Song.find()
+
+    for (const song of result) {
+        const songId = song._id
+        const path = `public/video/${songId}.mp4`
+        const exists = await fs.existsSync(path)
+        const url = song.ytURL
+        
+        if (!exists && url) {
+            ytdl(url, {filter : 'audioonly'}).pipe(fs.createWriteStream('public/video/' + songId + '.mp4').on('finish', () => {
+                console.log(song.title, song.artist)
+                db.Song.findByIdAndUpdate(_id, {isFile : 1}, (err) => {
+                    if (err) return console.error(err)
+                })
+            }))
+        }
+    }
+}
+
 myModule.setURLScheduler = setURLScheduler
 myModule.setTodayChart = setTodayChart
+myModule.setSongsFile = setSongsFile
 
 module.exports = myModule
