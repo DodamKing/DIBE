@@ -84,7 +84,7 @@ cron.schedule('5 12 * * *', async () => {
   console.log(new Date().toLocaleString(), 'url 크롤링 종료')
 })
 
-// cron.schedule('7 1 * * *', () => {
+// cron.schedule('34 1 * * *', () => {
 //   myModule.setSongsFile()
 //   console.log(new Date().toLocaleString(), '음원 파일 로컬 다운로드')
 // })

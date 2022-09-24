@@ -77,7 +77,7 @@ async function setSongsFile() {
         if (!exists && url) {
             ytdl(url, {filter : 'audioonly'}).pipe(fs.createWriteStream('public/video/' + songId + '.mp4').on('finish', () => {
                 console.log(song.title, song.artist)
-                db.Song.findByIdAndUpdate(_id, {isFile : 1}, (err) => {
+                db.Song.findByIdAndUpdate(songId, {isFile : 1}, (err) => {
                     if (err) return console.error(err)
                 })
             }))
