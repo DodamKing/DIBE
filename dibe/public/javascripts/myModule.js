@@ -26,7 +26,7 @@ function setURLScheduler() {
         request.post(options, async (err, response, body) => {
             for (let i=0; i<body.length; i++) {
                 await db.Song.findByIdAndUpdate(songs[i]._id, {ytURL : body[i]})
-                await db.Chart.findOneAndUpdate(songs[i].title, songs[i].artist, {ytURL : body[i]})
+                await db.Chart.findOneAndUpdate({title : songs[i].title, artist : songs[i].artist}, {ytURL : body[i]})
                 const result = await db.Song.findById(songs[i]._id)
                 results.push(result)
             }
@@ -57,8 +57,8 @@ function setTodayChart() {
                 const ytURL = result.ytURL
                 await db.Chart.create({songId, title, artist, img, isFile, ytURL})
             } else {
-                await db.Song.create({ title, artist, img, album })
-                await db.Chart.create({songId, title, artist, img})
+                const song = await db.Song.create({ title, artist, img, album })
+                await db.Chart.create({songId : song._id, title, artist, img})
             }
         }
 
@@ -73,9 +73,11 @@ async function setSongsFile() {
         const path = `public/video/${songId}.mp4`
         const exists = await fs.existsSync(path)
         const url = song.ytURL
-        
+
         if (!exists && url) {
-            ytdl(url, {filter : 'audioonly'}).pipe(fs.createWriteStream('public/video/' + songId + '.mp4').on('finish', () => {
+            ytdl(url, {filter : 'audioonly'}).on('error', () => {
+                console.log('잘못된 url :', url + ',', song.title, song.artist)
+            }).pipe(fs.createWriteStream('public/video/' + songId + '.mp4').on('finish', () => {
                 console.log(song.title, song.artist)
                 db.Song.findByIdAndUpdate(songId, {isFile : 1}, (err) => {
                     if (err) return console.error(err)

@@ -8,7 +8,7 @@ let exSongs
 
 // 한 곡 재생
 async function oneplay(songId, ytURL) {
-    if (!ytURL || ytURL === 'null') return alert('준비중 입니다')
+    if (!ytURL || ytURL === 'undefined') return alert('준비중 입니다')
 
     if ($('.get-songId').length !== 0) {
         for (let song of $('.get-songId')) {
@@ -37,7 +37,7 @@ async function oneplay(songId, ytURL) {
 async function senddata() {
     const songId = idx_box.innerHTML
     const ytURL = ytURL_box.innerHTML
-    if (!songId || !ytURL) return alert('준비중 입니다')
+    if (!ytURL || ytURL === 'undefined') return alert('준비중 입니다')
 
     const res = await fetch('/songs/addsong?songId=' + songId)
     const json = await res.json()
@@ -155,6 +155,9 @@ async function setList(song) {
     else res+= `${song.artist}`
     res += `    </div>
             </div>
+            <!-- <div class='ml-auto drag_point'>
+                <div class='btn text-white'><i class="fa-solid fa-bars"></i></div>
+            </div> -->
             <div class='ml-auto'>
                 <button name='delete_btn' type='button' class='btn' onclick="delList('${song._id}')"><i title="플레이리스트에서 제거" class='fa-regular fa-trash-can'></i></button>
             </div>
@@ -495,7 +498,7 @@ function focus_cur() {
     
     let focu = $('.get-songId')[playerIndex]
     
-    focu.scrollIntoView();
+    focu.scrollIntoView({block : 'center'});
     focu.style.backgroundColor = "#bbccdd";
     focu.style.opacity = "0.7";
     focu.style.borderRadius = "5px";
@@ -514,7 +517,14 @@ addmore_btn.addEventListener("click", () => {
     
 });
 
-//크기 고정
-window.addEventListener("resize", () => {
-    window.resizeTo(1100, 800);
+// 드래그 이벤트
+const songBox = document.getElementById('play_list')
+new Sortable(songBox, {
+    group: "shared",
+    animation: 150,
+    ghostClass: "blue-background-class"
 });
+
+songBox.addEventListener('dragstart', (e) => {
+    console.log(e.target.id)
+})
