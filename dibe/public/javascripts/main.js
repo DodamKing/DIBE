@@ -159,7 +159,7 @@ $('.nav').on('click', async (e) => {
                     <div class="text-center h4">${today}</div>
                     <table class="table">
                         <tr>
-                            <td style="border-top: none;"><input id="allch" type="checkbox" ></td>
+                            <td style="border-top: none;"><input id="allch" type="checkbox" style="accent-color: red;"></td>
                             <td id="cnt_box" colspan="2" style="vertical-align: middle; border-top: none;">0 곡 선택 됨</td>
                             <td colspan="2" class="text-right" style="border-top: none;"><div id="add_btn" class="btn btn-dark btn-sm" style="position: sticky; position: -webkit-sticky; right: 30px; top: 50px;" data-toggle="modal" data-target="#addMany">선택추가</div></td>
                         </tr>
@@ -169,7 +169,7 @@ $('.nav').on('click', async (e) => {
             if (!song.ytURL) disabled = 'disabled'
             chart += `
                 <tr>
-                    <td style="vertical-align: middle;"><input name="tch" type="checkbox" value="${song.songId}" ${disabled}></td>
+                    <td style="vertical-align: middle;"><input name="tch" type="checkbox" value="${song.songId}" style="accent-color: red;" ${disabled}></td>
                     <td style="text-align: center; vertical-align: middle;">${i+1}</td>
                     <td><div class="imgBox ho" onclick="oneplay('${song.songId}', '${song.ytURL}')"><img name="top100Img" src="${song.img}"></div></td>
                     <td class="align-middle">

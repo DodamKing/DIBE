@@ -1,6 +1,5 @@
 let songUrl;
 let playerIndex = 0;
-let playerIndex_ = 0;
 let sw = 0;
 let repeat = 0;
 let shuffle = 0;
@@ -81,7 +80,6 @@ async function delList(songId) {
             $(`#p_${songId}`).remove()
             $('#listCnt').html(`${$('.get-songId').length} 곡`)
             player.currentTime = player.duration
-            playerIndex_ = 0
             return 
         }
         next_btn.click()
@@ -98,7 +96,6 @@ async function delList(songId) {
 
     if (currnetIndex > delIndex) {
         playerIndex--
-        playerIndex_--
     }
 
     $(`#p_${songId}`).remove()
@@ -142,6 +139,7 @@ async function setList(song) {
     let res = `
         <div id="p_${song._id}" class='d-flex p-3 get-songId' draggable='true'>
             <div style='display: none;' class='playlist_url'>${song.ytURL}</div>
+            <input type='checkbox' class='mr-3 player_checkbox' onclick="playlist_checkedId('${song._id}')">
             <div class='imgBox mr-3'>
                 <img class="playlist_i" src='${song.img}' title="재생" onclick="startThis('${song._id}')" draggable='false'>
             </div>
@@ -155,11 +153,11 @@ async function setList(song) {
     else res+= `${song.artist}`
     res += `    </div>
             </div>
-            <!-- <div class='ml-auto drag_point'>
-                <div class='btn text-white'><i class="fa-solid fa-bars"></i></div>
-            </div> -->
-            <div class='ml-auto'>
+            <!-- <div class='ml-auto'>
                 <button name='delete_btn' type='button' class='btn' onclick="delList('${song._id}')"><i title="플레이리스트에서 제거" class='fa-regular fa-trash-can'></i></button>
+            </div> -->
+            <div class='ml-auto drag_point'>
+                <div class='btn text-white' title="이동"><i class="fa-solid fa-bars"></i></div>
             </div>
         </div>`
     
@@ -441,7 +439,6 @@ $("#shuffle_btn").click(async () => {
     $('.loader').show()
     
     if (shuffle === 0)  {
-        playerIndex_ = playerIndex
         const songs = exSongs = $('.get-songId')
         const currentId = songs[playerIndex].id
 
@@ -494,22 +491,13 @@ $("#shuffle_btn").click(async () => {
 
 // 현재 음악 포커스
 function focus_cur() {
-    if ($('.get-songId').length == 0) return;
-    
-    let focu = $('.get-songId')[playerIndex]
-    
-    focu.scrollIntoView({block : 'center'});
-    focu.style.backgroundColor = "#bbccdd";
-    focu.style.opacity = "0.7";
-    focu.style.borderRadius = "5px";
-    
-    if (playerIndex != playerIndex_) {
-        let focu_ = $('.get-songId')[playerIndex_]
-        focu_.style.backgroundColor = "";
-        focu_.style.opacity = "1";
-        focu_.style.borderRadius = "0";
-        playerIndex_ = playerIndex;
-    }
+    if ($('.get-songId').length == 0) return
+
+    const active = $('.get-songId.active')[0]
+    if(active) active.classList.remove('active')
+    const focu = $('.get-songId')[playerIndex]
+    focu.scrollIntoView({block : 'center'})
+    focu.classList.add('active')
 }
 
 // 더보기 버튼 클릭
@@ -525,6 +513,35 @@ new Sortable(songBox, {
     ghostClass: "blue-background-class"
 });
 
-songBox.addEventListener('dragstart', (e) => {
-    console.log(e.target.id)
+// 드래그 이벤트시 재생 순서 리셋
+songBox.addEventListener('dragend', () => {
+    if (!$('.get-songId.active')[0]) return
+    const song = $('.get-songId')
+    for (let i=0; i<song.length; i++) {
+        if (song[i].id === $('.get-songId.active')[0].id) return playerIndex = i
+    }
 })
+
+//플레이 리스트 전체 체크
+$('#list_allCheck').on('click', (e) => {
+    const allCheck = e.target
+    if (allCheck.innerHTML === '전체 선택') {
+        $('.player_checkbox').prop('checked', true)
+        $('#list_selectedCnt').html($('.player_checkbox').length + '곡 선택됨')
+        allCheck.innerHTML = '전체 취소'
+    }
+    else if (allCheck.innerHTML === '전체 취소') {
+        $('.player_checkbox').prop('checked', false)
+        $('#list_selectedCnt').html('')
+        allCheck.innerHTML = '전체 선택'
+    }
+})
+
+// 플레이 리스트 체크 박스 체크
+function playlist_checkedId(songId) {
+    const checkedCnt = $('.player_checkbox:checked').length
+    if (checkedCnt !== 0) $('#list_selectedCnt').html(checkedCnt + '곡 선택됨')
+    else $('#list_selectedCnt').html('')
+
+    if ($('.player_checkbox').length !== checkedCnt) $('#list_allCheck').html('전체 선택')
+}

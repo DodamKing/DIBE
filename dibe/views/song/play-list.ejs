@@ -4,9 +4,27 @@
 		cursor: pointer;
 	}
 	
-	#listCnt {
+	#list_selectedDelete {
 		position: fixed;
 		top: 15px;
+		right: 49px;
+	}
+
+    #list_allCheck {
+        position: fixed;
+        top: 15px;
+        right: 400px;
+    }
+    
+    #list_selectedCnt{
+        position: fixed;
+        top: 15px;
+        right: 200px;
+    }
+
+    #listCnt {
+		position: fixed;
+		bottom: 100px;
 		right: 50px;
 	}
 </style>
@@ -20,9 +38,12 @@
             </div>
         </div>
         <div id="play_listBox">
+            <div id="list_allCheck" class="ho">전체 선택</div>
+            <div id="list_selectedCnt"></div>
+            <div id="list_selectedDelete" title="삭제" class="ho"><i class="fa-regular fa-trash-can"></i></div>
             <div id="listCnt"></div>
-            <div class="mt-3">
-                <div id="play_list" class="pfc" tabindex="0"></div>
+            <div>
+                <div id="play_list" tabindex="0"></div>
             </div>
         </div>
     </div>
