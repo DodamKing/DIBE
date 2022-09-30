@@ -137,7 +137,7 @@ async function setList(song) {
     }
 
     let res = `
-        <div id="p_${song._id}" class='d-flex p-3 get-songId' draggable='true'>
+        <div id="p_${song._id}" class='d-flex p-3 get-songId'>
             <div style='display: none;' class='playlist_url'>${song.ytURL}</div>
             <input type='checkbox' class='mr-3 player_checkbox' onclick="playlist_checkedId('${song._id}')">
             <div class='imgBox mr-3'>
@@ -510,7 +510,8 @@ const songBox = document.getElementById('play_list')
 new Sortable(songBox, {
     group: "shared",
     animation: 150,
-    ghostClass: "blue-background-class"
+    ghostClass: "blue-background-class",
+    handle : '.drag_point'
 });
 
 // 드래그 이벤트시 재생 순서 리셋
