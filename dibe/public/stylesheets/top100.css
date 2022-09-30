@@ -24,9 +24,9 @@ div.card-body > table div:nth-child(2) {
 }
 
 .playlist_t:hover {
-	cursor: pointer;
+    cursor: default;
 }
 
 .playlist_a:hover {
-	cursor: pointer;
+	cursor: default;
 }

@@ -332,6 +332,12 @@ div#play_listImg > div {
     border-radius: 5px;
 }
 
+.ghost {
+    background-color: #bbccdd;
+    opacity: 0.7;
+    border-radius: 5px;
+}
+
 .player_checkbox {
     margin-top: 16px;
     width: 16px;

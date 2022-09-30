@@ -73,45 +73,30 @@ async function godata_many() {
 }
 
 // 플레이 리스트 음원 삭제
-async function delList(songId) {
-    const currentId = $('.get-songId')[playerIndex].id
-    if (currentId === `p_${songId}`) {
-        if ($('.get-songId').length - 1 === playerIndex) {
-            $(`#p_${songId}`).remove()
-            $('#listCnt').html(`${$('.get-songId').length} 곡`)
+$('#list_selectedDelete').on('click', () => {
+    const checkedSongs = $('.player_checkbox:checked').parent()
+    for (const song of checkedSongs) {
+        if (song === $('.get-songId.active')[0]) {
             player.currentTime = player.duration
-            return 
+            playerIndex--
         }
-        next_btn.click()
-        playerIndex--
+        song.remove()
     }
 
-    let currnetIndex
-    let delIndex
-    const l = $('.get-songId').length
-    for (let i=0; i<l; i++) {
-        if (currentId === $('.get-songId')[i].id) currnetIndex = i
-        if (`p_${songId}` === $('.get-songId')[i].id) delIndex = i
+    playerIndexReset()
+
+    $('#list_selectedCnt').html('')
+    const cnt = $('.get-songId').length
+    $('#listCnt').html(`${cnt} 곡`)
+
+    if (cnt === 0) {
+        $('#play_list_modal').modal('hide')
+        $('#list_up_btn1').show()
+        $('#list_up_btn2').hide()
+        $('#list_down_btn').hide()
+        // 모달과 하단 컨트롤러 초기화 하면 좋음
     }
-
-    if (currnetIndex > delIndex) {
-        playerIndex--
-    }
-
-    $(`#p_${songId}`).remove()
-    $('#listCnt').html(`${$('.get-songId').length} 곡`)
-}
-
-// document.addEventListener('click', () => {
-//     $('button[name=delete_btn]').on('click', (e) => {
-//         const index = $(e.target).closest('.get-songId').index()
-//         if (playerIndex >= index) playerIndex--
-        
-//         $(e.target).closest('.get-songId').remove()
-//         const cnt = $('.get-songId').length
-//         $('#listCnt').html(`${cnt} 곡`)
-//     })
-// })
+})
 
 // 원하는 곡 재생
 async function startThis(songId) {
@@ -510,18 +495,23 @@ const songBox = document.getElementById('play_list')
 new Sortable(songBox, {
     group: "shared",
     animation: 150,
-    ghostClass: "blue-background-class",
-    handle : '.drag_point'
+    ghostClass: "ghost",
+    handle : '.drag_point',
 });
 
 // 드래그 이벤트시 재생 순서 리셋
 songBox.addEventListener('dragend', () => {
+    playerIndexReset()
+})
+
+// 인덱스 초기화
+function playerIndexReset() {
     if (!$('.get-songId.active')[0]) return
     const song = $('.get-songId')
     for (let i=0; i<song.length; i++) {
         if (song[i].id === $('.get-songId.active')[0].id) return playerIndex = i
     }
-})
+}
 
 //플레이 리스트 전체 체크
 $('#list_allCheck').on('click', (e) => {
