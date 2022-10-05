@@ -7,6 +7,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from pytube import YouTube
+from selenium.webdriver.common.by import By
+
 
 chart = Blueprint('chart', __name__)
 
@@ -60,21 +62,16 @@ def get_yt_url_one():
         video_url = ''
 
         driver.get(url)
-        soup = bs(driver.page_source, 'html.parser')
+        elements = driver.find_elements(By.CSS_SELECTOR, 'a#video-title')
 
-        idx = 0
-        if len(soup.select('a#video-title')) > 0:
-            while True:
-                html = soup.select('a#video-title')[idx]
-                video_url = 'https://www.youtube.com' + html.get('href')
-                l = YouTube(video_url).length
-                idx += 1
-                if 120 < l < 60 * 6:
-                    break 
+        for i in range(len(elements)):
+            video_url = elements[i].get_attribute('href')
+            l = YouTube(video_url).length
+            if 120 < l < 60 * 6:
+                break 
 
         url_list.append(video_url)
 
-    driver.close()
     driver.quit()
 
     print(url_list)
