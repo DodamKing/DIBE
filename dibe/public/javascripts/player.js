@@ -124,7 +124,7 @@ async function setList(song) {
     let res = `
         <div id="p_${song._id}" class='d-flex p-3 get-songId'>
             <div style='display: none;' class='playlist_url'>${song.ytURL}</div>
-            <input type='checkbox' class='mr-3 player_checkbox' onclick="playlist_checkedId('${song._id}')">
+            <input type='checkbox' class='mr-3 player_checkbox' onclick="playlist_checkedId()">
             <div class='imgBox mr-3'>
                 <img class="playlist_i" src='${song.img}' title="재생" onclick="startThis('${song._id}')" draggable='false'>
             </div>
@@ -524,10 +524,20 @@ $('#list_allCheck').on('click', (e) => {
 })
 
 // 플레이 리스트 체크 박스 체크
-function playlist_checkedId(songId) {
+function playlist_checkedId() {
     const checkedCnt = $('.player_checkbox:checked').length
     if (checkedCnt !== 0) $('#list_selectedCnt').html(checkedCnt + '곡 선택됨')
     else $('#list_selectedCnt').html('')
 
     if ($('.player_checkbox').length !== checkedCnt) $('#list_allCheck').html('전체 선택')
 }
+
+
+$('#play_list').on('DOMSubtreeModified', () => {
+    const songsList = []
+    const songs = $('.get-songId')
+    for (const song of songs) {
+        songsList.push(song.id.split('_')[1])
+    }
+    localStorage.songsList_ = JSON.stringify(songsList)
+})

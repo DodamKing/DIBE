@@ -1,10 +1,24 @@
-$().ready(() => {
+$().ready(async () => {
     mainVideoPlay();
     $("video").on("ended", mainVideoPlay);
     
     if ($('.get-songId').length > 0) {
         $('#list_up_btn1').hide()
         $('#list_up_btn2').show()
+    }
+
+    const songsList_ = localStorage.songsList_
+    if (songsList_) {
+        const songs = JSON.parse(songsList_)
+        for (const songId of songs) {
+            const res = await fetch('/songs/addsong?songId=' + songId)
+            const json = await res.json()
+            const song = json.song
+            await setList(song)
+            $('#list_up_btn1').hide()
+            $('#list_up_btn2').show()
+            // 컨트롤러도 세팅 하면 좋을 듯
+        }
     }
 });
 
