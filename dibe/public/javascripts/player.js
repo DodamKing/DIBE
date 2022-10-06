@@ -228,12 +228,7 @@ $("#volume_bar").on("input", async () => {
     player.volume = vol / 100;
     $("#vol_no").html(vol);
     
-    // $.ajax({
-    //     type : "post",
-    //     url : "${ctp}/song/myvol",
-    //     data : {vol : player.volume}
-    // });
-    await fetch(`/songs/myvol/${vol}`)
+    localStorage.myvol = vol
 });
 
 // 음소거
@@ -355,9 +350,9 @@ $("#player").on("ended", async () => {
 
 //가사 모달
 $("#lyrics_btn").click(() => {
-    modal_i.src = thum_list[playerIndex].replace("50","200");
-    $("#modal_t").html($("#controls_title").html());
-    $("#modal_a").html($("#controls_artist").html());
+    // modal_i.src = thum_list[playerIndex].replace("50","200");
+    // $("#modal_t").html($("#controls_title").html());
+    // $("#modal_a").html($("#controls_artist").html());
     
     // $.ajax({
     //     type : "post",

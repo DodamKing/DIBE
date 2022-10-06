@@ -30,15 +30,21 @@
                         class="fa-solid fa-volume-high" style="color: #fff;"></i></button></div>
             <div id="mute_btn2" class="ml-2" style="display: none;"><button class="btn" type="button"><i
                         class="fa-solid fa-volume-xmark" style="color: #fff;"></i></button></div>
-            <div class="ml-1 mt-1"><input id="volume_bar" type="range" min="0" max="100" <% if (vol) { %> value='<%- vol %>' <% } %> /></div>
-            <div id="vol_no" class="ml-1" style="font-size: 8px; margin-top: 12px;">
-                <% if (vol) { %> <%- vol %>
-                <% } else { %> 50 <% } %>
-            </div>
+            <div class="ml-1 mt-1"><input id="volume_bar" type="range" min="0" max="100" value="100"></div>
+            <div id="vol_no" class="ml-1" style="font-size: 8px; margin-top: 12px;">100</div>
         </div>
         <div id="list_up_btn1" class="mt-3 mr-1"><button class="btn" disabled><i class="fa-solid fa-list fa-2x" style="color: #fff;"></i></button></div>
         <div id="list_up_btn2" class="mt-3 mr-1" style="display: none;"><button class="btn"><i class="fa-solid fa-list fa-2x" data-toggle="modal" data-target="#play_list_modal" style="color: #fff;"></i></button></div>
         <div id="list_down_btn" class="mt-3 mr-1" style="display: none;"><button class="btn"><i class="fa-solid fa-list fa-2x" style="color: red;"></i></button></div>
     </div>
-    <audio id="player" <% if (locals.vol) { %> onloadstart="this.volume= `<%- vol/100 %>`" <% } %>></audio>
+    <audio id="player"></audio>
 </footer>
+
+<script>
+    const vol = localStorage.myvol
+    if (vol) {
+        $('#vol_no').html(vol)
+        $('#volume_bar').val(vol)
+        player.volume = vol/100
+    }
+</script>

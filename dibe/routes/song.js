@@ -207,12 +207,6 @@ router.get('/search', async (req, res) => {
     res.json(songs)
 })
 
-router.get('/myvol/:vol', (req, res) => {
-    const vol = req.params.vol
-    res.cookie('vol', vol, {maxAge : 60 * 60 * 24 * 30})
-    res.end()
-})
-
 router.get('/exists/:songId', async (req, res) => {
     const songId = req.params.songId
     const path = `public/video/${songId}.mp4`
