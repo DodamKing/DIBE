@@ -214,4 +214,12 @@ router.get('/exists/:songId', async (req, res) => {
     res.send(exists)
 })
 
+router.get('/set_play_cnt/:songId', async (req, res) => {
+    const songId = req.params.songId
+    const userId = req.user ? req.user.id : '비회원'
+    const result = await db.playCnt.findOne({songId, userId})
+    if (!result) await db.playCnt.create({songId, userId})
+    else await db.playCnt.findOneAndUpdate({songId, userId}, {$inc : {playCnt : +1}},  {new : true})
+})
+
 module.exports = router

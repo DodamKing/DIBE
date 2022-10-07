@@ -208,7 +208,6 @@ async function load() {
     
     // 현재 재생 음악 포커스
     focus_cur()
-    localStorage.dibe_playerIndex = playerIndex
     $('.loader').fadeOut()
 }
 
@@ -238,7 +237,7 @@ $("#volume_bar").on("input", async () => {
     player.volume = vol / 100;
     $("#vol_no").html(vol);
     
-    localStorage.myvol = vol
+    localStorage.setItem(`dibe_${sUserId}_vol`, vol)
 });
 
 // 음소거
@@ -334,6 +333,8 @@ $("#back_btn").click(async () => {
 
 // 연속 재생
 $("#player").on("ended", async () => {
+    setPlayCnt()
+
     playerIndex++;
     if (repeat == 2) playerIndex--;
     if (playerIndex >= $('.get-songId').length) {
@@ -510,10 +511,10 @@ songBox.addEventListener('dragend', () => {
 
 // 인덱스 초기화
 function playerIndexReset() {
-    if (!$('.get-songId.active')[0]) return localStorage.dibe_playerIndex = 0
+    if (!$('.get-songId.active')[0]) return 
     const song = $('.get-songId')
     for (let i=0; i<song.length; i++) {
-        if (song[i].id === $('.get-songId.active')[0].id) return localStorage.dibe_playerIndex = playerIndex = i
+        if (song[i].id === $('.get-songId.active')[0].id) return playerIndex = i
     }
 }
 
@@ -541,12 +542,9 @@ function playlist_checkedId() {
     if ($('.player_checkbox').length !== checkedCnt) $('#list_allCheck').html('전체 선택')
 }
 
-
-$('#play_list').on('DOMSubtreeModified', () => {
-    const songsList = []
-    const songs = $('.get-songId')
-    for (const song of songs) {
-        songsList.push(song.id.split('_')[1])
-    }
-    localStorage.songsList_ = JSON.stringify(songsList)
-})
+// 재생 횟 수
+function setPlayCnt() {
+    if (!$('.get-songId.active')[0]) return
+    const songId = $('.get-songId.active')[0].id.split('_')[1]
+    fetch('/songs/set_play_cnt/' + songId)
+}

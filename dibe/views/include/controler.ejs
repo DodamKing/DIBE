@@ -41,7 +41,7 @@
 </footer>
 
 <script>
-    const vol = localStorage.myvol
+    const vol = localStorage.getItem('dibe_' + $('#sUserId').html() + '_vol')
     if (vol) {
         $('#vol_no').html(vol)
         $('#volume_bar').val(vol)

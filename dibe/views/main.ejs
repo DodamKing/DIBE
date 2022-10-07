@@ -19,6 +19,7 @@
         <%- include('./song/add-modal') %>
         <%- include('./song/play-list') %>
         <div class="isAuthenticated" style="display: none;"><%- isAuthenticated %></div>
+        <% if (user) { %> <div id="sUserId" style="display: none;"><%- user._id %></div> <% } %>
 
         <section>
             <div class="loader" style="display: none; z-index: 1055;"></div>
