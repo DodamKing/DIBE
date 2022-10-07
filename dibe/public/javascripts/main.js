@@ -7,17 +7,31 @@ $().ready(async () => {
         $('#list_up_btn2').show()
     }
 
-    const songsList_ = localStorage.songsList_
-    if (songsList_) {
-        const songs = JSON.parse(songsList_)
-        for (const songId of songs) {
+    const songsList_ = JSON.parse(localStorage.songsList_)
+    if (songsList_.length !== 0) {
+        $('.loader').fadeIn()
+        for (const songId of songsList_) {
             const res = await fetch('/songs/addsong?songId=' + songId)
             const json = await res.json()
             const song = json.song
             await setList(song)
-            $('#list_up_btn1').hide()
-            $('#list_up_btn2').show()
-            // 컨트롤러도 세팅 하면 좋을 듯
+        }
+        $('#list_up_btn1').hide()
+        $('#list_up_btn2').show()
+        $('.loader').fadeOut()
+
+        const idx = localStorage.dibe_playerIndex
+        if (idx) playerIndex = idx
+        await load()
+        sw = 1
+        await player.play()
+        player.pause()
+
+        const savePoint = localStorage.dibe_savePoint
+        if (savePoint) {
+            player.currentTime = parseInt(savePoint) * player.duration / 1000
+            $("#play_bar").val(savePoint)
+            $("#controls_time").html(localStorage.dibe_saveStrTime)
         }
     }
 });
@@ -41,7 +55,7 @@ function mainVideoPlay() {
 	let contextPath = location.href.substring(hostIndex, location.href.indexOf("/", hostIndex + 1));
 
     // let mainVideoUrl = contextPath + "/public/video/sample.mp4#t=0" + mainVideoH + ":" + mainVideoM.substr(-2) + ":" + mainVideoS.substr(-2);
-    let mainVideoUrl = "video/sample.mp4#t=0" + mainVideoH + ":" + mainVideoM.substr(-2) + ":" + mainVideoS.substr(-2);
+    let mainVideoUrl = "video/sample.mp4#t=0" + mainVideoH + ":" + mainVideoM.slice(-2) + ":" + mainVideoS.slice(-2);
     $("video").prop("src", mainVideoUrl);
 }
 
@@ -103,6 +117,39 @@ $('#play_list_modal').on('hidden.bs.modal', () => {
     $('#list_down_btn').hide()
 })
 
+// 웹 종료될 때 저장
+window.addEventListener('beforeunload', () => {
+    let min_dur = 00
+    let sec_dur = 00
+    let min_cur = 00
+    let sec_cur = 00
+
+    if (!isNaN(player.duration)) {
+        min_dur = parseInt(player.duration / 60)
+        sec_dur = parseInt(player.duration % 60)
+        min_cur = parseInt(player.currentTime / 60)
+        sec_cur = parseInt(player.currentTime % 60)
+    }
+    
+    if (min_dur < 10) {
+        min_dur = "0" + min_dur
+    }
+    if (sec_dur < 10) {
+        sec_dur = "0" + sec_dur
+    }
+    if (min_cur < 10) {
+        min_cur = "0" + min_cur
+    }
+    if (sec_cur < 10) {
+        sec_cur = "0" + sec_cur
+    }
+
+    let res = min_cur + ":" + sec_cur + " / " + min_dur + ":" + sec_dur
+
+    localStorage.dibe_savePoint = (player.currentTime / player.duration) * 1000
+    localStorage.dibe_saveStrTime = res
+})
+
 async function search(srchKwd) {
     history.pushState(null, 'DIBE', location.origin + '/search?srchKwd=' + srchKwd)
     const response = await fetch('/songs/search?srchKwd=' + srchKwd)
@@ -144,7 +191,6 @@ async function search(srchKwd) {
 
 // 페이지 이동
 $('.nav').on('click', async (e) => {
-    $('.loader').fadeIn()
     e.preventDefault()
     const url = e.target.dataset.url
     
@@ -203,7 +249,6 @@ $('.nav').on('click', async (e) => {
 
         $('#main').html(chart)
     }
-    $('.loader').fadeOut()
 })
 
 window.onpopstate = (e) => {

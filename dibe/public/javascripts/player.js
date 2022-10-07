@@ -48,6 +48,7 @@ async function senddata() {
 
 // 여러곡 선택 추가
 async function godata_many() {
+    $('.loader').fadeIn()
     const songIds = []
     let strSongIds = ''
     const items = $("input:checkbox[name='tch']")
@@ -70,6 +71,7 @@ async function godata_many() {
     }
     $('#list_up_btn1').hide()
     $('#list_up_btn2').show()
+    $('.loader').fadeOut()
 }
 
 // 플레이 리스트 음원 삭제
@@ -94,7 +96,14 @@ $('#list_selectedDelete').on('click', () => {
         $('#list_up_btn1').show()
         $('#list_up_btn2').hide()
         $('#list_down_btn').hide()
-        // 모달과 하단 컨트롤러 초기화 하면 좋음
+        
+        controls_img.src = 'images/music.png'
+        controls_title.innerHTML = '오늘 뭐 듣지?'
+        controls_artist.innerHTML = '재생 버튼을 클릭 해보세요.'
+        controls_title.title = ''
+        controls_artist.title = ''
+        play_listImg_img.src = '/img/music.png'
+        play_listbg.src = ''
     }
 })
 
@@ -168,7 +177,6 @@ async function streaming() {
 
 // 로드
 async function load() {
-    $('.loader').fadeIn()
     const getId = $('.get-songId')[playerIndex].id
     const songId = getId.split('_')[1]
     const title = $('.playlist_t')[playerIndex].title
@@ -179,6 +187,7 @@ async function load() {
     const exists = await (await fetch('/songs/exists/' + songId)).json()
     if (exists) player.src = songUrl
     else {
+        $('.loader').fadeIn()
         const src = await streaming()
         player.src = src
     }
@@ -199,6 +208,7 @@ async function load() {
     
     // 현재 재생 음악 포커스
     focus_cur()
+    localStorage.dibe_playerIndex = playerIndex
     $('.loader').fadeOut()
 }
 
@@ -248,7 +258,7 @@ $("#mute_btn2").click(() => {
 // 재생바 이동
 $("#play_bar").on("input", (e) => {
     const point = $("#play_bar").val();
-    const current = point * player.duration / 100
+    const current = point * player.duration / 1000
     play_bar = point;
     player.currentTime = current
 });
@@ -256,7 +266,7 @@ $("#play_bar").on("input", (e) => {
 //재생바
 $("#player").on("timeupdate", () => {
     const isAuthenticated = $('.isAuthenticated')[0].innerHTML
-    let per = (player.currentTime / player.duration) * 100;
+    let per = (player.currentTime / player.duration) * 1000;
     $("#play_bar").val(per);
     
     let min_dur = 00;
@@ -270,7 +280,6 @@ $("#player").on("timeupdate", () => {
         min_cur = parseInt(player.currentTime / 60);
         sec_cur = parseInt(player.currentTime % 60);
     }
-
     
     if (min_dur < 10) {
         min_dur = "0" + min_dur;
@@ -501,10 +510,10 @@ songBox.addEventListener('dragend', () => {
 
 // 인덱스 초기화
 function playerIndexReset() {
-    if (!$('.get-songId.active')[0]) return
+    if (!$('.get-songId.active')[0]) return localStorage.dibe_playerIndex = 0
     const song = $('.get-songId')
     for (let i=0; i<song.length; i++) {
-        if (song[i].id === $('.get-songId.active')[0].id) return playerIndex = i
+        if (song[i].id === $('.get-songId.active')[0].id) return localStorage.dibe_playerIndex = playerIndex = i
     }
 }
 
