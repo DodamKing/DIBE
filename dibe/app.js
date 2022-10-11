@@ -74,8 +74,8 @@ app.use(function(err, req, res, next) {
 });
 
 cron.schedule('0 12 * * *', async () => {
-  myModule.setTodayChart()
-  console.log(new Date().toLocaleString(), 'chart setting')
+  await myModule.setTodayChart()
+  console.log(new Date().toLocaleString(), 'chart setting done')
 })
 
 cron.schedule('5 12 * * *', async () => {
@@ -84,9 +84,14 @@ cron.schedule('5 12 * * *', async () => {
   console.log(new Date().toLocaleString(), 'url 크롤링 종료')
 })
 
-// cron.schedule('40 17 * * *', () => {
-//   console.log(new Date().toLocaleString(), '음원 파일 로컬 다운로드')
-//   myModule.setSongsFile()
-// })
+cron.schedule('10 12 * * *', () => {
+  console.log(new Date().toLocaleString(), '음원 파일 로컬 다운로드')
+  myModule.setSongsFile()
+})
+
+cron.schedule('11 12 * * *', () => {
+  console.log(new Date().toLocaleString(), '음원 파일 로컬 삭제')
+  myModule.delSongsFile()
+})
 
 module.exports = app;
