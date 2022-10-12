@@ -65,7 +65,7 @@ function setTodayChart() {
     })
 }
 
-async function setSongsFile() {
+async function downSongsFile() {
     const result = await db.Song.find()
 
     for (const song of result) {
@@ -75,23 +75,7 @@ async function setSongsFile() {
         const url = song.ytURL
 
         if (!exists && url) {
-            ytdl(url, {filter : 'audioonly'}).on('error', async () => {
-                console.log('잘못된 url :', url, song.title, song.artist)
-
-                const song_ = await db.Song.findById(song._id)
-                const songs = [song_]
-                const uri = process.env.URL_GET_URL
-
-                const options = {
-                    uri : uri,
-                    method : 'POST',
-                    body : {songs},
-                    json : true,
-                }
-                request.post(options, async (err, response, body) => {
-                    await db.Song.findByIdAndUpdate(song._id, {ytURL : body[0]})
-                })
-            }).pipe(fs.createWriteStream(path).on('finish', () => {
+            ytdl(url, {filter : 'audioonly'}).pipe(fs.createWriteStream(path).on('finish', () => {
                 console.log(song.title, song.artist)
                 db.Song.findByIdAndUpdate(songId, {isFile : 1}, (err) => {
                     if (err) return console.error(err)
@@ -113,9 +97,38 @@ async function delSongsFile() {
     
 }
 
+async function setWrongYtURL() {
+    const result = await db.Song.find()
+
+    for (const song of result) {
+        const url = song.ytURL
+
+        ytdl(url, {filter : 'audioonly'}).on('error', async () => {
+            console.log('잘못된 url :', url, song.title, song.artist)
+
+            const song_ = await db.Song.findById(song._id)
+            const songs = [song_]
+            const uri = process.env.URL_GET_URL
+
+            const options = {
+                uri : uri,
+                method : 'POST',
+                body : {songs},
+                json : true,
+            }
+
+            request.post(options, async (err, response, body) => {
+                console.log('새로운 url :', body[0]);
+                await db.Song.findByIdAndUpdate(song._id, {ytURL : body[0]})
+            })
+        })
+    }
+}
+
 myModule.setURLScheduler = setURLScheduler
 myModule.setTodayChart = setTodayChart
-myModule.setSongsFile = setSongsFile
+myModule.downSongsFile = downSongsFile
 myModule.delSongsFile = delSongsFile
+myModule.setWrongYtURL = setWrongYtURL
 
 module.exports = myModule

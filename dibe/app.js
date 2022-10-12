@@ -84,14 +84,14 @@ cron.schedule('5 12 * * *', async () => {
   console.log(new Date().toLocaleString(), 'url 크롤링 종료')
 })
 
-cron.schedule('10 12 * * *', () => {
-  console.log(new Date().toLocaleString(), '음원 파일 로컬 다운로드')
-  myModule.setSongsFile()
+cron.schedule('10 12 * * *', async () => {
+  await myModule.setWrongYtURL()
+  console.log(new Date().toLocaleString(), '잘못된 주소 다시 세팅')
 })
 
-cron.schedule('11 12 * * *', () => {
-  console.log(new Date().toLocaleString(), '음원 파일 로컬 삭제')
-  myModule.delSongsFile()
+cron.schedule('15 12 * * *', async () => {
+  await myModule.downSongsFile()
+  console.log(new Date().toLocaleString(), '음원 파일 로컬 다운로드')
 })
 
 module.exports = app;
