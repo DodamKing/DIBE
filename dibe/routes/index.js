@@ -3,7 +3,8 @@ var router = express.Router();
 const db = require('../models')
 const fs = require('fs')
 const request = require('request')
-const MobileDetect = require('mobile-detect')
+const MobileDetect = require('mobile-detect');
+const myModule = require('../public/javascripts/myModule');
 
 /* GET home page. */
 router.get('/', (req, res) => {
@@ -34,5 +35,9 @@ router.get('/:flag', async (req, res) => {
 		res.render('main', {flag, songs, srchKwd : query, vol})
 	}
 });
+
+router.get('/test/ryr', (req, res) => {
+	myModule.setRyrics()
+})
 
 module.exports = router;

@@ -214,6 +214,8 @@ async function load() {
 
 // 플레이버튼 클릭
 play_btn.addEventListener("click", async () => {
+    if ($('.get-songId').length == 0) return
+
     if (sw == 0) {
         await load();
         sw = 1;
@@ -305,6 +307,8 @@ $("#player").on("timeupdate", () => {
 
 // next button
 $("#next_btn").click(async () => {
+    if ($('.get-songId').length == 0) return
+
     $(play_btn).hide();
     $(pause_btn).show();
     
@@ -319,6 +323,8 @@ $("#next_btn").click(async () => {
 
 // back button
 $("#back_btn").click(async () => {
+    if ($('.get-songId').length == 0) return
+
     $(play_btn).hide();
     $(pause_btn).show();
     
@@ -360,12 +366,18 @@ $("#player").on("ended", async () => {
 
 //가사 모달
 $("#lyrics_btn").click(() => {
-    // modal_i.src = thum_list[playerIndex].replace("50","200");
-    // $("#modal_t").html($("#controls_title").html());
-    // $("#modal_a").html($("#controls_artist").html());
+    if ($('.get-songId').length === 0) {
+        $("#moreModal_message_box").html("플레이 리스트에 곡을 추가해 주세요.")
+		$("#moreModal_message_box").slideDown(300)
+		setTimeout(() => $("#moreModal_message_box").slideUp(), 1000)
+        return
+    }
+    $("#lyricsModal_title").html($("#controls_title").html())
+    $("#lyricsModal_artist").html($("#controls_artist").html())
+    $('#lyricsModal_img').prop('src' ,$('#controls_img').prop('src').replace('50', '200'))
     
     // $.ajax({
-    //     type : "post",
+        //     type : "post",
     //     url : "${ctp}/song/lyrics",
     //     data : {idx : idx_list[playerIndex]},
     //     success : (data) => {
@@ -374,6 +386,8 @@ $("#lyrics_btn").click(() => {
     //     }
     // });
     
+    $('#moreModal').modal('hide')
+    $('#lyricsModal').modal('show')
 });
 
 // 좋아요 버튼 이벤트
@@ -424,7 +438,7 @@ $("#repeat_btn").click(() => {
 
 //셔플
 $("#shuffle_btn").click(async () => {
-    if ($('.get-songId').length <= 1) return;
+    if ($('.get-songId').length <= 1) return
     
     $('.loader').show()
     
@@ -489,11 +503,6 @@ function focus_cur() {
     focu.scrollIntoView({block : 'center'})
     focu.classList.add('active')
 }
-
-// 더보기 버튼 클릭
-addmore_btn.addEventListener("click", () => {
-    
-});
 
 // 드래그 이벤트
 const songBox = document.getElementById('play_list')

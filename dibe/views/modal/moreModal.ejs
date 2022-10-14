@@ -1,0 +1,37 @@
+<div class="modal fade" id="moreModal">
+	<div class="modal-dialog modal-sm modal-dialog-centered">
+		<div class="modal-content" style="background: black;">
+			<!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">더보기</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+                <button type="button" class="btn btn-danger form-control mt-3" onclick="moreModal_temp()">좋아요</button>
+                <button type="button" class="btn btn-danger form-control mt-3" onclick="moreModal_temp()">내 플레이리스트 추가</button>
+                <button type="button" class="btn btn-danger form-control mt-3" onclick="$('#lyrics_btn').click()">가사 보기</button>
+                <button type="button" class="btn btn-danger form-control mt-3" onclick="moreModal_temp()">저장</button>
+                <button type="button" class="btn btn-danger form-control mt-3" onclick="moreModal_temp()">선물하기</button>
+                <button type="button" class="btn btn-danger form-control mt-3" onclick="moreModal_temp()">신고</button>
+                <div id="moreModal_idx_box" style="display: none;"></div>
+                <div id="moreModal_mylist_box" class="mt-5"></div>
+                <div id="moreModal_message_box" style="display: none;" class="text-center"></div>
+            </div>
+            
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button id="moreModal_close" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+	</div>
+</div>
+
+<script>
+	function moreModal_temp() {
+		$("#moreModal_message_box").html("준비중인 서비스 입니다.")
+		$("#moreModal_message_box").slideDown(300)
+		setTimeout(() => $("#moreModal_message_box").slideUp(), 1000)
+	}
+</script>

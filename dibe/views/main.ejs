@@ -18,6 +18,8 @@
         <%- include('./include/header') %>
         <%- include('./song/add-modal') %>
         <%- include('./song/play-list') %>
+        <%- include('./modal/moreModal') %>
+        <%- include('./modal/lyricsModal') %>
         <div class="isAuthenticated" style="display: none;"><%- isAuthenticated %></div>
         <% if (user) { %> <div id="sUserId" style="display: none;"><%- user._id %></div> <% } %>
 

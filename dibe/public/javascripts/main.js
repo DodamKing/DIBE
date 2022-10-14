@@ -1,6 +1,7 @@
 const sUserId = $('#sUserId').html()
 
 $().ready(async () => {
+    mediaCheck()
     mainVideoPlay();
     $("video").on("ended", mainVideoPlay);
     
@@ -273,4 +274,23 @@ $('.nav').on('click', async (e) => {
 
 window.onpopstate = (e) => {
     location.reload()
+}
+
+// 반응형
+window.onresize = (e) => {
+    mediaCheck()
+}
+
+function mediaCheck() {
+    const innerWidth = window.innerWidth
+    
+    if (innerWidth <= 1200) {
+        $('#controls_time').hide()
+        $('.controls_more').hide()
+    }
+    
+    else {
+        $('#controls_time').show()
+        $('.controls_more').show()
+    }
 }
