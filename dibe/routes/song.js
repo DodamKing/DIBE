@@ -222,4 +222,11 @@ router.get('/set_play_cnt/:songId', async (req, res) => {
     else await db.playCnt.findOneAndUpdate({songId, userId}, {$inc : {playCnt : +1}},  {new : true})
 })
 
+router.get('/lyrics/:songId', async (req, res) => {
+    const songId = req.params.songId
+    const lyrics = (await db.Song.findById(songId)).lyrics
+    if (lyrics) res.json(lyrics)
+    else res.json(false)
+})
+
 module.exports = router

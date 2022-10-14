@@ -365,7 +365,7 @@ $("#player").on("ended", async () => {
 });
 
 //가사 모달
-$("#lyrics_btn").click(() => {
+$("#lyrics_btn").click(async () => {
     if ($('.get-songId').length === 0) {
         $("#moreModal_message_box").html("플레이 리스트에 곡을 추가해 주세요.")
 		$("#moreModal_message_box").slideDown(300)
@@ -376,15 +376,14 @@ $("#lyrics_btn").click(() => {
     $("#lyricsModal_artist").html($("#controls_artist").html())
     $('#lyricsModal_img').prop('src' ,$('#controls_img').prop('src').replace('50', '200'))
     
-    // $.ajax({
-        //     type : "post",
-    //     url : "${ctp}/song/lyrics",
-    //     data : {idx : idx_list[playerIndex]},
-    //     success : (data) => {
-    //         data = data.replace(/\n/g, "<br>");
-    //         $("#modal_c").html(data);
-    //     }
-    // });
+    const songId = ($('.get-songId.active')[0].id).split('_')[1]
+    const response = await fetch('/songs/lyrics/' + songId)
+    const json = await response.json()
+    if (json) {
+        const lyrics = json.replace(/\n/g, "<br>")
+        $('#lyricsModal_lyrics').html(lyrics)
+    }
+    else $('#lyricsModal_lyrics').html('준비중 입니다.')
     
     $('#moreModal').modal('hide')
     $('#lyricsModal').modal('show')
