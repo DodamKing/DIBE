@@ -128,12 +128,16 @@ async function setWrongYtURL() {
 async function setRyrics() {
     const songs = []
     const result = await db.Song.find()
+    let i = 0
     for (const song of result) {
-        const ryrics = song.ryrics
-        if (!ryrics) {
+        const lyrics = song.lyrics
+        if (!lyrics) {
             songs.push(song)
+            i++
         }
+        if (i === 5) break
     }
+
 
     const uri = process.env.LYRICS_POST_URL
     const options = {
@@ -147,6 +151,7 @@ async function setRyrics() {
         for (const song of body) {
             const songId = song._id
             await db.Song.findByIdAndUpdate(songId, {write : song.작곡, words : song.작사, arrange : song.편곡, lyrics : song.가사})
+            // console.log(songId, song.작곡, song.작사, song.편곡, song.가사)
         }
     })
 }

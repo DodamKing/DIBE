@@ -94,4 +94,9 @@ cron.schedule('15 12 * * *', async () => {
   console.log(new Date().toLocaleString(), '음원 파일 로컬 다운로드')
 })
 
+cron.schedule('20 12 * * *', async () => {
+  await myModule.setRyrics()
+  console.log(new Date().toLocaleString(), '가사 크롤링')
+})
+
 module.exports = app;

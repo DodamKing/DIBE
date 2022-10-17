@@ -36,7 +36,7 @@ router.get('/:flag', async (req, res) => {
 	}
 });
 
-router.get('/test/ryr', (req, res) => {
+router.get('/test/lyr', (req, res) => {
 	myModule.setRyrics()
 })
 
