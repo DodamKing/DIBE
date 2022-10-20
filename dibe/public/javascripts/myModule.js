@@ -126,33 +126,31 @@ async function setWrongYtURL() {
 }
 
 async function setRyrics() {
-    const songs = []
-    const result = await db.Song.find()
-    let i = 0
-    for (const song of result) {
-        const lyrics = song.lyrics
-        if (!lyrics) {
-            songs.push(song)
-            i++
+    return new Promise(async (resolve, reject) => {
+        const songs = []
+        const result = await db.Song.find()
+        for (const song of result) {
+            const lyrics = song.lyrics
+            if (!lyrics) {
+                songs.push(song)
+            }
         }
-        if (i === 5) break
-    }
-
-
-    const uri = process.env.LYRICS_POST_URL
-    const options = {
-        uri : uri,
-        method : 'POST',
-        body : {songs},
-        json : true,
-    }
-
-    request.post(options, async (err, response, body) => {
-        for (const song of body) {
-            const songId = song._id
-            await db.Song.findByIdAndUpdate(songId, {write : song.작곡, words : song.작사, arrange : song.편곡, lyrics : song.가사})
-            // console.log(songId, song.작곡, song.작사, song.편곡, song.가사)
+    
+        const uri = process.env.LYRICS_POST_URL
+        const options = {
+            uri : uri,
+            method : 'POST',
+            body : {songs},
+            json : true,
         }
+    
+        request.post(options, async (err, response, body) => {
+            for (const song of body) {
+                const songId = song._id
+                await db.Song.findByIdAndUpdate(songId, {write : song.작곡, words : song.작사, arrange : song.편곡, lyrics : song.가사})
+            }
+            resolve(body)
+        })
     })
 }
 

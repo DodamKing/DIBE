@@ -127,7 +127,7 @@ router.get('/set/chart', (req, res) => {
 router.get('/list', async (req, res) => {
     try {
         const result = await db.Song.find()
-        res.json(result)
+        res.json(JSON.stringify(result))
     } catch (err) {
         console.error(err)
     }
