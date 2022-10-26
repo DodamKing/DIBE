@@ -26,7 +26,7 @@ function setURLScheduler() {
         request.post(options, async (err, response, body) => {
             for (let i=0; i<body.length; i++) {
                 await db.Song.findByIdAndUpdate(songs[i]._id, {ytURL : body[i]})
-                await db.Chart.findOneAndUpdate({title : songs[i].title, artist : songs[i].artist}, {ytURL : body[i]})
+                await db.Chart.findOneAndUpdate({songId : songs[i]._id}, {ytURL : body[i]})
                 const result = await db.Song.findById(songs[i]._id)
                 results.push(result)
             }
@@ -120,6 +120,7 @@ async function setWrongYtURL() {
             request.post(options, async (err, response, body) => {
                 console.log('새로운 url :', body[0]);
                 await db.Song.findByIdAndUpdate(song._id, {ytURL : body[0]})
+                await db.Chart.findOneAndUpdate({songId : song._id}, {ytURL : body[0]})
             })
         })
     }
