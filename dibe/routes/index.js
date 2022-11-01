@@ -36,8 +36,9 @@ router.get('/:flag', async (req, res) => {
 	}
 });
 
-router.get('/test/lyr', async (req, res) => {
-	const result = await myModule.setRyrics()
+router.get('/test/my', async (req, res) => {
+	// const result = await myModule.setRyrics()
+	const result = await myModule.setWrongYtURL()
 	res.json(result)
 })
 
