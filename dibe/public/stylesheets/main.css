@@ -300,6 +300,10 @@ div#play_listImg > div {
 	display: none;
 }
 
+#lyricsModal .modal-body::-webkit-scrollbar {
+    display: none;
+}
+
 .table {
     color: inherit;
 }

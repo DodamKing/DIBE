@@ -11,7 +11,7 @@ async function oneplay(songId, ytURL) {
 
     if ($('.get-songId').length !== 0) {
         for (let song of $('.get-songId')) {
-            if (song.id === `p_${songId}`) return alert('이미 추가된 곡입니다.')
+            if (song.id === `p_${songId}`) return bootbox.alert('<div style="color:black;">이미 추가된 곡입니다.</div>')
         }
     }
 
@@ -48,7 +48,10 @@ async function senddata() {
 
 // 여러곡 선택 추가
 async function godata_many() {
-    $('.loader').fadeIn()
+    const dialog = bootbox.dialog({
+        message : '<p class="text-center mb-0 text-dark"><i class="fa fa-spin fa-spinner"></i> Please wait while we do something...</p>',
+        closeButton : false,
+    })
     const songIds = []
     let strSongIds = ''
     const items = $("input:checkbox[name='tch']")
@@ -71,7 +74,7 @@ async function godata_many() {
     }
     $('#list_up_btn1').hide()
     $('#list_up_btn2').show()
-    $('.loader').fadeOut()
+    dialog.modal('hide')
 }
 
 // 플레이 리스트 음원 삭제

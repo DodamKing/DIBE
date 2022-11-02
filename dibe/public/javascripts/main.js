@@ -42,14 +42,18 @@ async function setPlayList_() {
     const songsList = JSON.parse(songsList_)
     if (songsList.length === 0) return
 
-    $('.loader').fadeIn()
+    const dialog = bootbox.dialog({
+        message : '<p class="text-center mb-0 text-dark"><i class="fa fa-spin fa-spinner"></i> Please wait while we do something...</p>',
+        closeButton : false,
+    })
+
     for (const songId of songsList) {
         const res = await fetch('/songs/addsong?songId=' + songId)
         const json = await res.json()
         const song = json.song
         await setList(song)
     }
-    $('.loader').fadeOut()
+    dialog.modal('hide')
     
     const idx = localStorage.getItem(`dibe_${sUserId}_playerIndex`)
     if (idx) playerIndex = idx
@@ -216,13 +220,13 @@ $('.nav').on('click', async (e) => {
     const url = e.target.dataset.url
     
     if (url === '/today') {
-        history.pushState(null, 'DIBE', location.origin + url)
+        history.pushState(null, '', location.origin + url)
         main.innerHTML = `<video style="width: 100%;" src="" autoplay muted></video>`
         mainVideoPlay();
     }
     
     else if (url === '/chart') {
-        history.pushState(null, 'DIBE', location.origin + url)
+        history.pushState(null, '', location.origin + url)
         const response = await fetch('/songs/chart')
         const result = await response.json()
         const data = result.data
@@ -232,10 +236,12 @@ $('.nav').on('click', async (e) => {
             <div class="container">
                 <div class="card-body">
                     <h2 class="mt-5 mb-5">DIBE Top 100</h2>
+                    <!--
                     <div>
                         <input type="date" id="calendar" min="" max="">
                         <div id="go_btn" class="btn btn-dark btn-sm">go</div>
                     </div>
+                    -->
                     <div id="top_btn" class="btn btn-dark btn-sm" style="position: fixed; right: 30px; bottom: 100px;">top</div>
                     <div class="text-center h4">${today}</div>
                     <table class="table">
