@@ -99,7 +99,6 @@ async function delSongsFile() {
 
 async function setWrongYtURL() {
     const result = await db.Song.find()
-    // const songs = []
     const uri = process.env.URL_GET_URL
 
     for (const song of result) {
