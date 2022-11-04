@@ -99,33 +99,32 @@ async function delSongsFile() {
 
 async function setWrongYtURL() {
     const result = await db.Song.find()
-    const songs = []
+    // const songs = []
+    const uri = process.env.URL_GET_URL
 
-    for await (const song of result) {
+    for (const song of result) {
         const url = song.ytURL
-        ytdl(url, {filter : 'audioonly'}).on('error', async () => {
+        ytdl(url, {filter : 'audioonly'}).on('error', () => {
             console.log('잘못된 url :', url, song.title, song.artist)
-            songs.push(song)
+            
+            const songs = [song]
+            const options = {
+                uri : uri,
+                method : 'POST',
+                body : {songs},
+                json : true,
+            }
+        
+            request.post(options, async (err, response, body) => {
+                if (response.statusCode === 200) {
+                    console.log('새로운 url :', body[0])
+                    await db.Song.findByIdAndUpdate(songs[i]._id, {ytURL : body[i]})
+                    await db.Chart.findOneAndUpdate({songId : songs[i]._id}, {ytURL : body[i]})
+                }
+            })
         })
     }
 
-    const uri = process.env.URL_GET_URL
-    const options = {
-        uri : uri,
-        method : 'POST',
-        body : {songs},
-        json : true,
-    }
-
-    request.post(options, async (err, response, body) => {
-        if (response.statusCode === 200) {
-            for (let i=0; i<body.length; i++) {
-                console.log('새로운 url :', body[i])
-                await db.Song.findByIdAndUpdate(songs[i]._id, {ytURL : body[i]})
-                await db.Chart.findOneAndUpdate({songId : songs[i]._id}, {ytURL : body[i]})
-            }
-        }
-    })
 }
 
 async function setRyrics() {
