@@ -59,7 +59,7 @@ app.use('/admin', adminRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  console.log(req.ip, new Date().toLocaleString)
+  console.log(req.ip, new Date().toLocaleString())
   next(createError(404));
 });
 
