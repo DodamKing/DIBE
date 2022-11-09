@@ -74,7 +74,12 @@ async function godata_many() {
     }
     $('#list_up_btn1').hide()
     $('#list_up_btn2').show()
-    dialog.modal('hide')
+    // dialog.modal('hide')
+    dialog.init(function(){
+        setTimeout(function(){
+            dialog.modal('hide')
+        }, 500);
+    })
 }
 
 // 플레이 리스트 음원 삭제

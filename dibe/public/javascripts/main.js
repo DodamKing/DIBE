@@ -46,14 +46,14 @@ async function setPlayList_() {
         message : '<p class="text-center mb-0 text-dark"><i class="fa fa-spin fa-spinner"></i> Please wait while we do something...</p>',
         closeButton : false,
     })
-
-    for (const songId of songsList) {
+    
+    for await (const songId of songsList) {
         const res = await fetch('/songs/addsong?songId=' + songId)
         const json = await res.json()
         const song = json.song
         await setList(song)
     }
-    dialog.modal('hide')
+    // dialog.modal('hide')
     
     const idx = localStorage.getItem(`dibe_${sUserId}_playerIndex`)
     if (idx) playerIndex = idx
@@ -68,6 +68,11 @@ async function setPlayList_() {
         $("#play_bar").val(savePoint)
         $("#controls_time").html(localStorage.getItem(`dibe_${sUserId}_saveTime`))
     }
+    dialog.init(function(){
+        setTimeout(function(){
+            dialog.modal('hide')
+        }, 500);
+    })
 }
 
 // 검색버튼 클릭 이벤트
