@@ -5,30 +5,39 @@ const moment = require('moment')
 const ytdl = require('ytdl-core')
 const fs = require('fs')
 const request = require('request')
+const myModule = require('../public/javascripts/myModule')
 
-router.get('/index', (req, res) => {
+const isAdmin = (req, res, next) => {
+    const user = req.user
+    if (user && user.userId === 'admin') next()  
+    else res.redirect('/users/login')
+}
+
+router.get('/index', isAdmin, (req, res) => {
     res.render('admin/index')
 })
 
-router.get('/users', async (req, res) => {
+router.get('/users', isAdmin, async (req, res) => {
     const users = await db.User.find().sort('-_id')
     res.render('admin/user', {users, moment})
 })
 
-router.get('/songs', async (req, res) => {
+router.get('/songs', isAdmin, async (req, res) => {
     res.render('admin/song')
 })
 
-router.post('/songs', async (req, res) => {
+router.post('/songs', isAdmin, async (req, res) => {
     const query = req.body.query
     const songs = await db.Song.find({$or : [{title : {$regex : query, $options : 'i'}}, {artist : {$regex : query, $options : 'i'}}]})
     res.render('admin/song', {songs})
 })
 
-router.get('/update/:songId', async (req, res) => {
+router.get('/update/:songId', isAdmin, async (req, res) => {
     const songId = req.params.songId
     const song = await db.Song.findById(songId)
-    res.render('admin/update', {song})
+    const path = `public/video/${songId}.mp4`
+    const exists = await fs.existsSync(path)
+    res.render('admin/update', {song, exists})
 })
 
 router.post('/update/:songId', async (req, res) => {
@@ -59,36 +68,13 @@ router.post('/preview', async (req, res) => {
     ytdl(url, {filter : 'audioonly'}).pipe(res)
 })
 
-router.get('/setYtUrl', async (req, res) => {
-    const url = process.env.URL_GET_URL
-    const songs = []
-    const results = []
-    const rows = await db.Song.find()
-    for (row of rows) {
-        if (!row.ytURL) {
-            songs.push(row)
-        }
-    }
-    
-    const options = {
-        uri : url,
-        method : 'POST',
-        body : {songs},
-        json : true,
-    }
-    request.post(options, async (err, response, body) => {
-        for (let i=0; i<body.length; i++) {
-            console.log(body[i]);
-            await db.Song.findByIdAndUpdate(songs[i]._id, {ytURL : body[i]})
-            const result = await db.Song.findById(songs[i]._id)
-            results.push(result)
+router.get('/testYtUrl', (req, res) => {
+    myModule.resetWrongYtURL()
+})
 
-            if (i === body.length-1) {
-                console.log(results)
-                res.json({results})
-            }
-        }
-    })
+router.get('/setYtUrl', async (req, res) => {
+    const results = await myModule.setWrongYtURL()
+    res.json({results})
 })
 
 router.get('/getYtUTL', async (req, res) => {

@@ -95,7 +95,7 @@
             </div>
 
             <div class="mt-5">
-                <audio controls src="/track/<%-song._id%>.mp4"></audio>
+                <audio controls <% if(exists) { %> src="/track/<%-song._id%>.mp4" <% } %>></audio>
                 <audio id="preview" controls></audio>
             </div>
         </div>
