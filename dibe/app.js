@@ -7,6 +7,7 @@ const session = require('express-session')
 const passport = require('passport')
 const flash = require('connect-flash')
 const cron = require('node-cron')
+const ipfilter = require('express-ipfilter').IpFilter
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -20,6 +21,19 @@ require('dotenv').config()
 require('./db/connect')()
 var app = express();
 passportConfig()
+
+const ips = ['164.92.143.142']
+app.use(ipfilter(ips))
+app.use((req, res, next) => {
+  let ip = req.ip
+  if (ip.substring(0, 7) === '::ffff:') ip = ip.substring(7)
+  if (ips.includes(ip)) {
+    console.log(req.headers.referer, '침입자 발생')
+    res.redirect('http://www.cnhonker.com/#/')
+    // res.end()
+  } 
+  else next()
+})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -59,7 +73,7 @@ app.use('/admin', adminRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  console.log(req.ip, new Date().toLocaleString())
+  // console.log(req.ip, new Date().toLocaleString())
   next(createError(404));
 });
 
