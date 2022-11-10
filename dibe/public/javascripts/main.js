@@ -305,3 +305,7 @@ function mediaCheck() {
         $('.controls_more').show()
     }
 }
+
+$('#addMany').on('shown.bs.modal', () => {
+    if ($("input:checkbox[name='tch']:checked").length === 0) $('#addMany').modal('hide')
+})

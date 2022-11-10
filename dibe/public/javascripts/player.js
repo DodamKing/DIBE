@@ -11,7 +11,10 @@ async function oneplay(songId, ytURL) {
 
     if ($('.get-songId').length !== 0) {
         for (let song of $('.get-songId')) {
-            if (song.id === `p_${songId}`) return bootbox.alert('<div style="color:black;">이미 추가된 곡입니다.</div>')
+            if (song.id === `p_${songId}`) return bootbox.alert({
+                message : '<h4 style="color:black;">이미 추가된 곡입니다.</h4>',
+                closeButton : false,
+            })
         }
     }
 
@@ -37,6 +40,16 @@ async function senddata() {
     const songId = idx_box.innerHTML
     const ytURL = ytURL_box.innerHTML
     if (!ytURL || ytURL === 'undefined') return alert('준비중 입니다')
+    
+    const rows = $('.get-songId')
+    for (row of rows) {
+        if (row.id.split('_')[1] === songId) {
+            $("#addModal_message_box").html("이미 추가 된 곡입니다.")
+            $("#addModal_message_box").slideDown(300)
+            setTimeout(() => $("#addModal_message_box").slideUp(), 1000)
+            return
+        }
+    }
 
     const res = await fetch('/songs/addsong?songId=' + songId)
     const json = await res.json()
@@ -44,6 +57,7 @@ async function senddata() {
     await setList(song)
     $('#list_up_btn1').hide()
     $('#list_up_btn2').show()
+    $('#addOne').modal('hide')
 }
 
 // 여러곡 선택 추가
@@ -397,6 +411,12 @@ $("#lyrics_btn").click(async () => {
     $('#lyricsModal').modal('show')
 });
 
+//더보기 모달
+$('#addmore_btn').on('click', () => {
+    if (!$('.get-songId.active')[0]) return
+    $('#moreModal').modal('show')
+})
+
 // 좋아요 버튼 이벤트
 $("#like_btn1").click(() => {
     $("#like_btn1").hide();
@@ -563,4 +583,30 @@ function setPlayCnt() {
     if (!$('.get-songId.active')[0]) return
     const songId = $('.get-songId.active')[0].id.split('_')[1]
     fetch('/songs/set_play_cnt/' + songId)
+}
+
+// 신고
+function report() {
+    const songId = $('.get-songId.active')[0].id.split('_')[1]
+    bootbox.prompt({
+        title : '<h4 style="color:black;">내용을 기입해 주세요.</h4>',
+        closeButton : false,
+        inputType : 'textarea',
+        buttons : {
+            cancel : { 
+                label : '<i class="fa fa-times"></i> 취소',
+                className : 'btn-danger',
+            },
+            confirm : {
+                label : '<i class="fa fa-check"></i> 전송',
+                className : 'btn-success'
+            }
+        },
+        callback : (res) => {
+            if (res !== null) {
+                fetch('/admin/report/' + songId + '?content=' + res)
+                $('#moreModal').modal('hide')
+            }
+        }
+    })
 }

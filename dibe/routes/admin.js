@@ -95,4 +95,11 @@ router.get('/getYtUTL', async (req, res) => {
     })
 })
 
+router.get('/report/:songId', async (req, res) => {
+    const songId = req.params.songId
+    const content = req.query.content
+    const song = await db.Song.findById(songId)
+    console.log(song.title, song.artist, content)
+})
+
 module.exports = router

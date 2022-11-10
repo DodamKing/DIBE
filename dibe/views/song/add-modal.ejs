@@ -9,16 +9,14 @@
             
             <!-- Modal body -->
             <div class="modal-body">
-                <button type="button" class="btn btn-danger form-control" onclick="senddata()" data-dismiss="modal">현재 재생 목록에 추가</button>
-                <button type="button" class="btn btn-danger form-control mt-3" onclick="download()">저장</button>
-                <button type="button" class="btn btn-danger form-control mt-3" onclick="gift()">선물하기</button>
-                <button type="button" class="btn btn-danger form-control mt-3" onclick="getlist()">플레이리스트에 추가</button>
+                <button type="button" class="btn btn-danger form-control" onclick="senddata()">현재 재생 목록에 추가</button>
+                <button type="button" class="btn btn-danger form-control mt-3" onclick="addModal_temp()">저장</button>
+                <button type="button" class="btn btn-danger form-control mt-3" onclick="addModal_temp()">선물하기</button>
+                <button type="button" class="btn btn-danger form-control mt-3" onclick="addModal_temp()">플레이리스트에 추가</button>
                 <div id="idx_box" style="display: none;"></div>
                 <div id="ytURL_box" style="display: none;"></div>
                 <div id="mylist_box" class="mt-5"></div>
-                <div id="message_box1" style="display: none;" class="text-center">추가 되었습니다</div>
-                <div id="message_box2" style="display: none;" class="text-center">이미 추가 된 곡입니다</div>
-                <div id="message_box3" style="display: none;" class="text-center">로그인이 필요합니다</div>
+                <div id="addModal_message_box" style="display: none;" class="text-center"></div>
             </div>
             
             <!-- Modal footer -->
@@ -41,9 +39,9 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <button type="button" class="btn btn-danger form-control" onclick="godata_many()" data-dismiss="modal">현재 재생 목록에 추가</button>
-                <button type="button" class="btn btn-danger form-control mt-3" onclick="getlist_many()">플레이리스트에 추가</button>
+                <button type="button" class="btn btn-danger form-control mt-3" onclick="addMany_temp()">플레이리스트에 추가</button>
                 <div id="mylist_box_many" class="mt-5"></div>
-                <div id="message_box_many" style="display: none;" class="text-center">추가 되었습니다</div>
+                <div id="addModal_message_box_many" style="display: none;" class="text-center"></div>
             </div>
             
             <!-- Modal footer -->
@@ -55,6 +53,18 @@
 </div>
 
 <script>
+	function addModal_temp() {
+		$("#addModal_message_box").html("준비중인 서비스 입니다.")
+		$("#addModal_message_box").slideDown(300)
+		setTimeout(() => $("#addModal_message_box").slideUp(), 1000)
+	}
+
+	function addMany_temp() {
+		$("#addModal_message_box_many").html("준비중인 서비스 입니다.")
+		$("#addModal_message_box_many").slideDown(300)
+		setTimeout(() => $("#addModal_message_box_many").slideUp(), 1000)
+	}
+
 	function getlist() {
 		if ("${sVO}" == "") return;
 		$.ajax({
