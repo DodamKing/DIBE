@@ -8,6 +8,7 @@ const passport = require('passport')
 const flash = require('connect-flash')
 const cron = require('node-cron')
 const ipfilter = require('express-ipfilter').IpFilter
+const IpDeniedError = require('express-ipfilter').IpDeniedError
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -22,17 +23,12 @@ require('./db/connect')()
 var app = express();
 passportConfig()
 
-const ips = ['164.92.143.142']
+const ips = ['::ffff:164.92.143.142']
 app.use(ipfilter(ips))
-app.use((req, res, next) => {
-  let ip = req.ip
-  if (ip.substring(0, 7) === '::ffff:') ip = ip.substring(7)
-  if (ips.includes(ip)) {
-    console.log(req.headers.referer, '침입자 발생')
-    res.redirect('http://www.cnhonker.com/#/')
-    // res.end()
-  } 
-  else next()
+app.use((err, req, res, next) => {
+  res.send('Hello World!!!')
+  if (err instanceof IpDeniedError) res.status(401).end()
+  else res.status(err.status || 500).end()
 })
 
 // view engine setup
