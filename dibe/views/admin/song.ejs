@@ -22,7 +22,7 @@
             <div class="mt-5">
                 <form method="post">
                     <div class="input-group mb-3">
-                        <input name="query" type="text" class="form-control query" placeholder="Search">
+                        <input name="query" type="text" class="form-control query" placeholder="Search" autofocus>
                         <div class="input-group-append">
                             <button class="btn btn-success search" type="submit">검색</button>
                         </div>
@@ -63,7 +63,7 @@
             $('#resultDiv').html(write)
         }
 
-        $('.query').on('keyup', (e) => {
+        $('.query').on('keydown', (e) => {
             if (e.keyCode === 13) $('.search').click()
         })
     </script>
