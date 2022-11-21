@@ -602,9 +602,15 @@ function report() {
                 className : 'btn-success'
             }
         },
+        placeholder : '예) 가사가 틀렸어요, 수정해 주세요.',
         callback : (res) => {
             if (res !== null) {
-                fetch('/admin/report/' + songId + '?content=' + res)
+                const post = {
+                    method : 'POST',
+                    body : JSON.stringify({songId, content : res}),
+                    headers : {'Content-Type' : 'application/json'}
+                }
+                fetch('/admin/report/', post)
                 $('#moreModal').modal('hide')
             }
         }

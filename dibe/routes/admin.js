@@ -13,8 +13,10 @@ const isAdmin = (req, res, next) => {
     else res.redirect('/users/login')
 }
 
-router.get('/index', isAdmin, (req, res) => {
-    res.render('admin/index')
+router.get('/index', isAdmin, async (req, res) => {
+    const songs = []
+    const reports = await db.Report.find().sort({createdAt : -1})
+    res.render('admin/index', {reports})
 })
 
 router.get('/users', isAdmin, async (req, res) => {
@@ -95,11 +97,13 @@ router.get('/getYtUTL', async (req, res) => {
     })
 })
 
-router.get('/report/:songId', async (req, res) => {
-    const songId = req.params.songId
-    const content = req.query.content
+router.post('/report', async (req, res) => {
+    const songId = req.body.songId
     const song = await db.Song.findById(songId)
-    console.log(song.title, song.artist, content)
+    const title = song.title
+    const artist = song.artist
+    const content = req.body.content
+    db.Report.create({songId, title, artist, content})
 })
 
 module.exports = router

@@ -12,9 +12,21 @@
     <div class="container mt-5">
         <div class="card-body">
             <h1>관리자</h1>
-            <a href="/" class="btn btn-secondary btn-sm">돌아가기</a>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='/admin/users'">사용자 관리</button>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='/admin/songs'">음원 관리</button>
+            <div class="btn btn-secondary btn-sm" onclick="location.href='/'">돌아가기</div>
+            <div class="btn btn-secondary btn-sm" onclick="location.href='/admin/users'">사용자 관리</div>
+            <div class="btn btn-secondary btn-sm" onclick="location.href='/admin/songs'">음원 관리</div>
+            <div class="mt-5">
+                <div class="text-right"><%- reports.length %> 건</div>
+                <table class="table table-hover ho">
+                        <% for (const report of reports) { %>
+                            <tr>
+                                <td><%- report.title %></td>
+                                <td><%- report.artist %></td>
+                                <td><%- report.content.replaceAll('\n', '<br>') %></td>
+                            </tr>
+                        <% } %>
+                </table>
+            </div>
             <div id="resultDiv"></div>
         </div>
     </div>
