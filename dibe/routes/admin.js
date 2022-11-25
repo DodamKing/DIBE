@@ -106,4 +106,10 @@ router.post('/report', async (req, res) => {
     db.Report.create({songId, title, artist, content})
 })
 
+router.get('/reportdel/:reportId', async (req, res) => {
+    const reportId = req.params.reportId
+    await db.Report.findByIdAndDelete(reportId)
+    res.redirect('/admin/index')
+})
+
 module.exports = router

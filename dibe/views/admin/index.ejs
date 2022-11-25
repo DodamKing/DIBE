@@ -17,12 +17,13 @@
             <div class="btn btn-secondary btn-sm" onclick="location.href='/admin/songs'">음원 관리</div>
             <div class="mt-5">
                 <div class="text-right"><%- reports.length %> 건</div>
-                <table class="table table-hover ho">
+                <table class="table table-hover">
                         <% for (const report of reports) { %>
                             <tr>
-                                <td><%- report.title %></td>
-                                <td><%- report.artist %></td>
-                                <td><%- report.content.replaceAll('\n', '<br>') %></td>
+                                <td onclick="location.href=`/admin/update/<%- report.songId %>`"><%- report.title %></td>
+                                <td onclick="location.href=`/admin/update/<%- report.songId %>`"><%- report.artist %></td>
+                                <td onclick="location.href=`/admin/update/<%- report.songId %>`"><%- report.content.replaceAll('\n', '<br>') %></td>
+                                <td><div class="btn btn-sm btn-danger" onclick="location.href=`/admin/reportdel/<%- report._id %>`">확인</div></td>
                             </tr>
                         <% } %>
                 </table>
