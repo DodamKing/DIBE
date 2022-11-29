@@ -289,12 +289,12 @@ div#play_listImg > div {
     width: 450px;
     /* height: 800px; */
     height: 75%;
-    overflow: scroll;
+    overflow: auto;
 }
 
-#play_listBox::-webkit-scrollbar {
+/* #play_listBox::-webkit-scrollbar {
 	display: none;
-}
+} */
 
 #moreShowModal::-webkit-scrollbar {
 	display: none;
@@ -349,4 +349,19 @@ div#play_listImg > div {
     cursor: pointer;
     border: 0;
     accent-color: red;
+}
+
+.myScroll::-webkit-scrollbar {
+    width: 12px;
+}
+
+.myScroll::-webkit-scrollbar-thumb {
+    height: 10%;
+    background: gray; 
+    
+    border-radius: 10px;
+}
+
+.myScroll::-webkit-scrollbar-track {
+    background: rgb(0, 0, 0, .1);
 }

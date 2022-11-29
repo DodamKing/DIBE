@@ -25,13 +25,15 @@ router.get('/users', isAdmin, async (req, res) => {
 })
 
 router.get('/songs', isAdmin, async (req, res) => {
-    res.render('admin/song')
+    const reports = await db.Report.find().sort({createdAt : -1})
+    res.render('admin/song', {reports})
 })
 
 router.post('/songs', isAdmin, async (req, res) => {
     const query = req.body.query
+    const reports = await db.Report.find().sort({createdAt : -1})
     const songs = await db.Song.find({$or : [{title : {$regex : query, $options : 'i'}}, {artist : {$regex : query, $options : 'i'}}]})
-    res.render('admin/song', {songs})
+    res.render('admin/song', {reports, songs})
 })
 
 router.get('/update/:songId', isAdmin, async (req, res) => {

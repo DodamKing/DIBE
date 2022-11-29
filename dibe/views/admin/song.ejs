@@ -10,15 +10,51 @@
         .ho {
             cursor: pointer;
         }
+
+        .myScroll {
+            height: 500px;
+            overflow: auto;
+        }
+
+        .myScroll::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .myScroll::-webkit-scrollbar-thumb {
+            height: 30%;
+            background: #217af4; 
+            
+            border-radius: 10px;
+        }
+
+        .myScroll::-webkit-scrollbar-track {
+            background: rgb(33, 122, 244, .1);
+        }
     </style>
 </head>
 <body>
     <div class="container mt-5">
         <div class="card-body">
             <h1>음원관리</h1>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='/admin/index'">돌아가기</button>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="fetch('/admin/testYtUrl')">url 검사</button>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="localDown()">url 추출</button>
+            <div class="mt-3">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='/admin/index'">돌아가기</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="fetch('/admin/testYtUrl')">url 검사</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="localDown()">url 추출</button>
+            </div>
+            <div class="mt-5 myScroll">
+                <h6 class="text-info">신고내역</h6>
+                <div class="text-right"><%- reports.length %> 건</div>
+                <table class="table table-hover">
+                        <% for (const report of reports) { %>
+                            <tr>
+                                <td onclick="location.href=`/admin/update/<%- report.songId %>`"><%- report.title %></td>
+                                <td onclick="location.href=`/admin/update/<%- report.songId %>`"><%- report.artist %></td>
+                                <td onclick="location.href=`/admin/update/<%- report.songId %>`"><%- report.content.replaceAll('\n', '<br>') %></td>
+                                <td><div class="btn btn-sm btn-danger" onclick="location.href=`/admin/reportdel/<%- report._id %>`">확인</div></td>
+                            </tr>
+                        <% } %>
+                </table>
+            </div>
             <div class="mt-5">
                 <form method="post">
                     <div class="input-group mb-3">
