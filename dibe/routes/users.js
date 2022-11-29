@@ -93,7 +93,7 @@ async (req, res) => {
   }
 )
 
-router.get('/logout', isLoggedIn, (req, res) => {
+router.get('/logout',(req, res) => {
   req.logout((err) => {
     if (err) return console.error(err)
     req.session.destroy()

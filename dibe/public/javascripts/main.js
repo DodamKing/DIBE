@@ -61,6 +61,7 @@ async function setPlayList_() {
     sw = 1
     await player.play()
     player.pause()
+    setPlayCnt(-1)
 
     const savePoint = localStorage.getItem(`dibe_${sUserId}_savePoint`)
     if (savePoint) {

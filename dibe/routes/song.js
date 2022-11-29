@@ -217,9 +217,11 @@ router.get('/exists/:songId', async (req, res) => {
 router.get('/set_play_cnt/:songId', async (req, res) => {
     const songId = req.params.songId
     const userId = req.user ? req.user.id : '비회원'
+    const int = parseInt(req.query.int)
     const result = await db.playCnt.findOne({songId, userId})
     if (!result) await db.playCnt.create({songId, userId})
-    else await db.playCnt.findOneAndUpdate({songId, userId}, {$inc : {playCnt : +1}},  {new : true})
+    else await db.playCnt.findOneAndUpdate({songId, userId}, {$inc : {playCnt : int}},  {new : true})
+    res.end()
 })
 
 router.get('/lyrics/:songId', async (req, res) => {

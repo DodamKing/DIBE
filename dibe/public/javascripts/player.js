@@ -32,6 +32,7 @@ async function oneplay(songId, ytURL) {
         $(play_btn).hide();
         $(pause_btn).show();
         player.play();
+        sw = 1
     }
 }
 
@@ -39,7 +40,12 @@ async function oneplay(songId, ytURL) {
 async function senddata() {
     const songId = idx_box.innerHTML
     const ytURL = ytURL_box.innerHTML
-    if (!ytURL || ytURL === 'undefined') return alert('준비중 입니다')
+    if (!ytURL || ytURL === 'undefined') {
+        $("#addModal_message_box").html("준비중 입니다.")
+        $("#addModal_message_box").slideDown(300)
+        setTimeout(() => $("#addModal_message_box").slideUp(), 1000)
+        return
+    } 
     
     const rows = $('.get-songId')
     for (row of rows) {
@@ -231,6 +237,7 @@ async function load() {
     // 현재 재생 음악 포커스
     focus_cur()
     $('.loader').fadeOut()
+    setPlayCnt(1)
 }
 
 
@@ -361,8 +368,6 @@ $("#back_btn").click(async () => {
 
 // 연속 재생
 $("#player").on("ended", async () => {
-    setPlayCnt()
-
     playerIndex++;
     if (repeat == 2) playerIndex--;
     if (playerIndex >= $('.get-songId').length) {
@@ -579,10 +584,10 @@ function playlist_checkedId() {
 }
 
 // 재생 횟 수
-function setPlayCnt() {
+function setPlayCnt(int) {
     if (!$('.get-songId.active')[0]) return
     const songId = $('.get-songId.active')[0].id.split('_')[1]
-    fetch('/songs/set_play_cnt/' + songId)
+    fetch('/songs/set_play_cnt/' + songId + '?int=' + int)
 }
 
 // 신고
