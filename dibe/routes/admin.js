@@ -50,6 +50,16 @@ router.post('/update/:songId', async (req, res) => {
     res.redirect(`/admin/update/${songId}`)
 })
 
+router.get('/add', isAdmin, (req, res) => {
+    res.render('admin/add')
+})
+
+router.post('/add', async (req, res) => {
+    const song = req.body
+    await db.Song.create(song)
+    res.redirect('/admin/songs')
+})
+
 router.post('/downsong', async (req, res) => {
     const _id = req.body._id
     const url = req.body.url
@@ -113,7 +123,17 @@ router.post('/report', async (req, res) => {
 router.get('/reportdel/:reportId', async (req, res) => {
     const reportId = req.params.reportId
     await db.Report.findByIdAndDelete(reportId)
-    res.redirect('/admin/index')
+    res.redirect('/admin/songs')
+})
+
+router.get('/songs/delete/:songId', async (req, res) => {
+    const songId = req.params.songId
+    const path = `public/video/${songId}.mp4`
+    const exists = await fs.existsSync(path)
+
+    await db.Song.findByIdAndDelete(songId)
+    if (exists) fs.unlinkSync(path)
+    res.redirect('/admin/songs')
 })
 
 module.exports = router

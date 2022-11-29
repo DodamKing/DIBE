@@ -12,7 +12,10 @@
     <div class="container mt-5">
         <div class='card-body'>
             <h1>곡정보</h1>
-            <button type="button" class="btn btn-primary" onclick="location.href='/admin/songs'">뒤로가기</button>
+            <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-primary" onclick="location.href='/admin/songs'">뒤로가기</button>
+                <div class="btn btn-danger" onclick="confirmDel()">삭제</div>
+            </div>
             <form method="post" class="mt-5">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -117,6 +120,7 @@
         $('.down').on('click', async () => {
             const _id = `<%- song._id %>`
             const url = $('.url').val()
+            if (!url) return bootbox.alert('주소를 입력하세요.')
             const res = await fetch('/admin/downsong', {
                 method : 'POST',
                 headers : {"Content-Type": "application/json"},
@@ -154,6 +158,25 @@
             $('.url').val(url)
             $('.loader').fadeOut()
         })
+
+        function confirmDel() {
+            const res = bootbox.confirm({
+                message: '정말 삭제 하실?',
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) location.href='/admin/songs/delete/<%-song._id%>'
+                }
+            })
+        }
     </script>
 </body>
 </html>

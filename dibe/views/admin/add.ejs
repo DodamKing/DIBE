@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/loader.css">
+    <title>DIBE</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class='card-body'>
+            <h1>곡정보</h1>
+            <button type="button" class="btn btn-primary" onclick="location.href='/admin/songs'">뒤로가기</button>
+            <form method="post" class="mt-5">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">제목</span>
+                    </div>
+                    <input type="text" class="form-control" name="title">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">가수</span>
+                    </div>
+                    <input type="text" class="form-control" name="artist">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">앨범</span>
+                    </div>
+                    <input type="text" class="form-control" name="album">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">발매</span>
+                    </div>
+                    <input type="text" class="form-control" name="release">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">장르</span>
+                    </div>
+                    <input type="text" class="form-control" name="genre">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">작곡</span>
+                    </div>
+                    <input type="text" class="form-control" name="write">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">작사</span>
+                    </div>
+                    <input type="text" class="form-control" name="words">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">편곡</span>
+                    </div>
+                    <input type="text" class="form-control" name="arrange">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">URL</span>
+                    </div>
+                    <input type="text" class="form-control" name="ytURL">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">isFile</span>
+                    </div>
+                    <input type="text" class="form-control" name="isFile">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">가사</span>
+                    </div>
+                    <textarea class="form-control" name="lyrics" style="resize: none; overflow: hidden;"></textarea>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-success">적용</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="loader" style="display: none;"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+
+    <script>
+        function textareaHeightAuto() {
+            const textareaHeight = $('textarea').prop('scrollHeight')
+            $('textarea').css('height', textareaHeight)
+        }
+        textareaHeightAuto()
+    </script>
+</body>
+</html>
