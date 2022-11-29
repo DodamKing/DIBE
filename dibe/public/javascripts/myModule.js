@@ -97,6 +97,22 @@ async function delSongsFile() {
     
 }
 
+async function reportWrongYtURL() {
+    const songs = await db.Song.find()
+
+    for await (const song of songs) {
+        const ytURL = song.ytURL
+        if (!ytURL) continue
+        ytdl(ytURL).on('error', async () => {
+            const content = `유튜브 url 확인 바람. 관리자`
+            db.Report.create({songId : song._id, title : song.title, artist : song.artist, content})
+        })
+    }
+
+    const result = new Date().toLocaleString() + ', 잘못된 주소 기록'
+    return result
+}
+
 async function resetWrongYtURL() {
     const songs = await db.Song.find()
 
@@ -179,5 +195,6 @@ myModule.delSongsFile = delSongsFile
 myModule.setWrongYtURL = setWrongYtURL
 myModule.setRyrics = setRyrics
 myModule.resetWrongYtURL = resetWrongYtURL
+myModule.reportWrongYtURL = reportWrongYtURL
 
 module.exports = myModule

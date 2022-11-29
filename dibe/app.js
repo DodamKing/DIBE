@@ -101,11 +101,6 @@ cron.schedule('5 12 * * *', async () => {
   console.log(new Date().toLocaleString(), 'url 크롤링 종료')
 })
 
-// cron.schedule('10 12 * * *', async () => {
-//   await myModule.setWrongYtURL()
-//   console.log(new Date().toLocaleString(), '잘못된 주소 다시 세팅')
-// })
-
 cron.schedule('10 12 * * *', async () => {
   await myModule.downSongsFile()
   console.log(new Date().toLocaleString(), '음원 파일 로컬 다운로드')
@@ -115,6 +110,11 @@ cron.schedule('15 12 * * *', async () => {
   console.log(new Date().toLocaleString(), '가사 크롤링 시작')
   console.log(await myModule.setRyrics())
   console.log(new Date().toLocaleString(), '가사 크롤링 종료')
+})
+
+cron.schedule('20 12 * * 1', async () => {
+// cron.schedule('20 16 * * *', async () => {
+  console.log(await myModule.reportWrongYtURL())
 })
 
 module.exports = app;

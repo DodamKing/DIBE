@@ -67,7 +67,9 @@ router.post('/preview', async (req, res) => {
         'Transfer-Encoding' : 'chunked',
     })
 
-    ytdl(url, {filter : 'audioonly'}).pipe(res)
+    ytdl(url, {filter : 'audioonly'}).on('error', async () => {
+        return res.status(204).end()
+    }).pipe(res)
 })
 
 router.get('/testYtUrl', (req, res) => {
