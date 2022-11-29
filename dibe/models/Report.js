@@ -6,6 +6,10 @@ const reportSchema = new Schema({
     title : String,
     artist : String,
     content : String,
+    visible : {
+        type : Number,
+        default : 1,
+    },
     createdAt: {
         type: Date,
         default: Date().toLocaleString()

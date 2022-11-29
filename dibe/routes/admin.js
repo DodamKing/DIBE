@@ -16,7 +16,7 @@ const isAdmin = (req, res, next) => {
 router.get('/index', isAdmin, async (req, res) => {
     const songs = []
     const reports = await db.Report.find().sort({createdAt : -1})
-    res.render('admin/index', {reports})
+    res.render('admin/index')
 })
 
 router.get('/users', isAdmin, async (req, res) => {
@@ -25,7 +25,7 @@ router.get('/users', isAdmin, async (req, res) => {
 })
 
 router.get('/songs', isAdmin, async (req, res) => {
-    const reports = await db.Report.find().sort({createdAt : -1})
+    const reports = await db.Report.find({visible : 1}).sort({createdAt : -1})
     res.render('admin/song', {reports})
 })
 
@@ -122,7 +122,7 @@ router.post('/report', async (req, res) => {
 
 router.get('/reportdel/:reportId', async (req, res) => {
     const reportId = req.params.reportId
-    await db.Report.findByIdAndDelete(reportId)
+    await db.Report.findByIdAndUpdate(reportId, {visible : 0})
     res.redirect('/admin/songs')
 })
 
