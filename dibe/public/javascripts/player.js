@@ -401,7 +401,7 @@ $("#lyrics_btn").click(async () => {
     }
     $("#lyricsModal_title").html($("#controls_title").html())
     $("#lyricsModal_artist").html($("#controls_artist").html())
-    $('#lyricsModal_img').prop('src' ,$('#controls_img').prop('src').replace('50', '200'))
+    $('#lyricsModal_img').prop('src' ,$('#controls_img').prop('src').replace('50', '100'))
     
     const songId = ($('.get-songId.active')[0].id).split('_')[1]
     const response = await fetch('/songs/lyrics/' + songId)
