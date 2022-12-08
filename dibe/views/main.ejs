@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>DIBE</title>
+        <title>투데이 DIBE(다이브)</title>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="stylesheets/main.css">
@@ -20,6 +20,7 @@
         <%- include('./song/play-list') %>
         <%- include('./modal/moreModal') %>
         <%- include('./modal/lyricsModal') %>
+        <%- include('./modal/addPlayListModal') %>
         <div class="isAuthenticated" style="display: none;"><%- isAuthenticated %></div>
         <% if (user) { %> <div id="sUserId" style="display: none;"><%- user._id %></div> <% } %>
 
@@ -43,6 +44,7 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
             <script src="javascripts/main.js"></script>
             <script src="javascripts/player.js"></script>
+            <script src="javascripts/playList.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
         </div>
     </body>

@@ -1,0 +1,57 @@
+<style>
+	#addSongModal {
+		color: white;
+	}
+</style>
+
+<div class="modal fade" id="addPlayListModal" data-backdrop='static' data-keyboard='false' style="padding-bottom: 100px;">
+	<div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content" style="background: #444;">
+    
+            <!-- Modal Header -->
+            <div class="container mt-3">
+                <h2>새 플레이리스트 추가</h2>
+            </div>
+            <div class="modal-header">
+                나만의 플레이 리스트를 만들어 보세요!
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="form-group">
+                    <div id="" class="mt-3" style="color: gray;"><input id="listNm" class="form-control" type="text" placeholder="title"></div>
+                </div>
+                <div class="form-group">
+                    <div id="" class="mt-3" style="color: gray;"><input id="comment" class="form-control" type="text" placeholder="플레이리스트 설명을 입력해 주세요."></div>
+                </div>
+                <div class="text-danger ho" onclick="showsrch()">
+                    <div class="btn btn-danger btn-sm"><i title="새로운 곡 추가" class="fas fa-plus"></i></div>
+                    <span class="ml-2">새로운 곡 추가</span>
+                </div>
+                <div id="addPlayListModal_playlist"></div>
+                <div class="mt-3">
+                    <div id="srchform" name="srchform" style="display: none;">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Search" id="keyword">
+                            <div class="input-group-append">
+                                <button class="btn btn-danger" type="button" onclick="getres()"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div name="srchform" class="form-group" style="display: none;">
+                        <div id="srchResult"></div>
+                        <input type="hidden" id="content">
+                    </div>
+                </div>
+            </div>
+            <div id="addPlayListModal_message_box" class="text-center p-3"></div>
+            
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="savePlayList()">저장</button>
+                <button type="button" class="btn btn-danger" onclick="addSongModalClose()">Close</button>
+            </div>
+        
+        </div>
+	</div>
+</div>

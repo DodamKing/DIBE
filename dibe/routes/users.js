@@ -154,4 +154,9 @@ router.post('/update', isLoggedIn, async (req, res) => {
   res.redirect('/users/update')
 })
 
+router.get('/playlist', isLoggedIn, async (req, res) => {
+  const playList = []
+  res.json({playList})
+})
+
 module.exports = router;

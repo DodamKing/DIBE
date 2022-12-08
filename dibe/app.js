@@ -25,6 +25,14 @@ require('./db/connect')()
 var app = express();
 passportConfig()
 
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy : false }))
+// app.use(logger('short'));
+app.use(logger(':remote-addr :method :url :status :res[content-length] - :response-time ms'));
+
 app.use((req, res, next) => {
   const ip = req.ip
   const testIp = '207.97.227.239'
@@ -36,13 +44,6 @@ app.use((req, res, next) => {
   next()
 })
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
-app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy : false }))
-// app.use(logger('short'));
-app.use(logger(':remote-addr :method :url :status :res[content-length] - :response-time ms'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

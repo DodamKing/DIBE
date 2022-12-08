@@ -227,12 +227,14 @@ $('.nav').on('click', async (e) => {
     
     if (url === '/today') {
         history.pushState(null, '', location.origin + url)
+        document.title = '투데이 DIBE(다이브)'
         main.innerHTML = `<video style="width: 100%;" src="" autoplay muted></video>`
         mainVideoPlay();
     }
     
     else if (url === '/chart') {
         history.pushState(null, '', location.origin + url)
+        document.title = '차트 DIBE(다이브)'
         const response = await fetch('/songs/chart')
         const result = await response.json()
         const data = result.data
@@ -281,6 +283,55 @@ $('.nav').on('click', async (e) => {
         `
 
         $('#main').html(chart)
+    }
+
+    else if ('/playlist') {
+        history.pushState(null, '', location.origin + url)
+        const response = await fetch('/users/playlist')
+        const result = await response.json()
+        const playList = result.playList
+        const userNickNm = $('#dropMenu').text()
+
+        let html = `
+            <div class="container">
+                <div class="card-body" style="padding-bottom: 300px;">
+                    <h2 class="mt-5 mb-5"><font color="yellow">${userNickNm}</font>님 플레이리스트</h2>
+                    <div class="row">
+                        <div class="p-3 ho" onclick="" data-toggle="modal" data-target="#addPlayListModal">
+                            <div style="width: 200px; height: 200px; border: 1px solid white; text-align: center; background: #111;"><i style="position: relative; top: 50px;" title="새 플레이리스트 추가" class="fas fa-plus fa-5x"></i></div>
+                            <div style="width: 200px;" class="mt-3 text-center">새 플레이리스트 추가</div>
+                        </div>
+        `
+        for (const song of playList) {
+            html += `
+                <div class="p-3 ho" title="${song.comment }" onclick="javacript:location.href=''">
+                <div style="width: 200px; height: 200px;">
+            `
+            if (!song.thum1) html += `<div><img src="https://i1.sndcdn.com/avatars-000606604806-j6ghpm-t500x500.jpg" style="width: 100%;"></div>`
+            if (!song.thum2) html += `<div><img src="${song.thum1 }"></div>`
+            if (song.thum2) html += `
+                <div class="row" style="margin-left: 0px;">
+                    <div><img src="${song.thum1 }"></div>
+                    <div><img src="${song.thum2 }"></div>
+                </div>
+                <div class="row" style="margin-left: 0px;">
+                    <div><img src="${song.thum3 }"></div>
+                    <div><img src="${song.thum4 }"></div>
+                </div>
+            `
+            html += `
+                    </div>
+                    <div style="width: 200px;" class="mt-3 text-center">${song.listNm }</div>
+                </div>
+            `
+        }
+        html += `
+                    </div>
+                </div>
+            </div>
+        `
+        
+        $('#main').html(html)
     }
 })
 
