@@ -5,6 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
+from bs4 import BeautifulSoup as bs
 
 songs = Blueprint('songs', __name__)
 
@@ -37,6 +38,11 @@ def get_lyrics():
         driver.get(url)
         song_info = driver.find_element(By.CSS_SELECTOR, '.song_info')
         element = song_info.find_elements(By.CSS_SELECTOR, '.item')
+
+        html = song_info.get_attribute('innerHTML')
+        soup = bs(html, 'html.parser')
+        element = soup.select('.item')
+
         작사 = ''
         작곡 = ''
         편곡 = ''
@@ -44,7 +50,7 @@ def get_lyrics():
 
         if len(element) >= 1: 작사 = element[0].text[3:]
         if len(element) >= 2: 작곡 = element[1].text[3:]
-        if len(element) == 3: 편곡 = element[2].text[3:]
+        if len(element) >= 3: 편곡 = element[2].text[3:]
             
         try: 가사 = driver.find_element(By.CSS_SELECTOR, '.lyrics p').text 
         except: 가사 = ''
