@@ -34,6 +34,11 @@ router.get('/:flag', async (req, res) => {
 		const songs = await db.Song.find({$or : [{title : {$regex : query, $options : 'i'}}, {artist : {$regex : query, $options : 'i'}}]})
 		res.render('main', {flag, songs, srchKwd : query, vol})
 	}
+	else if (flag === 'playlist') {
+		if (!req.isAuthenticated()) return res.redirect('/users/login')
+		const playList = []
+		res.render('main', {flag, vol, playList})
+	}
 });
 
 router.get('/test/my', async (req, res) => {

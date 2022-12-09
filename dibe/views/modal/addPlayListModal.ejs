@@ -29,8 +29,9 @@
                     <span class="ml-2">새로운 곡 추가</span>
                 </div>
                 <div id="addPlayListModal_playlist"></div>
+                <div id="addPlayListModal_message_box" class="text-center p-3"></div>
                 <div class="mt-3">
-                    <div id="srchform" name="srchform" style="display: none;">
+                    <div id="srchform" name="srchform" style="display: none;" onkeydown="aplm_isEnter(event)">
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" placeholder="Search" id="keyword">
                             <div class="input-group-append">
@@ -44,7 +45,6 @@
                     </div>
                 </div>
             </div>
-            <div id="addPlayListModal_message_box" class="text-center p-3"></div>
             
             <!-- Modal footer -->
             <div class="modal-footer">

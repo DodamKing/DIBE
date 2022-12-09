@@ -155,8 +155,46 @@ router.post('/update', isLoggedIn, async (req, res) => {
 })
 
 router.get('/playlist', isLoggedIn, async (req, res) => {
-  const playList = []
-  res.json({playList})
+  const playList = await db.PlayList.find()
+  const thums = []
+
+  for (const item of playList) {
+    const thum = {}
+    if (item.content) {
+      const songIds = item.content.split('/').slice(0, -1)
+      if (songIds.length >= 4) {
+        thum.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
+        thum.thum2 = (await db.Song.findById(songIds[1])).img.replace('50', '100')
+        thum.thum3 = (await db.Song.findById(songIds[2])).img.replace('50', '100')
+        thum.thum4 = (await db.Song.findById(songIds[3])).img.replace('50', '100')
+      }
+      else if (songIds.length == 3) {
+        thum.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
+        thum.thum2 = (await db.Song.findById(songIds[1])).img.replace('50', '100')
+        thum.thum3 = (await db.Song.findById(songIds[2])).img.replace('50', '100')
+      }
+      else if (songIds.length == 2) {
+        thum.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
+        thum.thum2 = (await db.Song.findById(songIds[1])).img.replace('50', '100')
+      }
+      else if (songIds.length == 1) {
+        thum.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
+      }
+    }
+    thums.push(thum)
+  }
+
+  res.json({playList, thums})
+})
+
+router.post('/savelist', isLoggedIn, async (req, res) => {
+  const userId = req.user._id
+  const listNm = req.body.listNm
+  const comment = req.body.comment
+  const content = req.body.content
+
+  await db.PlayList.create({userId, listNm, comment, content})
+  res.end()
 })
 
 module.exports = router;

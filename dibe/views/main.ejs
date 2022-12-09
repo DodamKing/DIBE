@@ -30,7 +30,8 @@
                 <!-- <video style="width: 100%;" src="" autoplay muted></video> -->
                 <% if (flag === 'today') { %> <video style="width: 100%;" src="" autoplay muted></video>
                 <% } else if (flag === 'chart') { %> <%- include('chart') %>
-                <% } else if (flag === 'search') { %> <%- include('song/list') %> <% } %>
+                <% } else if (flag === 'search') { %> <%- include('song/list') %>
+                <% } else if (flag === 'playlist') { %> <%- include('user/playList') %> <% } %>
             </div>
             
             <%- include('./include/footer') %>

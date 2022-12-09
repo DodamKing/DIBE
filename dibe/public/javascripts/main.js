@@ -241,7 +241,7 @@ $('.nav').on('click', async (e) => {
         const today = result.today
 
         let chart = `
-            <div class="container">
+            <div id="main_content" class="container">
                 <div class="card-body">
                     <h2 class="mt-5 mb-5">DIBE Top 100</h2>
                     <!--
@@ -287,13 +287,15 @@ $('.nav').on('click', async (e) => {
 
     else if ('/playlist') {
         history.pushState(null, '', location.origin + url)
+        document.title = '플레이 리스트 DIBE(다이브)'
         const response = await fetch('/users/playlist')
         const result = await response.json()
         const playList = result.playList
+        const thums = result.thums
         const userNickNm = $('#dropMenu').text()
 
         let html = `
-            <div class="container">
+            <div id="main_content" class="container">
                 <div class="card-body" style="padding-bottom: 300px;">
                     <h2 class="mt-5 mb-5"><font color="yellow">${userNickNm}</font>님 플레이리스트</h2>
                     <div class="row">
@@ -302,21 +304,21 @@ $('.nav').on('click', async (e) => {
                             <div style="width: 200px;" class="mt-3 text-center">새 플레이리스트 추가</div>
                         </div>
         `
-        for (const song of playList) {
+        for (const [i, song] of playList.entries()) {
             html += `
                 <div class="p-3 ho" title="${song.comment }" onclick="javacript:location.href=''">
                 <div style="width: 200px; height: 200px;">
             `
-            if (!song.thum1) html += `<div><img src="https://i1.sndcdn.com/avatars-000606604806-j6ghpm-t500x500.jpg" style="width: 100%;"></div>`
-            if (!song.thum2) html += `<div><img src="${song.thum1 }"></div>`
-            if (song.thum2) html += `
+            if (!thums[i].thum1) html += `<div><img src="https://i1.sndcdn.com/avatars-000606604806-j6ghpm-t500x500.jpg" style="width: 100%;"></div>`
+            else if (!thums[i].thum2) html += `<div><img src="${thums[i].thum1 }"></div>`
+            else if (thums[i].thum2) html += `
                 <div class="row" style="margin-left: 0px;">
-                    <div><img src="${song.thum1 }"></div>
-                    <div><img src="${song.thum2 }"></div>
+                    <div><img src="${thums[i].thum1 }"></div>
+                    <div><img src="${thums[i].thum2 }"></div>
                 </div>
                 <div class="row" style="margin-left: 0px;">
-                    <div><img src="${song.thum3 }"></div>
-                    <div><img src="${song.thum4 }"></div>
+                    <div><img src="${thums[i].thum3 }"></div>
+                    <div><img src="${thums[i].thum4 }"></div>
                 </div>
             `
             html += `
