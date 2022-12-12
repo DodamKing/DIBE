@@ -182,7 +182,8 @@ window.addEventListener('beforeunload', () => {
 })
 
 async function search(srchKwd) {
-    history.pushState(null, 'DIBE', location.origin + '/search?srchKwd=' + srchKwd)
+    history.pushState(null, '', location.origin + '/search?srchKwd=' + srchKwd)
+    document.title = '검색 DIBE(다이브)'
     const response = await fetch('/songs/search?srchKwd=' + srchKwd)
     const songs = await response.json()
     let list = `
@@ -218,6 +219,19 @@ async function search(srchKwd) {
     
     `
     main.innerHTML = list
+}
+
+async function getPlayList() {
+    history.pushState(null, '', location.origin + '/search?srchKwd=' + srchKwd)
+    const response = await fetch('')
+    const list = await response.json()
+    document.title = `${list.listNm} DIBE(다이브)`
+
+    let html =`
+        여기에 작 작성해봐
+    `
+
+    $('#main').html(html)
 }
 
 // 페이지 이동
@@ -306,7 +320,7 @@ $('.nav').on('click', async (e) => {
         `
         for (const [i, song] of playList.entries()) {
             html += `
-                <div class="p-3 ho" title="${song.comment }" onclick="javacript:location.href=''">
+                <div class="p-3 ho" title="${song.comment }" onclick="getPlayList()">
                 <div style="width: 200px; height: 200px;">
             `
             if (!thums[i].thum1) html += `<div><img src="https://i1.sndcdn.com/avatars-000606604806-j6ghpm-t500x500.jpg" style="width: 100%;"></div>`
