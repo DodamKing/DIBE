@@ -31,7 +31,7 @@ router.get('/songs', isAdmin, async (req, res) => {
 
 router.post('/songs', isAdmin, async (req, res) => {
     const query = req.body.query
-    const reports = await db.Report.find().sort({createdAt : -1})
+    const reports = await db.Report.find({visible : 1}).sort({createdAt : -1})
     const songs = await db.Song.find({$or : [{title : {$regex : query, $options : 'i'}}, {artist : {$regex : query, $options : 'i'}}]})
     res.render('admin/song', {reports, songs})
 })
@@ -109,6 +109,11 @@ router.get('/getYtUTL', async (req, res) => {
     request.post(options, async (err, response, body) => {
         res.json(body)
     })
+})
+
+router.get('/reportAll', async (req, res) => {
+    const reports = await db.Report.find().sort({createdAt : -1})
+    res.render('admin/song', {reports})
 })
 
 router.post('/report', async (req, res) => {

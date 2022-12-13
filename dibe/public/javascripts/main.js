@@ -268,9 +268,9 @@ async function getPlayList(listId) {
             </div>
         </div>
         <div class="d-flex justify-content-around p-3 mt-5">
-            <button type="button" class="btn btn-dark col" onclick="listplay()"><i class="fas fa-play fa-2x"></i><span class="ml-5" style="font-size: 28px;">play</span></button>
+            <button type="button" class="btn btn-dark col" onclick="mylistplay()"><i class="fas fa-play fa-2x"></i><span class="ml-5" style="font-size: 28px;">play</span></button>
             <div class="col"></div>
-            <button type="button" class="btn btn-dark col" onclick="shuffle()"><i class="fas fa-random fa-2x"></i><span class="ml-5" style="font-size: 28px;">shuffle</span></button>
+            <button type="button" class="btn btn-dark col" onclick="mylistshuffle()"><i class="fas fa-random fa-2x"></i><span class="ml-5" style="font-size: 28px;">shuffle</span></button>
         </div>
     `
 
@@ -288,7 +288,7 @@ async function getPlayList(listId) {
     for (const song of songs) {
         html += `
             <tr>
-                <td class="text-center align-middle"><input name="tch" type="checkbox" checked></td>
+                <td class="text-center align-middle"><input name="tch" type="checkbox" value="${song._id}" checked></td>
                 <td class="align-middle"><img src="${song.img }"></td>
                 <td class="align-middle" title="${song.title }">
         `

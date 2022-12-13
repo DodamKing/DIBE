@@ -155,7 +155,8 @@ router.post('/update', isLoggedIn, async (req, res) => {
 })
 
 router.get('/playlist', isLoggedIn, async (req, res) => {
-  const playList = await db.PlayList.find()
+  const userId = req.user._id
+  const playList = await db.PlayList.find({userId})
   const thums = []
 
   for (const item of playList) {

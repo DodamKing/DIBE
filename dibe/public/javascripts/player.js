@@ -621,3 +621,28 @@ function report() {
         }
     })
 }
+
+//플레이 리스트 재생
+async function mylistplay() {
+    // $('.tch')
+    const songIds = []
+    const items = $("input:checkbox[name='tch']")
+    for (item of items) {
+        if (item.checked) {
+            songIds.push(item.value)
+        }
+    }
+    
+    const res = await fetch('/songs/addsongs', {
+        method : 'POST',
+        headers : {'Content-Type' : 'application/json'},
+        body : JSON.stringify({songIds})
+    })
+    const json = await res.json()
+    const songs = json.songs
+    for (song of songs) {
+        await setList(song)
+    }
+    $('#list_up_btn1').hide()
+    $('#list_up_btn2').show()
+}

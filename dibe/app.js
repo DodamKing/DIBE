@@ -109,7 +109,7 @@ cron.schedule('10 12 * * *', async () => {
 
 cron.schedule('15 12 * * *', async () => {
   console.log(new Date().toLocaleString(), '가사 크롤링 시작')
-  console.log(await myModule.setRyrics())
+  // console.log(await myModule.setRyrics())
   console.log(new Date().toLocaleString(), '가사 크롤링 종료')
 })
 
