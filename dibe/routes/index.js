@@ -36,8 +36,37 @@ router.get('/:flag', async (req, res) => {
 	}
 	else if (flag === 'playlist') {
 		if (!req.isAuthenticated()) return res.redirect('/users/login')
-		const playList = []
-		res.render('main', {flag, vol, playList})
+		
+		const playList = await db.PlayList.find()
+		const thums = []
+
+		for (const item of playList) {
+			const thum = {}
+			if (item.content) {
+			const songIds = item.content.split('/').slice(0, -1)
+			if (songIds.length >= 4) {
+				thum.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
+				thum.thum2 = (await db.Song.findById(songIds[1])).img.replace('50', '100')
+				thum.thum3 = (await db.Song.findById(songIds[2])).img.replace('50', '100')
+				thum.thum4 = (await db.Song.findById(songIds[3])).img.replace('50', '100')
+			}
+			else if (songIds.length == 3) {
+				thum.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
+				thum.thum2 = (await db.Song.findById(songIds[1])).img.replace('50', '100')
+				thum.thum3 = (await db.Song.findById(songIds[2])).img.replace('50', '100')
+			}
+			else if (songIds.length == 2) {
+				thum.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
+				thum.thum2 = (await db.Song.findById(songIds[1])).img.replace('50', '100')
+			}
+			else if (songIds.length == 1) {
+				thum.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
+			}
+			}
+			thums.push(thum)
+		}
+
+		res.render('main', {flag, vol, playList, thums})
 	}
 });
 

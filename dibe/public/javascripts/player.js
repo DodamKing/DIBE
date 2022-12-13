@@ -232,7 +232,7 @@ async function load() {
     
     
     //타이틀 변경
-    document.title = " DIBE(다이브) " + title + " - " + artist
+    // document.title = " DIBE(다이브) " + title + " - " + artist
     
     // 현재 재생 음악 포커스
     focus_cur()

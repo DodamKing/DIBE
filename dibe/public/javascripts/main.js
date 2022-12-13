@@ -1,4 +1,5 @@
 const sUserId = $('#sUserId').html()
+const userNickNm = $('#dropMenu').text()
 
 $().ready(async () => {
     mediaCheck()
@@ -221,14 +222,99 @@ async function search(srchKwd) {
     main.innerHTML = list
 }
 
-async function getPlayList() {
-    history.pushState(null, '', location.origin + '/search?srchKwd=' + srchKwd)
-    const response = await fetch('')
-    const list = await response.json()
-    document.title = `${list.listNm} DIBE(다이브)`
+async function getPlayList(listId) {
+    history.pushState(null, '', location.origin + '/playlist/' + listId)
+    const response = await fetch('/users/playlist/' + listId)
+    document.title = `플레이 리스트 DIBE(다이브)`
+    const json = await response.json()
+    const list = json.playList
+    const thums =  json.thums
+    const songs = json.songs
 
-    let html =`
-        여기에 작 작성해봐
+    let html = `
+        <div id="main_content" class="container">
+            <div class="card-body" style="padding-bottom: 300px;">
+                <h2 class="mt-5 mb-5"><font color="yellow">${userNickNm}</font>님 플레이리스트</h2>
+                <div class="row">
+                    <button type="button" class="btn btn-dark ml-3" onclick="$('a.nav')[6].click()">목록</button>
+                    <div class="col"></div>
+                    <button type="button" class="btn btn-dark mr-3" title="수정" onclick=""><i class="fas fa-pen-square"></i></button>
+                    <button type="button" class="btn btn-dark mr-3" onclick="">삭제</button>
+                </div>
+                <div class="p-3 row">
+                    <div style="width: 200px; height: 200px;">
+    `
+
+    if (Object.keys(thums).length === 0) html += `<div><img src="https://i1.sndcdn.com/avatars-000606604806-j6ghpm-t500x500.jpg" style="width: 100%;"></div>`
+    else if (Object.keys(thums).length === 1) html += `<div><img src="${thums.thum1 }"></div>`
+    else {
+        html += `
+            <div class="row" style="margin-left: 0px;">
+                <div><img src="${thums.thum1 }"></div>
+                <div><img src="${thums.thum2 }"></div>
+            </div>
+            <div class="row" style="margin-left: 0px;">
+                <div><img src="${thums.thum3 }"></div>
+                <div><img src="${thums.thum4 }"></div>
+            </div>
+        `
+    }
+
+    html += `
+            </div>
+            <div class="ml-5">
+                <h4 id="listNm_box">${list.listNm }</h4>
+                <div id="comment_box">${list.comment.replaceAll('\n', '<br>')}</div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-around p-3 mt-5">
+            <button type="button" class="btn btn-dark col" onclick="listplay()"><i class="fas fa-play fa-2x"></i><span class="ml-5" style="font-size: 28px;">play</span></button>
+            <div class="col"></div>
+            <button type="button" class="btn btn-dark col" onclick="shuffle()"><i class="fas fa-random fa-2x"></i><span class="ml-5" style="font-size: 28px;">shuffle</span></button>
+        </div>
+    `
+
+    html += `
+        <table class="table">
+            <tr>
+                <th class="text-center align-middle"><input id="allch" type="checkbox" checked></th>
+                <th id="cnt_box">${songs.length} 곡 선택됨</th>
+                <th></th>
+                <th></th>
+                <th class="text-center align-middle ho"><div class="btn btn-outline-warning" onclick="">선택삭제</div></th>
+            </tr>
+    `
+
+    for (const song of songs) {
+        html += `
+            <tr>
+                <td class="text-center align-middle"><input name="tch" type="checkbox" checked></td>
+                <td class="align-middle"><img src="${song.img }"></td>
+                <td class="align-middle" title="${song.title }">
+        `
+
+        if (song.title.length < 20) html += `${song.title}`
+        else if (song.title.length >= 20) html += `${song.title.substring(0, 20)}...`
+
+        html += `
+            </td>
+            <td class="align-middle" title="${song.artist }">
+        `
+
+        if (song.artist.length < 20) html += `${song.artist}`
+        else if (song.artist.length >= 20) html += `${song.artist.substring(0, 20)}...`
+
+        html += `
+            </td>
+            <td class="text-center"><button type="button" class="btn" title="플레이리스트에서 제거" onclick=""><i class='fa-regular fa-trash-can'></i></button></td>
+        </tr>
+        `
+    }
+
+    html += `
+        </table>
+        </div>
+    </div>
     `
 
     $('#main').html(html)
@@ -306,7 +392,6 @@ $('.nav').on('click', async (e) => {
         const result = await response.json()
         const playList = result.playList
         const thums = result.thums
-        const userNickNm = $('#dropMenu').text()
 
         let html = `
             <div id="main_content" class="container">
@@ -318,9 +403,9 @@ $('.nav').on('click', async (e) => {
                             <div style="width: 200px;" class="mt-3 text-center">새 플레이리스트 추가</div>
                         </div>
         `
-        for (const [i, song] of playList.entries()) {
+        for (const [i, list] of playList.entries()) {
             html += `
-                <div class="p-3 ho" title="${song.comment }" onclick="getPlayList()">
+                <div class="p-3 ho" title="${list.comment }" onclick="getPlayList('${list._id}')">
                 <div style="width: 200px; height: 200px;">
             `
             if (!thums[i].thum1) html += `<div><img src="https://i1.sndcdn.com/avatars-000606604806-j6ghpm-t500x500.jpg" style="width: 100%;"></div>`
@@ -337,7 +422,7 @@ $('.nav').on('click', async (e) => {
             `
             html += `
                     </div>
-                    <div style="width: 200px;" class="mt-3 text-center">${song.listNm }</div>
+                    <div style="width: 200px;" class="mt-3 text-center">${list.listNm }</div>
                 </div>
             `
         }
