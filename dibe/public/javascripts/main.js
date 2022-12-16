@@ -362,6 +362,61 @@ async function playlist_delete_song(listId, songId) {
     getPlayList(listId)
 }
 
+async function getMyPlayList() {
+    if ($('.isAuthenticated')[0].innerHTML === 'false') return
+
+    const response = await fetch('/users/playlist')
+    const json = await response.json()
+    const playList = json.playList
+    const thums = json.thums
+
+    let res = ''
+    for (const [i, list] of playList.entries()) {
+        res += `
+            <div class='d-flex justify-content-center ho mb-3' onclick='action("${list._id}")'>
+                <div style="width: 50px; height: 50px;" class="col-2">
+                    <div class="row" style="margin-left: 0px;">
+            `
+    
+        if (!thums[i].thum1) {
+            res += `
+                        <div><img width="50px" src="https://i1.sndcdn.com/avatars-000606604806-j6ghpm-t500x500.jpg"></div>
+                    </div>
+                </div>
+                <div class="col">${list.listNm}</div>
+            </div>
+            `
+        }
+    
+        else if (thums[i].thum3 === '') {
+            res += `
+                        <div><img width="50px" src="${thums[i].thum1}"></div>
+                    </div>
+                </div>
+                <div class="col">${list.listNm}</div>
+            </div>
+            `
+        }
+    
+        else {
+            res += `
+                        <div><img width="25px" src="${thums[i].thum1}"></div>
+                        <div><img width="25px" src="${thums[i].thum2}"></div>
+                    </div>
+                    <div class="row" style="margin-left: 0px;">
+                        <div><img width="25px" src="${thums[i].thum3}"></div>
+                        <div><img width="25px" src="${thums[i].thum4}"></div>
+                    </div>
+                </div>
+                <div class="col">${list.listNm}</div>
+            </div>
+            `
+        }
+    }
+
+    mylist_box.innerHTML = res
+}
+
 // 페이지 이동
 $('.nav').on('click', async (e) => {
     e.preventDefault()
