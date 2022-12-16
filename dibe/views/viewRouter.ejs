@@ -1,0 +1,8 @@
+<script>
+    $(() => {
+        const flag = '<%- flag %>'
+        const param = flag.split('/')
+        
+        if (param[0] === 'playlist') getPlayList(param[1])
+    })
+</script>

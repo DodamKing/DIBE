@@ -15,24 +15,24 @@ router.get('/', (req, res) => {
 
 router.get('/:flag', async (req, res) => {
 	const flag = req.params.flag
-	const vol = req.cookies.vol
+	
 	if (flag === 'today') {
 		const md = new MobileDetect(req.headers['user-agent'])
 		if (md.mobile() && !req.isAuthenticated()) return res.redirect('/users/login')
 		else if (md.mobile()) return res.render('mobile/index')
-		res.render('main', { flag, vol })
+		res.render('main', { flag })
 	}
 	else if (flag === 'chart') {
 		const date = new Date()
 		const today = date.toLocaleDateString()
 		const data = await db.Chart.find()
 
-		res.render('main', {flag, data, today, vol})
+		res.render('main', {flag, data, today})
 	}
 	else if (flag === 'search') {
 		const query = req.query.srchKwd
 		const songs = await db.Song.find({$or : [{title : {$regex : query, $options : 'i'}}, {artist : {$regex : query, $options : 'i'}}]})
-		res.render('main', {flag, songs, srchKwd : query, vol})
+		res.render('main', {flag, songs, srchKwd : query})
 	}
 	else if (flag === 'playlist') {
 		if (!req.isAuthenticated()) return res.redirect('/users/login')
@@ -66,9 +66,17 @@ router.get('/:flag', async (req, res) => {
 			thums.push(thum)
 		}
 
-		res.render('main', {flag, vol, playList, thums})
+		res.render('main', {flag, playList, thums})
 	}
 });
+
+router.get('/playlist/:listId', (req, res) => {
+	if (!req.isAuthenticated()) return res.redirect('/users/login')
+	
+	const listId = req.params.listId
+	const flag = 'playlist/' + listId
+	res.render('main', {flag, listId})
+})
 
 router.get('/test/my', async (req, res) => {
 	// const result = await myModule.setRyrics()

@@ -173,13 +173,19 @@ router.get('/playlist', isLoggedIn, async (req, res) => {
         thum.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
         thum.thum2 = (await db.Song.findById(songIds[1])).img.replace('50', '100')
         thum.thum3 = (await db.Song.findById(songIds[2])).img.replace('50', '100')
+        thum.thum4 = ''
       }
       else if (songIds.length == 2) {
         thum.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
         thum.thum2 = (await db.Song.findById(songIds[1])).img.replace('50', '100')
+        thum.thum3 = ''
+        thum.thum4 = ''
       }
       else if (songIds.length == 1) {
         thum.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
+        thum.thum2 = ''
+        thum.thum3 = ''
+        thum.thum4 = ''
       }
     }
     thums.push(thum)
@@ -206,13 +212,19 @@ router.get('/playlist/:listId', isLoggedIn, async (req, res) => {
       thums.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
       thums.thum2 = (await db.Song.findById(songIds[1])).img.replace('50', '100')
       thums.thum3 = (await db.Song.findById(songIds[2])).img.replace('50', '100')
+      thums.thum4 = ''
     }
     else if (songIds.length == 2) {
       thums.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
       thums.thum2 = (await db.Song.findById(songIds[1])).img.replace('50', '100')
+      thums.thum3 = ''
+      thums.thum4 = ''
     }
     else if (songIds.length == 1) {
       thums.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
+      thums.thum2 = ''
+      thums.thum3 = ''
+      thums.thum4 = ''
     }
 
     for (const id of songIds) {
@@ -231,6 +243,33 @@ router.post('/savelist', isLoggedIn, async (req, res) => {
   const content = req.body.content
 
   await db.PlayList.create({userId, listNm, comment, content})
+  res.end()
+})
+
+router.get('/dellist/:listId', isLoggedIn, async (req, res) => {
+  const listId = req.params.listId
+
+  await db.PlayList.findByIdAndDelete(listId)
+
+  res.end()
+})
+
+router.get('/dellistsong/:listId', isLoggedIn, async (req, res) => {
+  const listId = req.params.listId
+  const songId = req.query.songId
+  const songIds = req.query.songIds
+  const playlist = await db.PlayList.findById(listId)
+  const content = playlist.content
+
+  if (!songIds) await db.PlayList.findByIdAndUpdate(listId, {content : content.replace(songId + '/', '')})
+  else if (!songId) {
+    let content_ = content
+    for await (const id of songIds.split(',')) { 
+      content_ = content_.replace(id + '/', '')
+    }
+    await db.PlayList.findByIdAndUpdate(listId, {content : content_})
+  }
+  
   res.end()
 })
 

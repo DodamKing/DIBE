@@ -98,7 +98,8 @@ cron.schedule('0 12 * * *', async () => {
 
 cron.schedule('5 12 * * *', async () => {
   console.log(new Date().toLocaleString(), 'url 크롤링 시작')
-  console.log(await myModule.setURLScheduler())
+  // console.log(await myModule.setURLScheduler())
+  await myModule.setURLScheduler()
   console.log(new Date().toLocaleString(), 'url 크롤링 종료')
 })
 
@@ -110,6 +111,7 @@ cron.schedule('10 12 * * *', async () => {
 cron.schedule('15 12 * * *', async () => {
   console.log(new Date().toLocaleString(), '가사 크롤링 시작')
   // console.log(await myModule.setRyrics())
+  await myModule.setRyrics()
   console.log(new Date().toLocaleString(), '가사 크롤링 종료')
 })
 

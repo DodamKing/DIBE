@@ -73,12 +73,10 @@ async function godata_many() {
         closeButton : false,
     })
     const songIds = []
-    let strSongIds = ''
     const items = $("input:checkbox[name='tch']")
     for (item of items) {
         if (item.checked) {
             songIds.push(item.value)
-            strSongIds += item.value + '/'
         }
     }
     
@@ -623,15 +621,17 @@ function report() {
 }
 
 //플레이 리스트 재생
-async function mylistplay() {
-    // $('.tch')
+async function mylistplay(isSuffle) {
     const songIds = []
     const items = $("input:checkbox[name='tch']")
-    for (item of items) {
+    for (const item of items) {
         if (item.checked) {
             songIds.push(item.value)
         }
     }
+
+    if (songIds.length === 0) return
+    $('#play_list *').remove()
     
     const res = await fetch('/songs/addsongs', {
         method : 'POST',
@@ -643,6 +643,23 @@ async function mylistplay() {
     for (song of songs) {
         await setList(song)
     }
+
+    if (isSuffle) {
+        if ($('.get-songId').length <= 1) return
+        for (let i=0; i<$('.get-songId').length; i++) {
+            const idx = Math.floor(Math.random() * $('.get-songId').length-1) + 1
+            const idx2 = Math.floor(Math.random() * $('.get-songId').length-1) + 1
+            $('.get-songId').eq(idx).before($('.get-songId').eq(idx2))
+        }
+    }
+
     $('#list_up_btn1').hide()
     $('#list_up_btn2').show()
+
+    playerIndex = 0
+    await load()
+    $(play_btn).hide();
+    $(pause_btn).show();
+    player.play();
+    sw = 1
 }

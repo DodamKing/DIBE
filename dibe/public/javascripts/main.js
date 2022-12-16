@@ -232,14 +232,14 @@ async function getPlayList(listId) {
     const songs = json.songs
 
     let html = `
-        <div id="main_content" class="container">
+        <div class="container">
             <div class="card-body" style="padding-bottom: 300px;">
                 <h2 class="mt-5 mb-5"><font color="yellow">${userNickNm}</font>님 플레이리스트</h2>
                 <div class="row">
                     <button type="button" class="btn btn-dark ml-3" onclick="$('a.nav')[6].click()">목록</button>
                     <div class="col"></div>
-                    <button type="button" class="btn btn-dark mr-3" title="수정" onclick=""><i class="fas fa-pen-square"></i></button>
-                    <button type="button" class="btn btn-dark mr-3" onclick="">삭제</button>
+                    <button type="button" class="btn btn-dark mr-3" title="수정" onclick="updatePlayList('${listId}')"><i class="fas fa-pen-square"></i></button>
+                    <button type="button" class="btn btn-dark mr-3" onclick="delPalyList('${listId}')">삭제</button>
                 </div>
                 <div class="p-3 row">
                     <div style="width: 200px; height: 200px;">
@@ -270,25 +270,25 @@ async function getPlayList(listId) {
         <div class="d-flex justify-content-around p-3 mt-5">
             <button type="button" class="btn btn-dark col" onclick="mylistplay()"><i class="fas fa-play fa-2x"></i><span class="ml-5" style="font-size: 28px;">play</span></button>
             <div class="col"></div>
-            <button type="button" class="btn btn-dark col" onclick="mylistshuffle()"><i class="fas fa-random fa-2x"></i><span class="ml-5" style="font-size: 28px;">shuffle</span></button>
+            <button type="button" class="btn btn-dark col" onclick="mylistplay(true)"><i class="fas fa-random fa-2x"></i><span class="ml-5" style="font-size: 28px;">shuffle</span></button>
         </div>
     `
 
     html += `
         <table class="table">
             <tr>
-                <th class="text-center align-middle"><input id="allch" type="checkbox" checked></th>
+                <th class="text-center align-middle"><input id="playlist_allch" type="checkbox" checked onclick="playlist_isAll(this)"></th>
                 <th id="cnt_box">${songs.length} 곡 선택됨</th>
                 <th></th>
                 <th></th>
-                <th class="text-center align-middle ho"><div class="btn btn-outline-warning" onclick="">선택삭제</div></th>
+                <th class="text-center align-middle ho"><div class="btn btn-outline-warning" onclick="playlist_delete_song('${listId}')">선택삭제</div></th>
             </tr>
     `
 
     for (const song of songs) {
         html += `
             <tr>
-                <td class="text-center align-middle"><input name="tch" type="checkbox" value="${song._id}" checked></td>
+                <td class="text-center align-middle"><input name="tch" type="checkbox" value="${song._id}" checked onclick="playlist_isChecked()"></td>
                 <td class="align-middle"><img src="${song.img }"></td>
                 <td class="align-middle" title="${song.title }">
         `
@@ -306,7 +306,7 @@ async function getPlayList(listId) {
 
         html += `
             </td>
-            <td class="text-center"><button type="button" class="btn" title="플레이리스트에서 제거" onclick=""><i class='fa-regular fa-trash-can'></i></button></td>
+            <td class="text-center"><button type="button" class="btn" title="플레이리스트에서 제거" onclick="playlist_delete_song('${listId}', '${song._id}')"><i class='fa-regular fa-trash-can'></i></button></td>
         </tr>
         `
     }
@@ -318,6 +318,48 @@ async function getPlayList(listId) {
     `
 
     $('#main').html(html)
+}
+
+async function delPalyList(listId) {
+    if (!confirm('정말 삭제 하시겠습니까?')) return
+    await fetch('/users/dellist/' + listId)
+    $('a.nav')[6].click()
+}
+
+async function updatePlayList(listId) {
+    
+}
+
+function playlist_isAll(target) {
+    const isChecked = target.checked
+    if (isChecked) $("input:checkbox[name='tch']:not(:disabled)").prop("checked", true)
+    else  $("input:checkbox[name='tch']").prop("checked", false)
+    $('#cnt_box').html(`${$("input:checkbox[name='tch']:checked").length} 곡 선택됨`)
+}
+
+function playlist_isChecked() {
+    const ckboxs = $("input:checkbox[name='tch']")
+    
+    $('#cnt_box').html(`${$("input:checkbox[name='tch']:checked").length} 곡 선택됨`)
+    for (const box of ckboxs) {
+        if (!box.checked) return $("#playlist_allch").prop("checked", false)
+    }
+    $("#playlist_allch").prop("checked", true)
+}
+
+async function playlist_delete_song(listId, songId) {
+    if (!confirm('해당 곡을 플레이리스트에서 제거 하시겠습니까?')) return
+    
+    const songIds = []
+    if (!songId) {
+        for await (const el of $("input:checkbox[name='tch']:checked")) {
+            songIds.push(el.value)
+        }
+        await fetch('/users/dellistsong/' + listId + '?songIds=' + songIds)
+    }
+
+    else await fetch('/users/dellistsong/' + listId + '?songId=' + songId)
+    getPlayList(listId)
 }
 
 // 페이지 이동

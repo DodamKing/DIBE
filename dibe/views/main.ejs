@@ -7,8 +7,8 @@
         <title>투데이 DIBE(다이브)</title>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <link rel="stylesheet" href="stylesheets/main.css">
-        <link rel="stylesheet" href="stylesheets/top100.css">
+        <link rel="stylesheet" href="/stylesheets/main.css">
+        <link rel="stylesheet" href="/stylesheets/top100.css">
         <link rel="stylesheet" href="/stylesheets/loader.css">
         <!-- <link rel="shortcut icon" href="https://i1.sndcdn.com/avatars-000606604806-j6ghpm-t500x500.jpg" /> -->
     </head>
@@ -27,11 +27,12 @@
         <section>
             <div class="loader" style="display: none; z-index: 1055;"></div>
             <div id="main">
-                <!-- <video style="width: 100%;" src="" autoplay muted></video> -->
                 <% if (flag === 'today') { %> <video style="width: 100%;" src="" autoplay muted></video>
                 <% } else if (flag === 'chart') { %> <%- include('chart') %>
                 <% } else if (flag === 'search') { %> <%- include('song/list') %>
-                <% } else if (flag === 'playlist') { %> <%- include('user/playList') %> <% } %>
+                <% } else if (flag === 'playlist') { %> <%- include('user/playList') %>
+
+                <% } else { %> <%- include('viewRouter') %> <% } %>
             </div>
             
             <%- include('./include/footer') %>
@@ -43,9 +44,9 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
-            <script src="javascripts/main.js"></script>
-            <script src="javascripts/player.js"></script>
-            <script src="javascripts/playList.js"></script>
+            <script src="/javascripts/main.js"></script>
+            <script src="/javascripts/player.js"></script>
+            <script src="/javascripts/playList.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
         </div>
     </body>

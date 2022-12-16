@@ -15,11 +15,10 @@ $('#allch').on('click', () => {
 
 //전체선택 해제
 $("input:checkbox[name='tch']").click(() => {
+    const list = $("input:checkbox[name='tch']:not(:disabled)")
     cnt_box.innerHTML = $("input:checkbox[name='tch']:checked").length + " 곡 선택 됨"
-    for (let i=0; i<100; i++) {
-        if (!$("input:checkbox[name='tch']")[i].checked) {
-            $("#allch").prop("checked", false);
-            return;
-        }
+    for (const el of list) {
+        if (!el.checked) return $("#allch").prop("checked", false)
     }
+    $("#allch").prop("checked", true);
 });
