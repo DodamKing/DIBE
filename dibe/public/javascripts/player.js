@@ -663,3 +663,22 @@ async function mylistplay(isSuffle) {
     player.play();
     sw = 1
 }
+
+function addMyList(listId) {
+    const songIds = []
+    const songId = $('#idx_box').html()
+
+    if (songId) songIds.push(songId)
+    else {
+        const items = $("input:checkbox[name='tch']")
+        for (const item of items) {
+            if (item.checked) {
+                songIds.push(item.value)
+            }
+        }
+    }
+
+    console.log(listId, songId, songIds)
+    $('#addOne').modal('hide')
+    $('#addMany').modal('hide')
+}

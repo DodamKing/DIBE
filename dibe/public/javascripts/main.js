@@ -362,8 +362,31 @@ async function playlist_delete_song(listId, songId) {
     getPlayList(listId)
 }
 
-async function getMyPlayList() {
-    if ($('.isAuthenticated')[0].innerHTML === 'false') return
+async function getMyPlayList(sw) {
+    if ($('.isAuthenticated')[0].innerHTML === 'false') {
+        if (sw === 1) {
+            $("#addModal_message_box").html("로그인이 필요한 서비스 입니다.")
+            $("#addModal_message_box").slideDown(300)
+            setTimeout(() => $("#addModal_message_box").slideUp(), 1000)
+        }
+    
+        else {
+            $("#addModal_message_box_many").html("로그인이 필요한 서비스 입니다.")
+            $("#addModal_message_box_many").slideDown(300)
+            setTimeout(() => $("#addModal_message_box_many").slideUp(), 1000)
+        }
+        return
+    }
+
+    const ytURL = $('#ytURL_box').html()
+    if (ytURL) {
+        if (!ytURL || ytURL === 'undefined') {
+            $("#addModal_message_box").html("준비중 입니다.")
+            $("#addModal_message_box").slideDown(300)
+            setTimeout(() => $("#addModal_message_box").slideUp(), 1000)
+            return
+        }
+    }
 
     const response = await fetch('/users/playlist')
     const json = await response.json()
@@ -373,7 +396,7 @@ async function getMyPlayList() {
     let res = ''
     for (const [i, list] of playList.entries()) {
         res += `
-            <div class='d-flex justify-content-center ho mb-3' onclick='action("${list._id}")'>
+            <div class='d-flex justify-content-center ho mb-3' onclick='addMyList("${list._id}")'>
                 <div style="width: 50px; height: 50px;" class="col-2">
                     <div class="row" style="margin-left: 0px;">
             `
@@ -414,8 +437,18 @@ async function getMyPlayList() {
         }
     }
 
-    mylist_box.innerHTML = res
+    if (sw === 1) $('#mylist_box').html(res)
+    else $('#mylist_box_many').html(res)
 }
+
+$('#addOne').on('hide.bs.modal', () => {
+    $('#mylist_box').html('')
+    $('#idx_box').html('')
+})
+
+$('#addMany').on('hide.bs.modal', () => {
+    $('#mylist_box_many').html('')
+})
 
 // 페이지 이동
 $('.nav').on('click', async (e) => {
