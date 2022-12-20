@@ -60,15 +60,20 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(flash())
 
+app.use(express.static(path.join(__dirname, 'public')))
+app.use('/track', express.static(path.join('public/video')))
+app.use('/img', express.static(path.join('public/images'))
+)
 app.use((req, res, next) => {
+  // const MobileDetect = require('mobile-detect')
+  // const md = new MobileDetect(req.headers['user-agent'])
+	// if (md.mobile()) return res.render('mobile/temp')
+
   res.locals.user = req.user
   res.locals.isAuthenticated = req.isAuthenticated()
   next()
 })
 
-app.use(express.static(path.join(__dirname, 'public')))
-app.use('/track', express.static(path.join('public/video')))
-app.use('/img', express.static(path.join('public/images')))
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/songs', songRouter)
