@@ -378,8 +378,8 @@ async function getMyPlayList(sw) {
         return
     }
 
-    const ytURL = $('#ytURL_box').html()
-    if (ytURL) {
+    if (sw === 1) {
+        const ytURL = $('#ytURL_box').html()
         if (!ytURL || ytURL === 'undefined') {
             $("#addModal_message_box").html("준비중 입니다.")
             $("#addModal_message_box").slideDown(300)

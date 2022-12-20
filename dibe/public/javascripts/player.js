@@ -664,7 +664,7 @@ async function mylistplay(isSuffle) {
     sw = 1
 }
 
-function addMyList(listId) {
+async function addMyList(listId) {
     const songIds = []
     const songId = $('#idx_box').html()
 
@@ -678,7 +678,14 @@ function addMyList(listId) {
         }
     }
 
-    console.log(listId, songId, songIds)
+    const options = {
+        method : 'POST',
+        body : JSON.stringify({listId, songIds}),
+        headers : {'Content-Type' : 'application/json'}
+    }
+
+    await fetch('/users/updatelist', options)
+    
     $('#addOne').modal('hide')
     $('#addMany').modal('hide')
 }

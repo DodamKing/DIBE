@@ -84,8 +84,9 @@ router.post('/preview', async (req, res) => {
     }).pipe(res)
 })
 
-router.get('/testYtUrl', (req, res) => {
-    myModule.resetWrongYtURL()
+router.get('/testYtUrl', async (req, res) => {
+    await myModule.resetWrongYtURL()
+    res.end()
 })
 
 router.get('/setYtUrl', async (req, res) => {

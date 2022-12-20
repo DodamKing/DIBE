@@ -54,13 +54,19 @@ router.get('/:flag', async (req, res) => {
 				thum.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
 				thum.thum2 = (await db.Song.findById(songIds[1])).img.replace('50', '100')
 				thum.thum3 = (await db.Song.findById(songIds[2])).img.replace('50', '100')
+				thums.thum4 = ''
 			}
 			else if (songIds.length == 2) {
 				thum.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
 				thum.thum2 = (await db.Song.findById(songIds[1])).img.replace('50', '100')
+				thums.thum3 = ''
+				thums.thum4 = ''
 			}
 			else if (songIds.length == 1) {
-				thum.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
+				thum.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '200')
+				thums.thum2 = ''
+				thums.thum3 = ''
+				thums.thum4 = ''
 			}
 			}
 			thums.push(thum)

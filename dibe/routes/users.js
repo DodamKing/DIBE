@@ -182,7 +182,7 @@ router.get('/playlist', isLoggedIn, async (req, res) => {
         thum.thum4 = ''
       }
       else if (songIds.length == 1) {
-        thum.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
+        thum.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '200')
         thum.thum2 = ''
         thum.thum3 = ''
         thum.thum4 = ''
@@ -221,7 +221,7 @@ router.get('/playlist/:listId', isLoggedIn, async (req, res) => {
       thums.thum4 = ''
     }
     else if (songIds.length == 1) {
-      thums.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '100')
+      thums.thum1 = (await db.Song.findById(songIds[0])).img.replace('50', '200')
       thums.thum2 = ''
       thums.thum3 = ''
       thums.thum4 = ''
@@ -243,6 +243,19 @@ router.post('/savelist', isLoggedIn, async (req, res) => {
   const content = req.body.content
 
   await db.PlayList.create({userId, listNm, comment, content})
+  res.end()
+})
+
+router.post('/updatelist', isLoggedIn, async (req, res) => {
+  const listId = req.body.listId
+  const songIds = req.body.songIds
+  const list = await db.PlayList.findById(listId)
+  let content = list.content
+
+  for (const id of songIds) {
+    if (!content.includes(id)) content += id + '/'
+  }
+  await db.PlayList.findByIdAndUpdate(listId, {content})
   res.end()
 })
 
