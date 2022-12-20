@@ -22,6 +22,8 @@ async function oneplay(songId, ytURL) {
     const json = await res.json()
     const song = json.songs[0]
     const autoPlay = json.autoPlay
+    
+    $('#play_list *').remove()
     await setList(song)
     $('#list_up_btn1').hide()
     $('#list_up_btn2').show()
@@ -123,13 +125,14 @@ $('#list_selectedDelete').on('click', () => {
         $('#list_up_btn2').hide()
         $('#list_down_btn').hide()
         
-        controls_img.src = 'images/music.png'
+        controls_img.src = '/img/music.png'
         controls_title.innerHTML = '오늘 뭐 듣지?'
         controls_artist.innerHTML = '재생 버튼을 클릭 해보세요.'
         controls_title.title = ''
         controls_artist.title = ''
         play_listImg_img.src = '/img/music.png'
         play_listbg.src = ''
+        $('#list_allCheck').html('전체 선택')
     }
 })
 
