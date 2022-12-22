@@ -37,7 +37,8 @@ router.get('/:flag', async (req, res) => {
 	else if (flag === 'playlist') {
 		if (!req.isAuthenticated()) return res.redirect('/users/login')
 		
-		const playList = await db.PlayList.find()
+		const userId = req.user._id
+		const playList = await db.PlayList.find({userId})
 		const thums = []
 
 		for (const item of playList) {
