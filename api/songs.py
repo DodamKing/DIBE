@@ -99,8 +99,8 @@ def get_songInfo():
             if info[2].select('dt')[0].text == '발매': song['발매'] = info[2].select('dd')[0].text
             if info[3].select('dt')[0].text == '장르': song['장르'] = info[3].select('dd')[0].text
             if info[4].select('dt')[0].text == '작곡': song['작곡'] = info[4].select('dd')[0].text.strip()
-            if info[5].select('dt')[0].text == '작사': song['작사'] = info[5].select('dd')[0].text.strip()
-            if info[6].select('dt')[0].text == '편곡': song['편곡'] = info[6].select('dd')[0].text.strip()
+            if len(info) > 5 and info[5].select('dt')[0].text == '작사': song['작사'] = info[5].select('dd')[0].text.strip()
+            if len(info) > 6 and info[6].select('dt')[0].text == '편곡': song['편곡'] = info[6].select('dd')[0].text.strip()
 
             songs.append(song)
 
