@@ -188,6 +188,35 @@ async function setRyrics() {
     })
 }
 
+function getSongsInfo() {
+    console.log(new Date().toLocaleString(), '발매일, 장르 크롤링 시작')
+    return new Promise(async (resolve, reject) => {
+        const songs = await db.Song.find({genre : null})
+        const uri = process.env.SONGINFO_POST_URL
+        const options = {
+            uri : uri,
+            method : 'POST',
+            body : {songs},
+            json : true,
+        }
+        
+        request.post(options, async (err, response, body) => {
+            if (err) return console.error(err)
+            for await (const song of body) {
+                const songId = song._id
+                const _song = await db.Song.findById(songId)
+                if (!_song.write) await db.Song.findByIdAndUpdate(songId, {write : song.작곡})
+                if (!_song.words) await db.Song.findByIdAndUpdate(songId, {words : song.작사})
+                if (!_song.arrange) await db.Song.findByIdAndUpdate(songId, {arrange : song.편곡})
+                await db.Song.findByIdAndUpdate(songId, { release : song.발매, genre : song.장르 })
+            }
+            console.log(body)
+            console.log(new Date().toLocaleString(), '발매일, 장르 크롤링 종료')
+            resolve(body)
+        })
+    })
+}
+
 myModule.setURLScheduler = setURLScheduler
 myModule.setTodayChart = setTodayChart
 myModule.downSongsFile = downSongsFile
@@ -196,5 +225,6 @@ myModule.setWrongYtURL = setWrongYtURL
 myModule.setRyrics = setRyrics
 myModule.resetWrongYtURL = resetWrongYtURL
 myModule.reportWrongYtURL = reportWrongYtURL
+myModule.getSongsInfo = getSongsInfo
 
 module.exports = myModule

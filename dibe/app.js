@@ -120,7 +120,12 @@ cron.schedule('15 12 * * *', async () => {
   console.log(new Date().toLocaleString(), '가사 크롤링 종료')
 })
 
-cron.schedule('20 12 * * 1', async () => {
+// 발매일, 장르 크롤링
+cron.schedule('20 12 * * *', async () => {
+  await myModule.getSongsInfo()
+})
+
+cron.schedule('30 12 * * 1', async () => {
 // cron.schedule('20 16 * * *', async () => {
   console.log(await myModule.reportWrongYtURL())
 })

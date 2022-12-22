@@ -87,8 +87,10 @@ router.get('/playlist/:listId', (req, res) => {
 
 router.get('/test/my', async (req, res) => {
 	// const result = await myModule.setRyrics()
-	const result = await myModule.setWrongYtURL()
+	// const result = await myModule.setWrongYtURL()
 	// const result = await myModule.downSongsFile()
+	const result = await myModule.getSongsInfo()
+
 	res.json(result)
 })
 
