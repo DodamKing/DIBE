@@ -121,7 +121,7 @@ cron.schedule('15 12 * * *', async () => {
 })
 
 // 발매일, 장르 크롤링
-cron.schedule('20 12 * * *', async () => {
+cron.schedule('30 12 * * 2', async () => {
   await myModule.getSongsInfo()
 })
 
