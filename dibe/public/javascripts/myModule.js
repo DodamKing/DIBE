@@ -191,7 +191,7 @@ async function setRyrics() {
 function getSongsInfo() {
     console.log(new Date().toLocaleString(), '발매일, 장르 크롤링 시작')
     return new Promise(async (resolve, reject) => {
-        const songs = await db.Song.find({genre : null})
+        const songs = await db.Song.find({$or : [{genre : null}, {genre : ''}]})
         const uri = process.env.SONGINFO_POST_URL
         const options = {
             uri : uri,
@@ -205,9 +205,9 @@ function getSongsInfo() {
             for await (const song of body) {
                 const songId = song._id
                 const _song = await db.Song.findById(songId)
-                if (!_song.write) await db.Song.findByIdAndUpdate(songId, {write : song.작곡})
-                if (!_song.words) await db.Song.findByIdAndUpdate(songId, {words : song.작사})
-                if (!_song.arrange) await db.Song.findByIdAndUpdate(songId, {arrange : song.편곡})
+                if (!_song.write && song.작곡) await db.Song.findByIdAndUpdate(songId, {write : song.작곡})
+                if (!_song.words && song.작사) await db.Song.findByIdAndUpdate(songId, {words : song.작사})
+                if (!_song.arrange && song.편곡) await db.Song.findByIdAndUpdate(songId, {arrange : song.편곡})
                 await db.Song.findByIdAndUpdate(songId, { release : song.발매, genre : song.장르 })
             }
             console.log(body)
