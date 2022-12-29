@@ -142,4 +142,9 @@ router.get('/songs/delete/:songId', async (req, res) => {
     res.redirect('/admin/songs')
 })
 
+router.get('/reportdelall', async (req, res) => {
+    await db.Report.updateMany({visible : 0})
+    res.redirect('/admin/songs')
+})
+
 module.exports = router
