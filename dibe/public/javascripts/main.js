@@ -458,8 +458,19 @@ $('.nav').on('click', async (e) => {
     if (url === '/today') {
         history.pushState(null, '', location.origin + url)
         document.title = '투데이 DIBE(다이브)'
-        main.innerHTML = `<video style="width: 100%;" src="" autoplay muted></video>`
+        let html = `<video style="width: 100%;" src="" autoplay muted></video>`
+        html += `
+            <div id="disqus_thread" class="p-5"></div>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        `
+        main.innerHTML = html
         mainVideoPlay();
+        (function() {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://dibe-1.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+        })();
     }
     
     else if (url === '/chart') {

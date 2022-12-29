@@ -32,13 +32,14 @@ router.get('/songs', isAdmin, async (req, res) => {
 router.post('/songs', isAdmin, async (req, res) => {
     const query = req.body.query
     const reports = await db.Report.find({visible : 1}).sort({createdAt : -1})
-    const songs = await db.Song.find({$or : [{title : {$regex : query, $options : 'i'}}, {artist : {$regex : query, $options : 'i'}}]})
+    const songs = await db.Song.find({$or : [{title : {$regex : query, $options : 'i'}}, {artist : {$regex : query, $options : 'i'}}]}).sort({createdAt : -1})
     res.render('admin/song', {reports, songs})
 })
 
 router.get('/update/:songId', isAdmin, async (req, res) => {
     const songId = req.params.songId
     const song = await db.Song.findById(songId)
+    song.updatedAt = new Date().toLocaleString()
     const path = `public/video/${songId}.mp4`
     const exists = await fs.existsSync(path)
     res.render('admin/update', {song, exists})

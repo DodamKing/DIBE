@@ -27,7 +27,9 @@
         <section>
             <div class="loader" style="display: none; z-index: 1055;"></div>
             <div id="main">
-                <% if (flag === 'today') { %> <video style="width: 100%;" src="" autoplay muted></video>
+                <% if (flag === 'today') { %> 
+                    <video style="width: 100%;" src="" autoplay muted></video>
+                    <%- include('./include/disqus') %>
                 <% } else if (flag === 'chart') { %> <%- include('chart') %>
                 <% } else if (flag === 'search') { %> <%- include('song/list') %>
                 <% } else if (flag === 'playlist') { %> <%- include('user/playList') %>
@@ -35,7 +37,6 @@
                 <% } else { %> <%- include('viewRouter') %> <% } %>
             </div>
 
-            <%- include('./include/disqus') %>
             <%- include('./include/footer') %>
         </section>
         <%- include('./include/controler') %>
