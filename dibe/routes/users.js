@@ -286,4 +286,15 @@ router.get('/dellistsong/:listId', isLoggedIn, async (req, res) => {
   res.end()
 })
 
+router.post('/finduserId', async (req, res) => {
+  const userNm = req.body.userNm
+  const phoneNb = req.body.phoneNb
+  const email = req.body.email
+
+  const user = await db.User.findOne({userNm, phoneNb, email})
+  let mid = ''
+  if (user) mid = user.userId
+  res.send(mid)
+})
+
 module.exports = router;
