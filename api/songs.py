@@ -81,10 +81,12 @@ def get_songInfo():
     driver.implicitly_wait(10)
 
     for result in results:
-        # query = '언제나 사랑해 케이시 (Kassy)'
         query = '{} {}'.format(result['title'], result['artist'])
         driver.get('https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bkhH&x_csa=%7B%22theme%22%3A%22music_top%22%2C%20%22pkid%22%3A%22632%22%7D&query=' + query)
         soup = bs(driver.page_source, 'html.parser')
+
+        song = OrderedDict()
+        song['_id'] = result['_id']
 
         try:
             query = soup.select('.middle_title a.more_link')[0].get('href')
@@ -93,19 +95,18 @@ def get_songInfo():
             soup = bs(driver.page_source, 'html.parser')
             info = soup.select('dl.info .info_group')
 
-            song = OrderedDict()
-            song['_id'] = result['_id']
-
             if info[2].select('dt')[0].text == '발매': song['발매'] = info[2].select('dd')[0].text
             if info[3].select('dt')[0].text == '장르': song['장르'] = info[3].select('dd')[0].text
             if info[4].select('dt')[0].text == '작곡': song['작곡'] = info[4].select('dd')[0].text.strip()
             if len(info) > 5 and info[5].select('dt')[0].text == '작사': song['작사'] = info[5].select('dd')[0].text.strip()
             if len(info) > 6 and info[6].select('dt')[0].text == '편곡': song['편곡'] = info[6].select('dd')[0].text.strip()
 
-            songs.append(song)
-
         except Exception as err:
-            print(query, err) 
+            song['장르'] = ' '
+            song['발매'] = ' '
+            print(query, err)
+
+        finally: songs.append(song)
 
     driver.quit()
     return jsonify(songs)
