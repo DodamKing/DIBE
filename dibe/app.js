@@ -33,17 +33,6 @@ app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy : false
 // app.use(logger('short'));
 app.use(logger(':remote-addr :method :url :status :res[content-length] - :response-time ms'));
 
-app.use((req, res, next) => {
-  const ip = req.ip
-  const testIp = '207.97.227.239'
-  const geo = geoip.lookup(ip)
-  if (geo) {
-    console.log('접속 시도 아이피:', ip, 'Country:', geo.country)
-    if (geo.country !== 'KR') return res.send('Access Denied')
-  }
-  next()
-})
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -68,6 +57,14 @@ app.use((req, res, next) => {
   // const MobileDetect = require('mobile-detect')
   // const md = new MobileDetect(req.headers['user-agent'])
 	// if (md.mobile()) return res.render('mobile/temp')
+
+  const ip = req.ip
+  // const ip = '207.97.227.239'
+  const geo = geoip.lookup(ip)
+  if (geo) {
+    console.log('접속 시도 아이피:', ip, 'Country:', geo.country)
+    if (geo.country !== 'KR') return res.send('Access Denied')
+  }
 
   res.locals.user = req.user
   res.locals.isAuthenticated = req.isAuthenticated()
