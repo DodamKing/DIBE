@@ -48,6 +48,10 @@ router.get('/update/:songId', isAdmin, async (req, res) => {
 router.post('/update/:songId', async (req, res) => {
     const songId = req.params.songId
     await db.Song.findByIdAndUpdate(songId, req.body)
+
+    const chart = await db.Chart.findOne({songId})
+    // if (chart) await db.Chart.findByIdAndUpdate(chart._id, {ytURL : req.body.ytURL})
+    if (chart) await db.Chart.findByIdAndUpdate(chart._id, req.body)
     res.redirect(`/admin/update/${songId}`)
 })
 
