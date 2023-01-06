@@ -122,9 +122,8 @@ cron.schedule('30 12 * * 2', async () => {
   await myModule.getSongsInfo()
 })
 
-cron.schedule('30 12 * * 1', async () => {
-// cron.schedule('20 16 * * *', async () => {
-  console.log(await myModule.reportWrongYtURL())
-})
+// cron.schedule('30 12 * * 1', async () => {
+//   console.log(await myModule.reportWrongYtURL())
+// })
 
 module.exports = app;
