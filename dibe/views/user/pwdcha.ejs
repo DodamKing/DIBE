@@ -52,7 +52,11 @@
 	</div>
 
     <script>
-        if ('<%- msg %>') alert('<%- msg %>')
+        if ('<%- msg1 %>') {
+			alert('<%- msg1 %>')
+			location.href='/users/logout'
+		}
+		else if ('<%- msg2 %>') alert('<%- msg2 %>')
         function smit() {
 			if (confirm('변경 사항을 적용 할까요?')) {
 				if (pwd1.value == "" || pwd2.value == "" || pwd3.value == "") {

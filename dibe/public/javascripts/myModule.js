@@ -217,6 +217,34 @@ function getSongsInfo() {
     })
 }
 
+async function nodemail(email, pwd, user) {
+    const nodemailer = require('nodemailer')
+
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+            user: process.env.NODEMAILER_USER,
+            pass: process.env.NODEMAILER_PASS,
+        },
+    });
+
+    let info = await transporter.sendMail({
+        from: `"DIBE" <${process.env.NODEMAILER_USER}>`,
+        to: email,
+        subject: 'DIBE 임시 비밀번호',
+        html: `<div style='font-size: 150%;'><b>DIBE</b>를 이용해 주셔셔 감사합니다.<br><br>'${user.nickNm}'님의 임시 비밀번호 입니다. <br><br><hr>
+            <p style='font-size: 200%; text-align: center;'>${pwd}</p>
+            <hr><br>로그인 하셔서 비밀번호를 꼭 변경해 주세요!"
+            <br><br><a href='http://112.167.167.27:9000'>DIBE 바로가기</a></div>
+        `,
+    });
+
+    console.log(info.messageId);
+}
+
 myModule.setURLScheduler = setURLScheduler
 myModule.setTodayChart = setTodayChart
 myModule.downSongsFile = downSongsFile
@@ -226,5 +254,6 @@ myModule.setRyrics = setRyrics
 myModule.resetWrongYtURL = resetWrongYtURL
 myModule.reportWrongYtURL = reportWrongYtURL
 myModule.getSongsInfo = getSongsInfo
+myModule.nodemail = nodemail
 
 module.exports = myModule

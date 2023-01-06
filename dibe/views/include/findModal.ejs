@@ -109,13 +109,13 @@
 				url : "/users/finduserPwd",
 				data : data,
 				success : (data) => {
-					if (data == "1") {
+					if (data === "1") {
 						demo21.innerHTML = email2.value + "로 임시 비밀번호를 보냈습니다.";
 					}
-					else if (data == "0") {
+					else if (data === "0") {
 						demo21.innerHTML = "없는 아이디 입니다.";
 					}
-					else if (data == "2") {
+					else if (data === "2") {
 						demo21.innerHTML = "이메일 주소가 일치 하지 않습니다.";
 					}
 					$('.loader').fadeOut();

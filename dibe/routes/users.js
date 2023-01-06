@@ -4,6 +4,7 @@ const db = require('../models')
 const passport = require('passport')
 const bcrypt = require('bcrypt');
 const { isNotLoggedIn, isLoggedIn, getCurrentDate } = require('./middlewares');
+const myModule = require('../public/javascripts/myModule');
 
 /* GET users listing. */
 router.get('/sns_login', isNotLoggedIn, (req, res) => {
@@ -104,8 +105,9 @@ router.get('/logout',(req, res) => {
 router.get('/profile/:_id', isLoggedIn, async (req, res) => {
   const _id = req.params._id
   const user = await db.User.findById(_id)
-  const msg = req.flash('msg')
-  res.render('user/profile', {user, msg})
+  const msg1 = req.flash('msg1')
+  const msg2 = req.flash('msg2')
+  res.render('user/profile', {user, msg1, msg2})
 })
 
 router.get('/withdrawal/:_id', isLoggedIn, async (req, res) => {
@@ -116,8 +118,9 @@ router.get('/withdrawal/:_id', isLoggedIn, async (req, res) => {
 })
 
 router.get('/pwdcha/:_id', isLoggedIn, (req, res) => {
-  const msg = req.flash('msg')
-  res.render('user/pwdcha', {msg})
+  const msg1 = req.flash('msg1')
+  const msg2 = req.flash('msg2')
+  res.render('user/pwdcha', {msg1, msg2})
 })
 
 router.post('/pwdcha/:id', isLoggedIn, async (req, res) => {
@@ -128,11 +131,11 @@ router.post('/pwdcha/:id', isLoggedIn, async (req, res) => {
   const check = await bcrypt.compare(pwd1, pwd)
   if (check) {
     await db.User.findByIdAndUpdate(_id, {pwd : pwd2})
-    req.flash('msg', '비밀번호가 정상적으로 변경 되었습니다.')
+    req.flash('msg1', '비밀번호가 정상적으로 변경 되었습니다. \\n다시 로그인 하세요.')
     res.redirect('/users/profile/' + _id)
   }
   else {
-    req.flash('msg', '기존 비밀번호가 틀립니다.')
+    req.flash('msg2', '기존 비밀번호가 틀립니다.')
     res.redirect('/users/pwdcha/' + _id)
   }
 })
@@ -295,6 +298,22 @@ router.post('/finduserId', async (req, res) => {
   let mid = ''
   if (user) mid = user.userId
   res.send(mid)
+})
+
+router.post('/finduserPwd', async (req, res) => {
+  const userId = req.body.userId
+  const email = req.body.email
+  
+  const user = await db.User.findOne({userId, del : false})
+  if (!user) return res.send('0')
+  else if (user.email !== email) return res.send('2')
+  else {
+    const pwd_ = Math.random().toString(36).slice(2)
+    const pwd = await bcrypt.hash(pwd_, 12)
+    await db.User.findOneAndUpdate({userId}, {pwd})
+    await myModule.nodemail(email, pwd_, user)
+    return res.send('1')
+  }
 })
 
 module.exports = router;
