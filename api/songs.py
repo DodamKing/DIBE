@@ -29,7 +29,7 @@ def get_lyrics():
         query = '{} {}'.format(result['title'], result['artist'])
         driver.get('https://vibe.naver.com/search?query=' + query)
         print(query)
-        try: track = driver.find_element(By.CSS_SELECTOR, '.popular_item .btn_play_now').get_attribute('data-track-id')
+        try: track = driver.find_element(By.CSS_SELECTOR, '.recommend_result .btn_play_now').get_attribute('data-track-id')
         except: 
             print(query, '없음')
             continue
