@@ -10,9 +10,7 @@
                 <tr>
                     <td><div class="imgBox"><img name="top100Img" src="<%- song.img %>" alt=""></div></td>
                     <td>
-                        <div name="top100Title">
-                            <a href=""><%- song.title %></a>
-                        </div>
+                        <div name="top100Title" class="ho" onclick="songInfo('<%- song._id %>')"><%- song.title %></div>
                         <div name="top100Artist"><%- song.artist %></div>
                     </td> 
                     <td class="align-middle"><button name="add_btn" type="button" class="btn" data-toggle="modal" data-target="#addOne" onclick="setdata('<%- song._id %>', '<%- song.ytURL %>')"><i title="곡 추가" class="fas fa-plus"></i></button></td>

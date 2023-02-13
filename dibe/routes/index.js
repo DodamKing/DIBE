@@ -85,6 +85,14 @@ router.get('/playlist/:listId', (req, res) => {
 	res.render('main', {flag, listId})
 })
 
+router.get('/track/:songId', async (req, res) => {
+	const songId = req.params.songId
+	const flag = 'track' 
+	const songInfo = await db.Song.findById(songId)
+    const thumb = songInfo.img.replace('50', '300')
+	res.render('main', {flag, songInfo, thumb})
+})
+
 router.get('/test/my', async (req, res) => {
 	// const result = await myModule.setRyrics()
 	// const result = await myModule.setWrongYtURL()

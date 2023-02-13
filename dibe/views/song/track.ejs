@@ -1,0 +1,52 @@
+<div class="container mt-5 mb-5 pb-3 bg-dark" style="width: 70%; border-radius: 5px;">
+    <div>
+        <h3 class="text-white pl-3 pt-4"><%- songInfo.title %><span style="float: right;" class="text-rigth btn btn-secondary"><a href="javascript:history.back()">돌아가기</a></span></h3>
+        <p class="text-white pl-3">
+            노래 | <%- songInfo.artist %> | <%- songInfo.release %>
+            <button id="songlike_btn1"  class="btn" type="button" title="좋아요" onclick="songlike()"><i class="fa-regular fa-heart"></i></button>
+            <button id="songlike_btn2"  style="display: none;" class="btn" type="button" onclick="songunlike()"><i class="fa-solid fa-heart text-danger"></i></button>
+            <span id="songLikeCnt"><%- songInfo.likes %></span>
+        </p>
+        <div class="p-3 mb-3" style="border-radius: 15px; background-color: rgb(35, 35, 35);">
+            <h5><b>곡정보</b></h5>
+            <table class="table table-borderless text-mute">
+                <tr>
+                    <th width="100px">아티스트</th>
+                    <td><%- songInfo.artist %></td>
+                    <td rowspan="7"><div style="float: right;"><img style="border-radius: 100%" src="<%- thumb %>"></div></td>
+                </tr>
+                <tr>
+                    <th>앨범</th>
+                    <td><%- songInfo.album %></td>
+                </tr>
+                <tr>
+                    <th>발매</th>
+                    <td><%- songInfo.release %></td>
+                </tr>
+                <tr>
+                    <th>장르</th>
+                    <td><%- songInfo.genre %></td>
+                </tr>
+                <tr>
+                    <th>작곡</th>
+                    <td><%- songInfo.write %></td>
+                </tr>
+                <tr>
+                    <th>작사</th>
+                    <td><%- songInfo.words %></td>
+                </tr>
+                <tr>
+                    <th>편곡</th>
+                    <td><%- songInfo.arrange %></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="p-3" style="border-radius: 15px; background-color: rgb(35, 35, 35);">
+        <h5><b>가사정보</b></h5>
+        <div class="text-light text-center">
+            <div id="lyrics_div"><%- songInfo.lyrics.replaceAll('\n', '<br>') %></div>
+            <button id="lyrics_more_btn" type="button" class="btn btn-dark form-control mt-5" onclick="moerLyrics()">더보기</button>
+        </div>
+    </div>
+</div>

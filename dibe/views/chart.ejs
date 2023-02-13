@@ -19,7 +19,7 @@
                     <td style="text-align: center; vertical-align: middle;"><%- i+1 %></td>
                     <td><div class="imgBox ho" onclick="oneplay(`<%- song.songId %>`, `<%- song.ytURL %>`)"><img name="top100Img" src="<%- song.img %>"></div></td>
                     <td class="align-middle">
-                        <div name="top100Title"><a href=""><%- song.title %></a></div>
+                        <div name="top100Title" class="ho" onclick="songInfo('<%- song.songId %>')"><%- song.title %></div>
                         <div name="top100Artist"><%- song.artist %></div>
                     </td>
                     <td class="align-middle"><button name="add_btn" type="button" class="btn" data-toggle="modal" data-target="#addOne" onclick="setdata('<%- song.songId %>', '<%- song.ytURL %>')"><i title="곡 추가" class="fas fa-plus"></i></button></td>

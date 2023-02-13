@@ -231,4 +231,11 @@ router.get('/lyrics/:songId', async (req, res) => {
     else res.json(false)
 })
 
+router.get('/track/:songId', async (req, res) => {
+    const songId = req.params.songId
+    const songInfo = await db.Song.findById(songId)
+    const thumb = songInfo.img.replace('50', '300')
+    res.json({songInfo, thumb})
+})
+
 module.exports = router

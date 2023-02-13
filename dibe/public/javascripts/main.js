@@ -204,9 +204,7 @@ async function search(srchKwd) {
             <tr>
                 <td><div class="imgBox" onclick="oneplay('${song._id}', '${song.ytURL}')"><img name="top100Img" src="${song.img}" alt=""></div></td>
                 <td>
-                    <div name="top100Title">
-                        <a href="">${song.title}</a>
-                    </div>
+                    <div name="top100Title" class="ho" onclick="songInfo('${song._id}')">${song.title}</div>
                     <div name="top100Artist">${song.artist}</div>
                 </td> 
                 <td class="align-middle"><button name="add_btn" type="button" class="btn" data-toggle="modal" data-target="#addOne" onclick="setdata('${song._id}', '${song.ytURL}')"><i title="곡 추가" class="fas fa-plus"></i></button></td>
@@ -319,6 +317,97 @@ async function getPlayList(listId) {
 
     $('#main').html(html)
 }
+
+async function songInfo(songId) {
+    history.pushState(null, '', location.origin + '/track/' + songId)
+    const response = await fetch('/songs/track/' + songId)
+    const json = await response.json()
+    const songInfo = json.songInfo
+    const thumb = json.thumb
+    document.title = `${songInfo.title} DIBE(다이브)`
+    let html = `
+        <div class="container mt-5 mb-5 pb-3 bg-dark" style="width: 70%; border-radius: 5px;">
+            <div>
+                <h3 class="text-white pl-3 pt-4">${songInfo.title }<span style="float: right;" class="text-rigth btn btn-secondary"><a href="javascript:history.back()">돌아가기</a></span></h3>
+                <p class="text-white pl-3">
+                    노래 | ${songInfo.artist } | ${songInfo.release }
+                    <button id="songlike_btn1" class="btn" type="button" title="좋아요" onclick="songlike()"><i class="fa-regular fa-heart"></i></button>
+                    <button id="songlike_btn2" style="display: none;" class="btn" type="button" onclick="songunlike()"><i class="fa-solid fa-heart text-danger"></i></button>
+                    <span id="songLikeCnt">${songInfo.likes }</span>
+                </p>
+                <div class="p-3 mb-3" style="border-radius: 15px; background-color: rgb(35, 35, 35);">
+                    <h5><b>곡정보</b></h5>
+                    <table class="table table-borderless text-mute">
+                        <tr>
+                            <th width="100px">아티스트</th>
+                            <td>${songInfo.artist }</td>
+                            <td rowspan="7"><div style="float: right;"><img style="border-radius: 100%" src="${thumb }"></div></td>
+                        </tr>
+                        <tr>
+                            <th>앨범</th>
+                            <td>${songInfo.album }</td>
+                        </tr>
+                        <tr>
+                            <th>발매</th>
+                            <td>${songInfo.release }</td>
+                        </tr>
+                        <tr>
+                            <th>장르</th>
+                            <td>${songInfo.genre }</td>
+                        </tr>
+                        <tr>
+                            <th>작곡</th>
+                            <td>${songInfo.write }</td>
+                        </tr>
+                        <tr>
+                            <th>작사</th>
+                            <td>${songInfo.words }</td>
+                        </tr>
+                        <tr>
+                            <th>편곡</th>
+                            <td>${songInfo.arrange }</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="p-3" style="border-radius: 15px; background-color: rgb(35, 35, 35);">
+                <h5><b>가사정보</b></h5>
+                <div class="text-light text-center">
+                    <div id="lyrics_div">${songInfo.lyrics.replaceAll('\n', '<br>') }</div>
+                    <button id="lyrics_more_btn" type="button" class="btn btn-dark form-control mt-5" onclick="moerLyrics()">더보기</button>
+                </div>
+            </div>
+        </div>
+    `
+    $('#main').html(html)
+}
+
+let lyricssw = 0
+function moerLyrics() {
+    if (lyricssw == 0) {
+        lyrics_div.style.height = "auto";
+        lyrics_div.style.overflow = "auto";
+        lyricssw = 1;
+        lyrics_more_btn.innerHTML = "접기";
+    }
+    
+    else {
+        lyrics_div.style.height = "200px";
+        lyrics_div.style.overflow = "hidden";
+        lyricssw = 0;    			
+        lyrics_more_btn.innerHTML = "더보기";
+    }
+}
+function songlike() {
+    $("#songlike_btn1").hide();
+    $("#songlike_btn2").show();
+}
+
+function songunlike() {
+    $("#songlike_btn2").hide();
+    $("#songlike_btn1").show();
+}
+
 
 async function delPalyList(listId) {
     if (!confirm('정말 삭제 하시겠습니까?')) return
@@ -509,7 +598,7 @@ $('.nav').on('click', async (e) => {
                     <td style="text-align: center; vertical-align: middle;">${i+1}</td>
                     <td><div class="imgBox ho" onclick="oneplay('${song.songId}', '${song.ytURL}')"><img name="top100Img" src="${song.img}"></div></td>
                     <td class="align-middle">
-                        <div name="top100Title"><a href="">${song.title}</a></div>
+                        <div name="top100Title" class="ho" onclick="songInfo('${song.songId}')">${song.title}</div>
                         <div name="top100Artist">${song.artist}</div>
                     </td>
                     <td class="align-middle"><button name="add_btn" type="button" class="btn" data-toggle="modal" data-target="#addOne" onclick="setdata('${song.songId}', '${song.ytURL}')"><i title="곡 추가" class="fas fa-plus"></i></button></td>

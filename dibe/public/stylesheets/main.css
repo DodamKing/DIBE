@@ -366,3 +366,8 @@ div#play_listImg > div {
 .myScroll::-webkit-scrollbar-track {
     background: rgb(0, 0, 0, .1);
 }
+
+#lyrics_div {
+    height: 200px;
+    overflow: hidden;
+}
