@@ -65,10 +65,12 @@ def get_yt_url_one():
         elements = driver.find_elements(By.CSS_SELECTOR, 'a#video-title')
 
         for i in range(len(elements)):
-            video_url = elements[i].get_attribute('href')
-            l = YouTube(video_url).length
-            if 120 < l < 60 * 6:
-                break 
+            try:
+                video_url = elements[i].get_attribute('href')
+                l = YouTube(video_url).length
+                if 120 < l < 60 * 6:
+                    break 
+            except: continue
 
         url_list.append(video_url)
 
