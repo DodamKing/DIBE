@@ -37,7 +37,7 @@ def get_lyrics():
         url = 'https://vibe.naver.com/track/' + track
         driver.get(url)
         song_info = driver.find_element(By.CSS_SELECTOR, 'div.song_info.pc')
-        # element = song_info.find_elements(By.CSS_SELECTOR, '.item')
+        element = song_info.find_elements(By.CSS_SELECTOR, '.item')
 
         html = song_info.get_attribute('innerHTML')
         soup = bs(html, 'html.parser')
