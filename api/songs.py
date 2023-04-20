@@ -29,15 +29,15 @@ def get_lyrics():
         query = '{} {}'.format(result['title'], result['artist'])
         driver.get('https://vibe.naver.com/search?query=' + query)
         print(query)
-        try: track = driver.find_element(By.CSS_SELECTOR, '.recommend_result .btn_play_now').get_attribute('data-track-id')
-        except: 
+        track = driver.find_element(By.CSS_SELECTOR, '.recommend_result .btn_play_now').get_attribute('data-track-id')
+        if track is None:
             print(query, '없음')
             continue
 
         url = 'https://vibe.naver.com/track/' + track
         driver.get(url)
-        song_info = driver.find_element(By.CSS_SELECTOR, '.song_info')
-        element = song_info.find_elements(By.CSS_SELECTOR, '.item')
+        song_info = driver.find_element(By.CSS_SELECTOR, 'div.song_info.pc')
+        # element = song_info.find_elements(By.CSS_SELECTOR, '.item')
 
         html = song_info.get_attribute('innerHTML')
         soup = bs(html, 'html.parser')
@@ -46,14 +46,13 @@ def get_lyrics():
         작사 = ''
         작곡 = ''
         편곡 = ''
-        가사 = ''
 
         if len(element) >= 1: 작사 = element[0].text[3:]
         if len(element) >= 2: 작곡 = element[1].text[3:]
         if len(element) >= 3: 편곡 = element[2].text[3:]
             
-        try: 가사 = driver.find_element(By.CSS_SELECTOR, '.lyrics p').text 
-        except: 가사 = ''
+        가사 = driver.find_element(By.CSS_SELECTOR, '.lyrics p').text 
+        if 가사 is None: 가사 = ''
 
         song = OrderedDict()
         song['_id'] = result['_id']
