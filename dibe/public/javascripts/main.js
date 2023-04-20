@@ -330,7 +330,7 @@ async function songInfo(songId) {
             <div>
                 <h3 class="text-white pl-3 pt-4">${songInfo.title }<span style="float: right;" class="text-rigth btn btn-secondary"><a href="javascript:history.back()">돌아가기</a></span></h3>
                 <p class="text-white pl-3">
-                    노래 | ${songInfo.artist } | ${songInfo.release }
+                    노래 | ${songInfo.artist } ${songInfo.release && songInfo.release.trim() ? '| ' + songInfo.release : '' }
                     <button id="songlike_btn1" class="btn" type="button" title="좋아요" onclick="songlike()"><i class="fa-regular fa-heart"></i></button>
                     <button id="songlike_btn2" style="display: none;" class="btn" type="button" onclick="songunlike()"><i class="fa-solid fa-heart text-danger"></i></button>
                     <span id="songLikeCnt">${songInfo.likes }</span>
@@ -349,23 +349,23 @@ async function songInfo(songId) {
                         </tr>
                         <tr>
                             <th>발매</th>
-                            <td>${songInfo.release }</td>
+                            <td>${songInfo.release ? songInfo.release : '' }</td>
                         </tr>
                         <tr>
                             <th>장르</th>
-                            <td>${songInfo.genre }</td>
+                            <td>${songInfo.genre ? songInfo.genre : '' }</td>
                         </tr>
                         <tr>
                             <th>작곡</th>
-                            <td>${songInfo.write }</td>
+                            <td>${songInfo.write ? songInfo.write : '' }</td>
                         </tr>
                         <tr>
                             <th>작사</th>
-                            <td>${songInfo.words }</td>
+                            <td>${songInfo.words ? songInfo.words : '' }</td>
                         </tr>
                         <tr>
                             <th>편곡</th>
-                            <td>${songInfo.arrange }</td>
+                            <td>${songInfo.arrange ? songInfo.arrange : '' }</td>
                         </tr>
                     </table>
                 </div>
@@ -373,7 +373,7 @@ async function songInfo(songId) {
             <div class="p-3" style="border-radius: 15px; background-color: rgb(35, 35, 35);">
                 <h5><b>가사정보</b></h5>
                 <div class="text-light text-center">
-                    <div id="lyrics_div">${songInfo.lyrics.replaceAll('\n', '<br>') }</div>
+                    <div id="lyrics_div">${songInfo.lyrics ? songInfo.lyrics.replaceAll('\n', '<br>') : '' }</div>
                     <button id="lyrics_more_btn" type="button" class="btn btn-dark form-control mt-5" onclick="moerLyrics()">더보기</button>
                 </div>
             </div>

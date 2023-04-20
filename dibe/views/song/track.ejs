@@ -2,7 +2,7 @@
     <div>
         <h3 class="text-white pl-3 pt-4"><%- songInfo.title %><span style="float: right;" class="text-rigth btn btn-secondary"><a href="javascript:history.back()">돌아가기</a></span></h3>
         <p class="text-white pl-3">
-            노래 | <%- songInfo.artist %> | <%- songInfo.release %>
+            노래 | <%- songInfo.artist %> <%- songInfo.release && songInfo.release.trim() ? '| ' + songInfo.release : '' %>
             <button id="songlike_btn1"  class="btn" type="button" title="좋아요" onclick="songlike()"><i class="fa-regular fa-heart"></i></button>
             <button id="songlike_btn2"  style="display: none;" class="btn" type="button" onclick="songunlike()"><i class="fa-solid fa-heart text-danger"></i></button>
             <span id="songLikeCnt"><%- songInfo.likes %></span>
