@@ -65,12 +65,12 @@ router.post('/add', async (req, res) => {
 router.post('/downsong', async (req, res) => {
     const _id = req.body._id
     const url = req.body.url
-    await ytdl(url, {filter : 'audioonly'}).pipe(fs.createWriteStream('public/video/' + _id + '.mp4').on('finish', () => {
+    ytdl(url, {filter : 'audioonly'}).on('error', () => { return res.send(false) }).pipe(fs.createWriteStream('public/video/' + _id + '.mp4').on('finish', () => {
         db.Song.findByIdAndUpdate(_id, {isFile : 1}, (err) => {
             if (err) return console.error(err)
+            res.send(true)
         })
     }))
-    res.send(true)
 })
 
 router.post('/preview', async (req, res) => {

@@ -71,11 +71,11 @@ async function downSongsFile() {
     for (const song of result) {
         const songId = song._id
         const path = `public/video/${songId}.mp4`
-        const exists = await fs.existsSync(path)
+        const exists = fs.existsSync(path)
         const url = song.ytURL
 
         if (!exists && url) {
-            ytdl(url, {filter : 'audioonly'}).pipe(fs.createWriteStream(path).on('finish', () => {
+            ytdl(url, {filter : 'audioonly'}).on('error', (err) => { return console.error(err)}).pipe(fs.createWriteStream(path).on('finish', () => {
                 console.log(song.title, song.artist)
                 db.Song.findByIdAndUpdate(songId, {isFile : 1}, (err) => {
                     if (err) return console.error(err)

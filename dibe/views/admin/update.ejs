@@ -134,12 +134,14 @@
             })
             const json = await res.json()
             if (json) alert('음원 다운이 완료되었습니다.')
+            else alert('다운로드 실패!!!')
             location.reload()
         })
 
         $('.play').on('click', async () => {
-            $('.loader').show()
             const url = $('.url').val()
+            if (!url) return bootbox.alert('주소를 입력하세요.')
+            $('.loader').show()
             const res = await fetch('/admin/preview', {
                 method : 'POST',
                 headers : {"Content-Type": "application/json"},
