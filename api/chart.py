@@ -8,6 +8,8 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from pytube import YouTube
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 chart = Blueprint('chart', __name__)
@@ -62,15 +64,22 @@ def get_yt_url_one():
         video_url = ''
 
         driver.get(url)
-        elements = driver.find_elements(By.CSS_SELECTOR, 'a#video-title')
+        # elements = driver.find_elements(By.CSS_SELECTOR, 'a#video-title')
+        elements = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "a#video-title")))
 
-        for i in range(len(elements)):
+        idx = 0
+        # for i in range(len(elements)):
+        while idx < len(elements):
+            idx += 1
+            video_url = elements[idx].get_attribute('href')
             try:
-                video_url = elements[i].get_attribute('href')
                 l = YouTube(video_url).length
                 if 120 < l < 60 * 6:
+                    video_url = video_url[:video_url.find('&')]
                     break 
-            except: continue
+            except: 
+                video_url = ''
+                break
 
         url_list.append(video_url)
 
