@@ -64,16 +64,17 @@ def get_yt_url_one():
         video_url = ''
 
         driver.get(url)
-        # elements = driver.find_elements(By.CSS_SELECTOR, 'a#video-title')
         elements = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "a#video-title")))
+        lengths = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#overlays #text")))
 
         idx = 0
-        # for i in range(len(elements)):
         while idx < len(elements):
-            idx += 1
             video_url = elements[idx].get_attribute('href')
             try:
-                l = YouTube(video_url).length
+                times = lengths[idx].get_attribute('innerText').strip().split(':')
+                idx += 1
+                if len(times) < 2: continue
+                l = int(times[-2]) * 60 + int(times[-1])
                 if 120 < l < 60 * 6:
                     video_url = video_url[:video_url.find('&')]
                     break 
