@@ -10,7 +10,7 @@ function setURLScheduler() {
         const songs = []
         const results = []
         const rows = await db.Song.find()
-        for (row of rows) {
+        for (const row of rows) {
             if (!row.ytURL) {
                 songs.push(row)
             }
