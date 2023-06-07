@@ -64,8 +64,13 @@ def get_yt_url_one():
         video_url = ''
 
         driver.get(url)
-        elements = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "a#video-title")))
-        lengths = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#overlays #text")))
+        try:
+            elements = WebDriverWait(driver, 12).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "a#video-title")))
+            lengths = WebDriverWait(driver, 12).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#overlays #text")))
+        except:
+            print(title, artist, '시간 초과로 넘어감')
+            url_list.append('')
+            continue
 
         idx = 0
         while idx < len(elements):
