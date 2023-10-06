@@ -143,10 +143,10 @@ $('#play_list_modal').on('hidden.bs.modal', () => {
 // 웹 종료될 때 저장
 window.addEventListener('beforeunload', () => {
     if (!sUserId) return
-    let min_dur = 00
-    let sec_dur = 00
-    let min_cur = 00
-    let sec_cur = 00
+    let min_dur = 0
+    let sec_dur = 0
+    let min_cur = 0
+    let sec_cur = 0
 
     if (!isNaN(player.duration)) {
         min_dur = parseInt(player.duration / 60)
