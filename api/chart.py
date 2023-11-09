@@ -54,7 +54,8 @@ def get_yt_url_one():
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     options.add_argument('headless')
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    try: driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    except: driver = webdriver.Chrome(options=options)
 
     for song in songs:
         title = song['title']
@@ -125,7 +126,8 @@ def get_chart_url():
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    try: driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    except: driver = webdriver.Chrome(options=options)
 
     yt_url_list = []
 

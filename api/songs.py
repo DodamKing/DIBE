@@ -22,7 +22,8 @@ def get_lyrics():
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     options.add_argument('headless')
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    try: driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    except: driver = webdriver.Chrome(options=options)
     driver.implicitly_wait(10)
 
     for result in results:
@@ -82,7 +83,8 @@ def get_songInfo():
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     options.add_argument('headless')
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    try: driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    except: driver = webdriver.Chrome(options=options)
     driver.implicitly_wait(10)
 
     for result in results:
