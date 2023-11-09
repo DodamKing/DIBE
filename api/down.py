@@ -17,8 +17,7 @@ def file_down():
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
-    try: driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    except: driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
     yt_url_list = []
     # title_list = []
