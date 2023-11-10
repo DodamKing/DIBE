@@ -21,7 +21,7 @@ def file_down():
     try: driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     except: 
         if platform.system() == 'Windows': driver = webdriver.Chrome(options=options)
-        else: driver = webdriver.Chrome('./chromedirver', options=options)
+        else: driver = webdriver.Chrome('./chromedriver', options=options)
 
     yt_url_list = []
     # title_list = []

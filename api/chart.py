@@ -58,7 +58,7 @@ def get_yt_url_one():
     try: driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     except: 
         if platform.system() == 'Windows': driver = webdriver.Chrome(options=options)
-        else: driver = webdriver.Chrome('./chromedirver', options=options)
+        else: driver = webdriver.Chrome('./chromedriver', options=options)
 
     for song in songs:
         title = song['title']
@@ -132,7 +132,7 @@ def get_chart_url():
     try: driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     except: 
         if platform.system() == 'Windows': driver = webdriver.Chrome(options=options)
-        else: driver = webdriver.Chrome('./chromedirver', options=options)
+        else: driver = webdriver.Chrome('./chromedriver', options=options)
 
     yt_url_list = []
 
