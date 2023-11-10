@@ -9,6 +9,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from collections import OrderedDict
 import json
 import re, time, os
+import platform
 
 down = Blueprint('down', __name__)
 
@@ -17,7 +18,10 @@ def file_down():
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    try: driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    except: 
+        if platform.system() == 'Windows': driver = webdriver.Chrome(options=options)
+        else: driver = webdriver.Chrome('./chromedirver', options=options)
 
     yt_url_list = []
     # title_list = []

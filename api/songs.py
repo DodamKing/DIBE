@@ -6,6 +6,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup as bs
+import platform
 
 songs = Blueprint('songs', __name__)
 
@@ -22,7 +23,12 @@ def get_lyrics():
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     options.add_argument('headless')
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+    try: driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    except: 
+        if platform.system() == 'Windows': driver = webdriver.Chrome(options=options)
+        else: driver = webdriver.Chrome('./chromedirver', options=options)
+    
     driver.implicitly_wait(10)
 
     for result in results:
@@ -82,7 +88,12 @@ def get_songInfo():
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     options.add_argument('headless')
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+    try: driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    except: 
+        if platform.system() == 'Windows': driver = webdriver.Chrome(options=options)
+        else: driver = webdriver.Chrome('./chromedirver', options=options)
+
     driver.implicitly_wait(10)
 
     for result in results:

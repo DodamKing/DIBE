@@ -10,6 +10,7 @@ from pytube import YouTube
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import platform
 
 
 chart = Blueprint('chart', __name__)
@@ -54,7 +55,10 @@ def get_yt_url_one():
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     options.add_argument('headless')
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    try: driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    except: 
+        if platform.system() == 'Windows': driver = webdriver.Chrome(options=options)
+        else: driver = webdriver.Chrome('./chromedirver', options=options)
 
     for song in songs:
         title = song['title']
@@ -125,7 +129,10 @@ def get_chart_url():
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    try: driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    except: 
+        if platform.system() == 'Windows': driver = webdriver.Chrome(options=options)
+        else: driver = webdriver.Chrome('./chromedirver', options=options)
 
     yt_url_list = []
 
