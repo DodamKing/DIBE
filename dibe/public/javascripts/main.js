@@ -43,38 +43,32 @@ async function setPlayList_() {
     const songsList = JSON.parse(songsList_)
     if (songsList.length === 0) return
 
-    const dialog = bootbox.dialog({
-        message : '<p class="text-center mb-0 text-dark"><i class="fa fa-spin fa-spinner"></i> Please wait while we do something...</p>',
-        closeButton : false,
-    })
-    
     for await (const songId of songsList) {
         const res = await fetch('/songs/addsong?songId=' + songId)
         const json = await res.json()
         const song = json.song
         await setList(song)
     }
-    // dialog.modal('hide')
     
     const idx = localStorage.getItem(`dibe_${sUserId}_playerIndex`)
     if (idx) playerIndex = idx
     await load()
     sw = 1
-    await player.play()
-    player.pause()
-    setPlayCnt(-1)
 
-    const savePoint = localStorage.getItem(`dibe_${sUserId}_savePoint`)
-    if (savePoint) {
-        player.currentTime = parseInt(savePoint) * player.duration / 1000
-        $("#play_bar").val(savePoint)
+    const currentTime = localStorage.getItem(`dibe_${sUserId}_current`)
+    if (currentTime) {
+        player.currentTime = currentTime
         $("#controls_time").html(localStorage.getItem(`dibe_${sUserId}_saveTime`))
     }
-    dialog.init(function(){
-        setTimeout(function(){
-            dialog.modal('hide')
-        }, 500);
-    })
+
+    const repeat = localStorage.getItem(`dibe_${sUserId}_repeat`) || 0
+    if (repeat == 1) {
+        repeat_btn.style.opacity = "1";
+    }
+    else if (repeat == 2) {
+        repeat_btn.style.opacity = "1";
+        $("#one_repeat_mark").show();
+    }
 }
 
 // 검색버튼 클릭 이벤트
@@ -141,8 +135,9 @@ $('#play_list_modal').on('hidden.bs.modal', () => {
 })
 
 // 웹 종료될 때 저장
-window.addEventListener('beforeunload', () => {
+window.addEventListener('beforeunload', async () => {
     if (!sUserId) return
+
     let min_dur = 0
     let sec_dur = 0
     let min_cur = 0
@@ -170,8 +165,8 @@ window.addEventListener('beforeunload', () => {
 
     let res = min_cur + ":" + sec_cur + " / " + min_dur + ":" + sec_dur
 
-    localStorage.setItem(`dibe_${sUserId}_savePoint`, (player.currentTime / player.duration) * 1000)
     localStorage.setItem(`dibe_${sUserId}_saveTime`, res)
+    localStorage.setItem(`dibe_${sUserId}_current`, player.currentTime)
 
     const songsList = []
     const songs = $('.get-songId')

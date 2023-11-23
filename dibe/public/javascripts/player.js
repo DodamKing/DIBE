@@ -1,9 +1,11 @@
 let songUrl;
 let playerIndex = 0;
 let sw = 0;
-let repeat = 0;
+let repeat = localStorage.getItem(`dibe_${sUserId}_repeat`) || 0;
 let shuffle = 0;
 let exSongs
+
+
 
 // 한 곡 재생
 async function oneplay(songId, ytURL) {
@@ -231,7 +233,6 @@ async function load() {
     play_listImg_img.src = img.replace("50", "400");
     play_listbg.src = img.replace("50", "2000");
     
-    
     //타이틀 변경
     // document.title = " DIBE(다이브) " + title + " - " + artist
     
@@ -300,10 +301,10 @@ $("#player").on("timeupdate", () => {
     let per = (player.currentTime / player.duration) * 1000;
     $("#play_bar").val(per);
     
-    let min_dur = 00;
-    let sec_dur = 00;
-    let min_cur = 00;
-    let sec_cur = 00;
+    let min_dur = 0;
+    let sec_dur = 0;
+    let min_cur = 0;
+    let sec_cur = 0;
 
     if (!isNaN(player.duration)) {
         min_dur = parseInt(player.duration / 60);
@@ -449,23 +450,25 @@ $("#like_btn2").click(() => {
 
 //반복 재생 버튼
 $("#repeat_btn").click(() => {
+    const sUserId = $('#sUserId').html()
+
     if (repeat == 0) {
         repeat = 1;
         repeat_btn.style.opacity = "1";
-        $("#repeat_btn").prop("title", "반복재생");
+        localStorage.setItem(`dibe_${sUserId}_repeat`, 1)
     }
     
     else if (repeat == 1) {
         repeat = 2;
-        $("#repeat_btn").prop("title", "한곡반복");
         $("#one_repeat_mark").show();
+        localStorage.setItem(`dibe_${sUserId}_repeat`, 2)
     }
     
     else if (repeat == 2) {
         repeat = 0;
         repeat_btn.style.opacity = "0.5";
-        $("#repeat_btn").prop("title", "반복해제");
         $("#one_repeat_mark").hide();
+        localStorage.setItem(`dibe_${sUserId}_repeat`, 3)
     }
 });
 
