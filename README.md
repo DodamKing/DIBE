@@ -1,10 +1,10 @@
 # DIBE
 음원사이트
 
-스택
+## 스택
 Node.js, ExpressJS, EJS, MongoDB, Ubuntu, Python, Flask, BeautifulSoup, Selenium
 
-기능
+## 기능
 - 실시간 음원 스트리밍 서비스
 - node.js, express, mongoDB, ejs 기반
 - Python, Flask, Beautiful Soup를 이용한 음원 차트 top100 크롤링
