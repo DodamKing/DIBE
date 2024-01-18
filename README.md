@@ -1,6 +1,5 @@
-# DIBE
+# DIBE (https://dibe.dimad.site)
 음원사이트
-[바로가기] (https://dibe.dimad.site)
 
 ## 스택
 Node.js, ExpressJS, EJS, MongoDB, Ubuntu, Python, Flask, BeautifulSoup, Selenium
