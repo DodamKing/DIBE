@@ -10,8 +10,6 @@ from pytube import YouTube
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import platform
-
 
 chart = Blueprint('chart', __name__)
 
@@ -55,6 +53,11 @@ def get_yt_url_one():
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     options.add_argument('headless')
+
+    # 우분투에서 에러 안나게 추가
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
     for song in songs:
@@ -125,6 +128,11 @@ def get_chart_url():
 
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    options.add_argument('headless')
+
+    # 우분투에서 에러 안나게 추가
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 

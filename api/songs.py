@@ -6,7 +6,6 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup as bs
-import platform
 
 songs = Blueprint('songs', __name__)
 
@@ -23,6 +22,10 @@ def get_lyrics():
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     options.add_argument('headless')
+
+    # 우분투에서 에러 안나게 추가
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     
@@ -85,6 +88,10 @@ def get_songInfo():
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     options.add_argument('headless')
+
+    # 우분투에서 에러 안나게 추가
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
