@@ -3,7 +3,7 @@ const db = require('../../models')
 const fs = require ('fs')
 const ytdl = require('ytdl-core')
 const axios = require('axios')
-const { response } = require('express')
+
 const myModule = {}
 
 function setURLScheduler() {
@@ -251,11 +251,17 @@ const sendTelegramMessage = async (msg) => {
     const botToken = process.env.TELEGRAMBOTTOKEN
     const chatId = process.env.CHATID
 
+    const maxLength = 4900
+    let = sendMsg = '서버 에러 발생 \n'
+    sendMsg += msg
+
+    if (sendMsg.length > maxLength) sendMsg = sendMsg.substring(0, maxLength)
+
     try {
         const url = `https://api.telegram.org/bot${botToken}/sendMessage`
         const params = {
             chat_id: chatId,
-            text: msg
+            text: sendMsg
         }
 
         const response = await axios.post(url, params)

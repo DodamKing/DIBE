@@ -11,6 +11,7 @@ const ipfilter = require('express-ipfilter').IpFilter
 const IpDeniedError = require('express-ipfilter').IpDeniedError
 const geoip = require('geoip-country')
 const helmet = require('helmet')
+const util = require('util')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -87,6 +88,10 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // 슬랫봇아 부탁해
+  const errorrString = util.inspect(err)
+  myModule.sendTelegramMessage(errorrString)
 
   // render the error page
   res.status(err.status || 500);
