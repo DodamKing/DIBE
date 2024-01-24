@@ -17,23 +17,25 @@ function setURLScheduler() {
                 songs.push(row)
             }
         }
-    
-        const options = {
-            uri : url,
-            method : 'POST',
-            body : {songs},
-            json : true,
-        }
-    
-        request.post(options, async (err, response, body) => {
-            for (let i=0; i<body.length; i++) {
-                await db.Song.findByIdAndUpdate(songs[i]._id, {ytURL : body[i]})
-                await db.Chart.findOneAndUpdate({songId : songs[i]._id}, {ytURL : body[i]})
-                const result = await db.Song.findById(songs[i]._id)
-                results.push(result)
+
+        if (songs.length !== 0) {
+            const options = {
+                uri : url,
+                method : 'POST',
+                body : {songs},
+                json : true,
             }
-            resolve(results)
-        })
+        
+            request.post(options, async (err, response, body) => {
+                for (let i=0; i<body.length; i++) {
+                    await db.Song.findByIdAndUpdate(songs[i]._id, {ytURL : body[i]})
+                    await db.Chart.findOneAndUpdate({songId : songs[i]._id}, {ytURL : body[i]})
+                    const result = await db.Song.findById(songs[i]._id)
+                    results.push(result)
+                }
+                resolve(results)
+            })
+        }
     })
 }
 
