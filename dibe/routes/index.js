@@ -24,7 +24,7 @@ router.get('/:flag', async (req, res) => {
 	}
 	else if (flag === 'chart') {
 		const date = new Date()
-		const today = date.toLocaleDateString()
+		const today = date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric'})
 		const data = await db.Chart.find()
 
 		res.render('main', {flag, data, today})
@@ -97,7 +97,8 @@ router.get('/test/my', async (req, res) => {
 	// const result = await myModule.setRyrics()
 	// const result = await myModule.setWrongYtURL()
 	// const result = await myModule.downSongsFile()
-	const result = await myModule.getSongsInfo()
+	// const result = await myModule.getSongsInfo()
+	const result = await myModule.sendTelegramMessage('아 맞아 data.ok로 받아야지!')
 
 	res.json(result)
 })

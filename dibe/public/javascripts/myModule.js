@@ -2,6 +2,8 @@ const request = require('request')
 const db = require('../../models')
 const fs = require ('fs')
 const ytdl = require('ytdl-core')
+const axios = require('axios')
+const { response } = require('express')
 const myModule = {}
 
 function setURLScheduler() {
@@ -245,6 +247,30 @@ async function nodemail(email, pwd, user) {
     console.log(info.messageId);
 }
 
+const sendTelegramMessage = async (msg) => {
+    const botToken = process.env.TELEGRAMBOTTOKEN
+    const chatId = process.env.CHATID
+
+    try {
+        const url = `https://api.telegram.org/bot${botToken}/sendMessage`
+        const params = {
+            chat_id: chatId,
+            text: msg
+        }
+
+        const response = await axios.post(url, params)
+        const isSuccess = response.data.ok
+        if (isSuccess) console.log("성공");
+        else console.log("실패");
+
+        return response.data
+    }
+    catch (err) {
+        console.error(err.message)
+        return ('실패')
+    }
+}
+
 myModule.setURLScheduler = setURLScheduler
 myModule.setTodayChart = setTodayChart
 myModule.downSongsFile = downSongsFile
@@ -255,5 +281,6 @@ myModule.resetWrongYtURL = resetWrongYtURL
 myModule.reportWrongYtURL = reportWrongYtURL
 myModule.getSongsInfo = getSongsInfo
 myModule.nodemail = nodemail
+myModule.sendTelegramMessage = sendTelegramMessage
 
 module.exports = myModule

@@ -7,7 +7,7 @@ const ytdl = require('ytdl-core')
 
 router.get('/chart', async (req, res) => {
     const date = new Date()
-    const today = date.toLocaleDateString()
+    const today = date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric'})
     const data = await db.Chart.find()
 
     res.json({data, today})
