@@ -254,22 +254,19 @@ const sendTelegramMessage = async (msg) => {
     const chatId = process.env.CHATID
 
     const maxLength = 4900
-    let = sendMsg = '서버 에러 발생 \n'
-    sendMsg += msg
 
-    if (sendMsg.length > maxLength) sendMsg = sendMsg.substring(0, maxLength)
-
+    if (msg.length > maxLength) msg = msg.substring(0, maxLength)
     try {
         const url = `https://api.telegram.org/bot${botToken}/sendMessage`
         const params = {
             chat_id: chatId,
-            text: sendMsg
+            text: msg
         }
 
         const response = await axios.post(url, params)
         const isSuccess = response.data.ok
-        if (isSuccess) console.log("성공");
-        else console.log("실패");
+        if (isSuccess) console.log("슬랙 메시지 전송 성공");
+        else console.log("슬랙 메시지 전송 실패");
 
         return response.data
     }
