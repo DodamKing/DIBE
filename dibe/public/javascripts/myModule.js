@@ -276,6 +276,21 @@ const sendTelegramMessage = async (msg) => {
     }
 }
 
+const visitorCheck = (req, res, country) => {
+    const visitCookie = req.cookies.visitCookie
+    const today = new Date().toISOString().split('T')[0]
+
+    // res.clearCookie('visitCookie')
+    if (visitCookie) {
+        if (visitCookie === today) return
+    }
+
+    const msg = `접속 ip: ${req.ip}\n접속 국가: ${country}\n접속 시간: ${(new Date()).toLocaleString('ko-KR')}`
+
+    res.cookie('visitCookie', today)
+    sendTelegramMessage(msg)
+}
+
 myModule.setURLScheduler = setURLScheduler
 myModule.setTodayChart = setTodayChart
 myModule.downSongsFile = downSongsFile
@@ -287,5 +302,6 @@ myModule.reportWrongYtURL = reportWrongYtURL
 myModule.getSongsInfo = getSongsInfo
 myModule.nodemail = nodemail
 myModule.sendTelegramMessage = sendTelegramMessage
+myModule.visitorCheck = visitorCheck
 
 module.exports = myModule
