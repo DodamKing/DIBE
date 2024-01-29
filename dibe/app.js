@@ -93,8 +93,9 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // 슬랫봇아 부탁해
-  const msg404 = `잘못된 경로 접근 시도\n접속 시도 ip: ${req.ip}\n접근 경로: ${req.path}\n${util.inspect(err)}`
-  const errorrString = err.status === 404 ? msg404 : '서버 에러 발생 \n' + util.inspect(err)
+  const timeString = '발생 시간: ' + (new Date()).toLocaleString('ko-KR')
+  const msg404 = `잘못된 경로 접근 시도\n접속 시도 ip: ${req.ip}\n접근 경로: ${req.path}\n${timeString}\n${util.inspect(err)}`
+  const errorrString = err.status === 404 ? msg404 : `서버 에러 발생 \n${timeString}\n` + util.inspect(err)
   myModule.sendTelegramMessage(errorrString)
 
   // render the error page
