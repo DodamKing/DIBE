@@ -68,8 +68,8 @@ app.use((req, res, next) => {
   const geo = geoip.lookup(ip)
   if (geo) {
     console.log('접속 시도 아이피:', ip, 'Country:', geo.country)
-    myModule.visitorCheck(req, res, geo.country)
     if (geo.country !== 'KR') return res.send('Access Denied')
+    myModule.visitorCheck(req, res, geo.country)
   }
 
   res.locals.user = req.user
