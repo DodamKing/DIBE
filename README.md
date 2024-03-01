@@ -1,4 +1,4 @@
-# DIBE (https://dibe.dimad.site)
+# DIBE 
 음원사이트
 
 ## 스택
